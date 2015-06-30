@@ -1,10 +1,10 @@
 import pygame
 
-WIDTH = 480
-HEIGHT = 360
+WIDTH = 320
+HEIGHT = 240
 
-# OUTPUT_WIDTH = 480
-# OUTPUT_HEIGHT = 360
+# OUTPUT_WIDTH = 320
+# OUTPUT_HEIGHT = 240
 
 MAP_FOCUS = (-5.9347681, 54.5889076)
 
@@ -27,14 +27,14 @@ ACTIONS = {
 
 # Using GPIO.BOARD as mode
 GPIO_ACTIONS = {
-	22: "module_stats",
-	24: "module_items",
-	26: "module_data",
+    10: "module_stats",
+	7: "module_items",
+	12: "module_data",
 	13:	"knob_1",
 	11: "knob_2",
-	7: "knob_3",
-	5: "knob_4",
-	3: "knob_5",
+	#8: "knob_3",
+#	12: "knob_4",
+#	13: "knob_5",
 #	8: "dial_up",
 #	7: "dial_down"
 }
