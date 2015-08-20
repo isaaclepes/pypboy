@@ -27,16 +27,16 @@ ACTIONS = {
 
 # Using GPIO.BOARD as mode
 GPIO_ACTIONS = {
-    11: "module_stats", #GPIO 17
-	12: "module_items", #GPIO 18
-	13: "module_data", #GPIO 27
-	#22:	"knob_1", #GPIO 25
-	7: "knob_2", #GPIO 4
-	#8: "knob_3",
-#	12: "knob_4",
-#	13: "knob_5",
-#	8: "dial_up",
-#	7: "dial_down"
+#    11: "module_stats", #GPIO 17
+#	12: "module_items", #GPIO 18
+#	13: "module_data", #GPIO 27
+	26:	"knob_1", #GPIO 4
+	10: "knob_2", #GPIO 15
+	8: "knob_3", #GPIO 14
+	15: "knob_4", #GPIO 22
+	13: "knob_5", #GPIO 27
+	16: "dial_up", #GPIO 23
+	11: "dial_down" #GPIO 7
 }
 
 
