@@ -6,7 +6,7 @@ os.putenv('SDL_FBDEV'      , '/dev/fb1')
 
 try:
     import RPi.GPIO as GPIO
-    GPIO.setmode(GPIO.BOARD)
+    GPIO.setmode(GPIO.BCM)
     config.GPIO_AVAILABLE = True
 except Exception, e:
     print "GPIO UNAVAILABLE (%s)" % e
