@@ -102,7 +102,7 @@ class Oscilloscope:
 		self.embedded = False
 	
 	def open(self, screen=None):
-		# Open window
+        # Open window
 		pygame.init()
 		if screen:
 			'''Embedded'''

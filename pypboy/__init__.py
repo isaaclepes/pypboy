@@ -26,7 +26,7 @@ class BaseModule(game.EntityGroup):
 		for mod in self.submodules:
 			self.footer.menu.append(mod.label)
 		self.footer.selected = self.footer.menu[0]
-		self.footer.position = (0, config.HEIGHT - 80)
+		self.footer.position = (0, config.HEIGHT - 53) #80
 		self.add(self.footer)
 
 		self.switch_submodule(0)
