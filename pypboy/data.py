@@ -71,6 +71,10 @@ class Maps(object):
 			else:
 				break
 		osm_dict = xmltodict.parse(response.text.encode('UTF-8'))
+		#Write to cache file
+		f = open("map.cache", "w")
+		f.write(response.text.encode('UTF-8'))
+		f.close()
 		try:
 			for node in osm_dict['osm']['node']:
 				self.nodes[node['@id']] = node
