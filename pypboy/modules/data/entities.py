@@ -64,7 +64,7 @@ class Map(game.Entity):
 			if tag[3] in config.AMENITIES:
 				image = config.AMENITIES[tag[3]]
 			else:
-				print "Unknown amenity: %s" % tag[3]
+				#print "Unknown amenity: %s" % tag[3]
 				image = config.MAP_ICONS['misc']
 			pygame.transform.scale(image, (10, 10))
 			self._map_surface.blit(image, (tag[1], tag[2]))

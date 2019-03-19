@@ -14,7 +14,7 @@ class Module(BaseModule):
 	def __init__(self, *args, **kwargs):
 		self.submodules = [
 			local_map.Module(self),
-			world_map.Module(self),
+			#world_map.Module(self),
 			quests.Module(self),
 			misc.Module(self),
 			radio.Module(self)
