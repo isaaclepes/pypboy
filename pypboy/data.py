@@ -77,7 +77,7 @@ class Maps(object):
 		f.close()
 		self.display_map(map_data)
 	
-	def load_map_coordinates(coords,range):
+	def load_map_coordinates(self, coords,range):
 		return self.load_map((
 				coords[0] - range,
 				coords[1] - range,
