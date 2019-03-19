@@ -38,6 +38,5 @@ except:
 
 if __name__ == "__main__":
 	boy = Pypboy('Pip-Boy 3000', config.WIDTH, config.HEIGHT)
-	boy.load_cached_map = options.load_cached
 	print "RUN"
 	boy.run()
