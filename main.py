@@ -1,5 +1,6 @@
 import pygame
 import optparse
+import sys
 import config
 import os
 
