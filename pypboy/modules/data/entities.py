@@ -37,7 +37,7 @@ class Map(game.Entity):
 		self.redraw_map()
 		
 	def display_map(self, map_data):
-		self._fetching = threading.Thread(target=self._internal_fetch_map, args=(position, radius))
+		self._fetching = threading.Thread(target=self._internal_display_map, args=(position, radius))
 		self._fetching.start()
 
 	def _internal_display_map(self, map_data):
