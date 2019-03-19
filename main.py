@@ -18,6 +18,8 @@ os.putenv('SDL_FBDEV'      , '/dev/fb1')
 os.putenv('SDL_MOUSEDRV'   , 'TSLIB')
 os.putenv('SDL_MOUSEDEV'   , '/dev/input/touchscreen')
 
+config.LOAD_CACHED_MAP = load_cached
+
 try:
     import RPi.GPIO as GPIO
     GPIO.setmode(GPIO.BCM)
