@@ -8,6 +8,11 @@ Uses OSM for map data and has been partially tailored to respond to physical swi
 ## Features
 
 Work with Screen TFT 3.5" Capacitive of Adafruit<br>
+Supports caching and offline loading of maps.
+* In config.py set 'LOAD_CACHED_MAP = False'
+* Run the application once
+* In config.py set 'LOAD_CACHED_MAP = True'
+* Pypboy will now load the cached map on starting
 
 ## Autors
 * Fixes and Updates by Goldstein
