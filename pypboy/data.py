@@ -75,7 +75,11 @@ class Maps(object):
 		f = open("map.cache", "w")
 		f.write(map_data)
 		f.close()
-		print "Internet map read as %i objects " % len(map_data)
+		self.display_map(map_data)
+		
+	def load_map(self, map_data_location):
+		with open(map_data_location, 'r') as mapcache:
+			map_data = mapcache.read()
 		self.display_map(map_data)
 			
 	def display_map(self, map_data):

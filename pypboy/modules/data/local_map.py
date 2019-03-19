@@ -15,16 +15,8 @@ class Module(pypboy.SubModule):
 		mapgrid = entities.Map(config.WIDTH, pygame.Rect(4, (config.WIDTH - config.HEIGHT) / 2, config.WIDTH - 8, config.HEIGHT - 80))
 		if(config.LOAD_CACHED_MAP):
 			print "Loading cached map"
-			#try:
-			with open('map.cache', 'r') as mapcache:
-				map_data = mapcache.read()
-			#map_data = f.readlines()
-			print "Cached map read as %i objects " % len(map_data)
-			mapgrid.display_map(map_data)
-			#except Exception, e:
-			#print "ERROR reading cached map file"
-			#print "(%s)" % e
-			#quit()
+			map_data_location = 'map.cache'
+			mapgrid.load_map(map_data_location)
 		else:
 			print "Loading map from the internet"
 			mapgrid.fetch_map(config.MAP_FOCUS, 0.003)
