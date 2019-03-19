@@ -6,7 +6,6 @@ from pypboy.modules.data import entities
 
 
 class Module(pypboy.SubModule):
-	load_cached_map = False
 	label = "Local Map"
 
 	def __init__(self, *args, **kwargs):
@@ -14,6 +13,7 @@ class Module(pypboy.SubModule):
 		#mapgrid = entities.MapGrid((-5.9302032, 54.5966701), (config.WIDTH - 8, config.HEIGHT - 80))
 		mapgrid = entities.Map(config.WIDTH, pygame.Rect(4, (config.WIDTH - config.HEIGHT) / 2, config.WIDTH - 8, config.HEIGHT - 80))
 		if(self.load_cached_map):
+			print "Loading cached map"
 			try:
 				f = open("map.cache")
 				map_data = f.readlines();
@@ -23,6 +23,7 @@ class Module(pypboy.SubModule):
 				print "ERROR reading cached map file"
 				quit()
 		else:
+			print "Loading map from the internet"
 			mapgrid.fetch_map(config.MAP_FOCUS, 0.003)
 		self.add(mapgrid)
 		mapgrid.rect[0] = 4
