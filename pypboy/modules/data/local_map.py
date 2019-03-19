@@ -16,7 +16,7 @@ class Module(pypboy.SubModule):
 		if(config.LOAD_CACHED_MAP):
 			print "Loading cached map"
 			#try:
-			with open('map.cache', 'r') as mapcache:
+			with open('map.cache', encoding='utf8') as mapcache:
 				map_data = mapcache.read()
 			#map_data = f.readlines()
 			mapgrid.display_map(map_data)
