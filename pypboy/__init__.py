@@ -28,6 +28,8 @@ class BaseModule(game.EntityGroup):
 		self.footer.selected = self.footer.menu[0]
 		self.footer.position = (0, config.HEIGHT - 53) #80
 		self.add(self.footer)
+		
+		self.load_cached_map = config.LOAD_CACHED_MAP
 
 		self.switch_submodule(0)
 

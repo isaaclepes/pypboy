@@ -45,7 +45,7 @@ class Maps(object):
 		])
 
 	def fetch_area(self, bounds):
-		if(config.LOAD_CACHED_MAP):
+		if(self.load_cached_map):
 			try:
 				f = open("map.cache")
 				map_data = f.readlines();
