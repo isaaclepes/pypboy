@@ -2,6 +2,14 @@ import pygame
 import config
 import os
 
+
+
+
+parser = optparse.OptionParser(usage='python %prog -c True\nor:\npython %prog -c True', version=settings.__version__, prog=sys.argv[0])
+parser.add_option('-c','--cached-map',        action="store_true", help="Loads the cached map file stored in map.cache", dest="load_cached", default=False)
+options, args = parser.parse_args()
+
+
 # Init framebuffer/touchscreen environment variables
 os.putenv('SDL_VIDEODRIVER', 'fbcon')
 os.putenv('SDL_FBDEV'      , '/dev/fb1')
