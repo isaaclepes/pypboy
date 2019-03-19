@@ -45,45 +45,39 @@ class Maps(object):
 		])
 
 	def fetch_area(self, bounds):
-		if(self.load_cached_map):
+		self.width = (bounds[2] - bounds[0]) / 2
+		self.height = (bounds[3] - bounds[1]) / 2
+		self.origin = (
+				bounds[0] + self.width,
+				bounds[1] + self.height
+		)
+		url = "http://www.openstreetmap.org/api/0.6/map?bbox=%f,%f,%f,%f" % (
+						bounds[0],
+						bounds[1],
+						bounds[2],
+						bounds[3]
+				)
+		print "[Fetching maps... (%f, %f) to (%f, %f)]" % (
+						bounds[0],
+						bounds[1],
+						bounds[2],
+						bounds[3]
+				)
+		while True:
 			try:
-				f = open("map.cache")
-				map_data = f.readlines();
-				f.close()
+				response = requests.get(url)
 			except:
-				print "ERROR reading cached map file"
-				quit()
-		else:
-			self.width = (bounds[2] - bounds[0]) / 2
-			self.height = (bounds[3] - bounds[1]) / 2
-			self.origin = (
-					bounds[0] + self.width,
-					bounds[1] + self.height
-			)
-			url = "http://www.openstreetmap.org/api/0.6/map?bbox=%f,%f,%f,%f" % (
-							bounds[0],
-							bounds[1],
-							bounds[2],
-							bounds[3]
-					)
-			print "[Fetching maps... (%f, %f) to (%f, %f)]" % (
-							bounds[0],
-							bounds[1],
-							bounds[2],
-							bounds[3]
-					)
-			while True:
-				try:
-					response = requests.get(url)
-				except:
-					pass
-				else:
-					break
-			map_data = response.text.encode('UTF-8')
-			#Write to cache file
-			f = open("map.cache", "w")
-			f.write(response.text.encode('UTF-8'))
-			f.close()
+				pass
+			else:
+				break
+		map_data = response.text.encode('UTF-8')
+		#Write to cache file
+		f = open("map.cache", "w")
+		f.write(map_data)
+		f.close()
+		display_map(map_data)
+			
+	def display_map(self, map_data):
 		osm_dict = xmltodict.parse(map_data)
 		try:
 			for node in osm_dict['osm']['node']:
@@ -113,7 +107,7 @@ class Maps(object):
 				self.ways.append(waypoints)
 		except Exception, e:
 			print e
-			#print response.text
+	
 
 	def fetch_by_coordinate(self, coords, range):
 		return self.fetch_area((
