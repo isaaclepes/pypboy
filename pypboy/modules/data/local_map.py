@@ -19,7 +19,7 @@ class Module(pypboy.SubModule):
 			with open('map.cache', 'r') as mapcache:
 				map_data = mapcache.read()
 			#map_data = f.readlines()
-			print "Cached map read as %i objects " % map_data.count()
+			print "Cached map read as %i objects " % len(map_data)
 			mapgrid.display_map(map_data)
 			#except Exception, e:
 			#print "ERROR reading cached map file"
