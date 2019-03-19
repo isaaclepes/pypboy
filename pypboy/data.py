@@ -75,7 +75,7 @@ class Maps(object):
 		f = open("map.cache", "w")
 		f.write(map_data)
 		f.close()
-		print "Internet map read as %i objects " % count(map_data) 
+		print "Internet map read as %i objects " % map_data.count() 
 		self.display_map(map_data)
 			
 	def display_map(self, map_data):
