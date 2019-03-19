@@ -18,7 +18,7 @@ os.putenv('SDL_FBDEV'      , '/dev/fb1')
 os.putenv('SDL_MOUSEDRV'   , 'TSLIB')
 os.putenv('SDL_MOUSEDEV'   , '/dev/input/touchscreen')
 
-config.LOAD_CACHED_MAP = options.load_cached
+
 
 try:
     import RPi.GPIO as GPIO
@@ -38,5 +38,6 @@ except:
 
 if __name__ == "__main__":
     boy = Pypboy('Pip-Boy 3000', config.WIDTH, config.HEIGHT)
+	boy.LOAD_CACHED_MAP = options.load_cached
     print "RUN"
     boy.run()
