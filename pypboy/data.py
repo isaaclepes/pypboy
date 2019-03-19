@@ -75,7 +75,7 @@ class Maps(object):
 		f = open("map.cache", "w")
 		f.write(map_data)
 		f.close()
-		display_map(map_data)
+		self.display_map(map_data)
 			
 	def display_map(self, map_data):
 		osm_dict = xmltodict.parse(map_data)

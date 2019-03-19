@@ -18,7 +18,7 @@ class Module(pypboy.SubModule):
 				f = open("map.cache")
 				map_data = f.readlines();
 				f.close()
-				mapgrid.load_map(map_data)
+				mapgrid.display_map(map_data)
 			except:
 				print "ERROR reading cached map file"
 				quit()
