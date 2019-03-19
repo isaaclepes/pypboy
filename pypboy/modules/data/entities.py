@@ -168,9 +168,9 @@ class MapGrid(game.Entity):
 		for name in self.tags:
 			if self.tags[name][2] in config.AMENITIES:
 				image = config.AMENITIES[self.tags[name][2]]
-			else:
-				print "Unknown amenity: %s" % self.tags[name][2]
-				image = config.MAP_ICONS['misc']
+			#else:
+			#	print "Unknown amenity: %s" % self.tags[name][2]
+			#	image = config.MAP_ICONS['misc']
 			pygame.transform.scale(image, (10, 10))
 			self.image.blit(image, (self.tags[name][0], self.tags[name][1]))
 			# try:
