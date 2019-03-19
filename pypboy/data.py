@@ -76,8 +76,22 @@ class Maps(object):
 		f.write(map_data)
 		f.close()
 		self.display_map(map_data)
-		
-	def load_map(self):
+	
+	def load_map_coordinates(coords,range):
+		return self.load_map((
+				coords[0] - range,
+				coords[1] - range,
+				coords[0] + range,
+				coords[1] + range
+		))
+	
+	def load_map(self, bounds):
+		self.width = (bounds[2] - bounds[0]) / 2
+		self.height = (bounds[3] - bounds[1]) / 2
+		self.origin = (
+				bounds[0] + self.width,
+				bounds[1] + self.height
+		)
 		with open('map.cache', 'r') as mapcache:
 			map_data = mapcache.read()
 		self.display_map(map_data)
