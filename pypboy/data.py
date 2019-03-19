@@ -77,8 +77,8 @@ class Maps(object):
 		f.close()
 		self.display_map(map_data)
 		
-	def load_map(self, map_data_location):
-		with open(map_data_location, 'r') as mapcache:
+	def load_map(self):
+		with open('map.cache', 'r') as mapcache:
 			map_data = mapcache.read()
 		self.display_map(map_data)
 			

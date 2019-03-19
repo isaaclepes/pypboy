@@ -36,12 +36,12 @@ class Map(game.Entity):
 		self._mapper.fetch_by_coordinate(position, radius)
 		self.redraw_map()
 		
-	def load_map(self, map_data_location):
-		self._fetching = threading.Thread(target=self._internal_load_map, args=(map_data_location))
+	def load_map(self):
+		self._fetching = threading.Thread(target=self._internal_load_map, args=())
 		self._fetching.start()
 
-	def _internal_load_map(self, map_data_location):
-		self._mapper.load_map(map_data_location)
+	def _internal_load_map(self):
+		self._mapper.load_map()
 		self.redraw_map()
 
 	def update(self, *args, **kwargs):

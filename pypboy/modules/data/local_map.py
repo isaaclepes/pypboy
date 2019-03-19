@@ -16,7 +16,7 @@ class Module(pypboy.SubModule):
 		if(config.LOAD_CACHED_MAP):
 			print "Loading cached map"
 			map_data_location = 'map.cache'
-			mapgrid.load_map(map_data_location)
+			mapgrid.load_map()
 		else:
 			print "Loading map from the internet"
 			mapgrid.fetch_map(config.MAP_FOCUS, 0.003)
