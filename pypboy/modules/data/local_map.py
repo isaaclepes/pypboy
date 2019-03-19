@@ -21,9 +21,9 @@ class Module(pypboy.SubModule):
 			f.close()
 			mapgrid.display_map(map_data)
 			#except Exception, e:
-			print "ERROR reading cached map file"
-			print "(%s)" % e
-			quit()
+			#print "ERROR reading cached map file"
+			#print "(%s)" % e
+			#quit()
 		else:
 			print "Loading map from the internet"
 			mapgrid.fetch_map(config.MAP_FOCUS, 0.003)
