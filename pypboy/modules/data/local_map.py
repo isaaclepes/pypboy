@@ -19,7 +19,7 @@ class Module(pypboy.SubModule):
 			f = open("map.cache")
 			map_data = ""
 			for line in f:
-				map_data += f.readline() + '\n';
+				map_data += line + '\n';
 			f.close()
 			mapgrid.display_map(map_data)
 			#except Exception, e:
