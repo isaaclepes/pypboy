@@ -7,13 +7,14 @@ Uses OSM for map data and has been partially tailored to respond to physical swi
 
 ## Features
 
-Work with Screen TFT 2.8" Capacitive of Adafruit<br>
+Work with Screen TFT 3.5" Capacitive of Adafruit<br>
 
 ## Autors
+* Fixes and Updates by Goldstein
 
-* By Sabas of The Inventor's House Hackerspace
+* Updates by Sabas of The Inventor's House Hackerspace
 
-* By grieve work original<br>
+* Originally by grieve work original<br>
 
 ## Special Thanks
 
