@@ -53,7 +53,7 @@ class Pypboy(game.core.Engine):
 
 	def check_gpio_input(self):
 		for pin in self.gpio_actions.keys():
-			if not GPIO.input(pin):
+			if GPIO.input(pin):
 				self.handle_action(self.gpio_actions[pin])
 
 	def update(self):
