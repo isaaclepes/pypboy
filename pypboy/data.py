@@ -31,9 +31,6 @@ class Maps(object):
 		return value
 
 	def fetch_grid(self, coords):
-		# lat = self.float_floor_to_precision(coords[0], self.SIG_PLACES)
-		# lng = self.float_floor_to_precision(coords[1], self.SIG_PLACES)
-		# print lat, lng
 		lat = coords[0]
 		lng = coords[1]
 

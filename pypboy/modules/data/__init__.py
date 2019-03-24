@@ -25,3 +25,5 @@ class Module(BaseModule):
 		self.pypboy.header.headline = "ITEMS"
 		self.pypboy.header.title = " Wg 186/280  |  HP 160/175"
 		self.active.handle_action("resume")
+		
+	

@@ -57,7 +57,7 @@ class BaseModule(game.EntityGroup):
 		else:
 			print "No submodule at %d" % module
 
-	def render(self, interval):
+	def render(self, interval): 
 		self.active.render(interval)
 		super(BaseModule, self).render(interval)
 

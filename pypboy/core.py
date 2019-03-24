@@ -67,15 +67,13 @@ class Pypboy(game.core.Engine):
 			self.active.render(interval)
 
 	def switch_module(self, module):
-		#print "switching to module %s" % (module)
 		if module in self.modules:
 			if hasattr(self, 'active'):
 				self.active.handle_action("pause")
 				self.remove(self.active)
-			self.active = self.modules[module]
-			#print "Switching to %s" % (self.active)
-			self.active.parent = self
 			self.active.handle_action("resume")
+			self.active = self.modules[module]
+			self.active.parent = self
 			self.add(self.active)
 		else:
 			print "Module '%s' not implemented." % module
