@@ -77,6 +77,7 @@ class Pypboy(game.core.Engine):
 			self.active.parent = self
 			self.active.handle_action("resume")
 			self.add(self.active)
+			print "Switching to %s" % (module)
 		else:
 			print "Module '%s' not implemented." % module
 
