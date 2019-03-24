@@ -4,6 +4,7 @@ from pypboy.modules.items import apparel
 from pypboy.modules.items import aid
 from pypboy.modules.items import misc
 from pypboy.modules.items import ammo
+import pygame
 import config
 import datetime
 
