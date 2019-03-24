@@ -71,9 +71,9 @@ class Pypboy(game.core.Engine):
 			if hasattr(self, 'active'):
 				self.active.handle_action("pause")
 				self.remove(self.active)
-			self.active.handle_action("resume")
 			self.active = self.modules[module]
 			self.active.parent = self
+			self.active.handle_action("resume")
 			self.add(self.active)
 		else:
 			print "Module '%s' not implemented." % module
