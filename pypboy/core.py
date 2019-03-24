@@ -104,11 +104,11 @@ class Pypboy(game.core.Engine):
 	def run(self):
 		self.running = True
 		while self.running:
+			self.check_gpio_input()
 			for event in pygame.event.get():
 				self.handle_event(event)
 			self.update()
 			self.render()
-			self.check_gpio_input()
 			pygame.time.wait(10)
 
 		try:
