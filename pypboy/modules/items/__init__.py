@@ -5,6 +5,7 @@ from pypboy.modules.items import aid
 from pypboy.modules.items import misc
 from pypboy.modules.items import ammo
 import config
+import datetime
 
 
 class Module(BaseModule):
