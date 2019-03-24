@@ -25,7 +25,6 @@ class Module(pypboy.SubModule):
 		mapgrid.rect[1] = 40
 
 	def handle_resume(self):
-		print "Hit handle local_map"
 		self.parent.pypboy.header.headline = "DATA"
 		self.parent.pypboy.header.title = "City Centre"
 		super(Module, self).handle_resume()

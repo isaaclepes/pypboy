@@ -21,7 +21,6 @@ class Module(pypboy.SubModule):
 		self.add(self.menu)
 
 	def handle_resume(self):
-		print "Hit handle status"
 		self.parent.pypboy.header.headline = "STATUS"
 		self.parent.pypboy.header.title = " HP 160/175  |  AP 62/62"
 		super(Module, self).handle_resume()
