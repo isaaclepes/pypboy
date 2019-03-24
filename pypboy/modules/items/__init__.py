@@ -30,18 +30,18 @@ class Module(BaseModule):
 
 	def render(self, interval):
 		new_date = datetime.datetime.now().strftime("%d.%m.%y.%H:%M:%S")
-		if new_date != self.header._date:
-			self.header.image.fill((0, 0, 0))
-			pygame.draw.line(self.header.image, (95, 255, 177), (5, 15), (5, 35), 2)
-			pygame.draw.line(self.header.image, (95, 255, 177), (5, 15), (config.WIDTH - 154, 15), 2)
-			pygame.draw.line(self.header.image, (95, 255, 177), (config.WIDTH - 154, 15), (config.WIDTH - 154, 35), 2)
-			pygame.draw.line(self.header.image, (95, 255, 177), (config.WIDTH - 148, 15), (config.WIDTH - 13, 15), 2)
-			pygame.draw.line(self.header.image, (95, 255, 177), (config.WIDTH - 13, 15), (config.WIDTH - 13, 35), 2)
+		if new_date != self.pypboy.header._date:
+			self.pypboy.header.image.fill((0, 0, 0))
+			pygame.draw.line(self.pypboy.header.image, (95, 255, 177), (5, 15), (5, 35), 2)
+			pygame.draw.line(self.pypboy.header.image, (95, 255, 177), (5, 15), (config.WIDTH - 154, 15), 2)
+			pygame.draw.line(self.pypboy.header.image, (95, 255, 177), (config.WIDTH - 154, 15), (config.WIDTH - 154, 35), 2)
+			pygame.draw.line(self.pypboy.header.image, (95, 255, 177), (config.WIDTH - 148, 15), (config.WIDTH - 13, 15), 2)
+			pygame.draw.line(self.pypboy.header.image, (95, 255, 177), (config.WIDTH - 13, 15), (config.WIDTH - 13, 35), 2)
 
-			text = config.FONTS[14].render("  %s  " % self.header.headline, True, (105, 251, 187), (0, 0, 0))
-			self.header.image.blit(text, (26, 8))
+			text = config.FONTS[14].render("  %s  " % self.pypboy.header.headline, True, (105, 251, 187), (0, 0, 0))
+			self.pypboy.header.image.blit(text, (26, 8))
 			text = config.FONTS[14].render("TEST", True, (95, 255, 177), (0, 0, 0))
-			self.header.image.blit(text, ((config.WIDTH - 154) - text.get_width() - 10, 19))
-			text = config.FONTS[14].render(self.header._date, True, (95, 255, 177), (0, 0, 0))
-			self.header.image.blit(text, ((config.WIDTH - 141), 19))
-			self.header._date = new_date
+			self.pypboy.header.image.blit(text, ((config.WIDTH - 154) - text.get_width() - 10, 19))
+			text = config.FONTS[14].render(self.pypboy.header._date, True, (95, 255, 177), (0, 0, 0))
+			self.pypboy.header.image.blit(text, ((config.WIDTH - 141), 19))
+			self.pypboy.header._date = new_date
