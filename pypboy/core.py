@@ -54,6 +54,7 @@ class Pypboy(game.core.Engine):
 	def check_gpio_input(self):
 		for pin in self.gpio_actions.keys():
 			if GPIO.input(pin):
+				print "GPIO %s is active"  % (pin) 
 				self.handle_action(self.gpio_actions[pin])
 
 	def update(self):
