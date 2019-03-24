@@ -22,6 +22,6 @@ class Module(BaseModule):
 		super(Module, self).__init__(*args, **kwargs)
 		
 	def handle_resume(self):
-		self.parent.pypboy.header.headline = "STATUS"
-		self.parent.pypboy.header.title = " HP 160/175  |  AP 62/62"
+		self.pypboy.header.headline = "STATUS"
+		self.pypboy.header.title = " HP 160/175  |  AP 62/62"
 		self.active.handle_action("resume")
