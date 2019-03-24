@@ -48,13 +48,13 @@ class Pypboy(game.core.Engine):
 	def init_gpio_controls(self):
 		for pin in config.GPIO_ACTIONS.keys():
 			print "Intialising pin %s as action '%s'" % (pin, config.GPIO_ACTIONS[pin])
-			GPIO.setup(pin, GPIO.IN)
+			GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 			self.gpio_actions[pin] = config.GPIO_ACTIONS[pin]
 
 	def check_gpio_input(self):
 		for pin in self.gpio_actions.keys():
-			if GPIO.input(pin):
-				print "GPIO %s is active"  % (pin) 
+			if GPIO.input(pin) == False:
+				#print "GPIO %s is off"  % (pin) 
 				self.handle_action(self.gpio_actions[pin])
 
 	def update(self):
@@ -68,7 +68,7 @@ class Pypboy(game.core.Engine):
 			self.active.render(interval)
 
 	def switch_module(self, module):
-		print "switching to module %s" % (module)
+		#print "switching to module %s" % (module)
 		if module in self.modules:
 			if hasattr(self, 'active'):
 				self.active.handle_action("pause")

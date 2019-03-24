@@ -10,7 +10,7 @@ HEIGHT = 320
 #MAP_FOCUS = (-102.3016145, 21.8841274) #Old Default?
 MAP_FOCUS = (174.776255,-41.286462)#Wellington City Centre
 
-LOAD_CACHED_MAP = False
+LOAD_CACHED_MAP = True
 
 EVENTS = {
 	'SONG_END': pygame.USEREVENT + 1
@@ -31,10 +31,10 @@ ACTIONS = {
 
 # Using GPIO.BCM as mode
 GPIO_ACTIONS = {
-    4: "module_stats", #GPIO 4
-	14: "module_items", #GPIO 14
-	15: "module_data", #GPIO 15
-#	17:	"knob_1", #GPIO 17
+    	4: "module_stats", #GPIO 4
+	17: "module_items", #GPIO 14
+	27: "module_data", #GPIO 15
+#	18:	"knob_1", #GPIO 17
 #	18: "knob_2", #GPIO 18
 #	7: "knob_3", #GPIO 7
 #	22: "knob_4", #GPIO 22
@@ -65,22 +65,22 @@ AMENITIES = {
 	'nightclub': 		MAP_ICONS['vault'],
 	'bar': 				MAP_ICONS['vault'],
 	'fast_food': 		MAP_ICONS['sewer'],
-	'cafe': 			MAP_ICONS['sewer'],
-	'drinking_water': 	MAP_ICONS['sewer'],
+#	'cafe': 			MAP_ICONS['sewer'],
+#	'drinking_water': 	MAP_ICONS['sewer'],
 	'restaurant': 		MAP_ICONS['settlement'],
 	'cinema': 			MAP_ICONS['office'],
 	'pharmacy': 		MAP_ICONS['office'],
 	'school': 			MAP_ICONS['office'],
 	'bank': 			MAP_ICONS['monument'],
 	'townhall': 		MAP_ICONS['monument'],
-	'bicycle_parking': 	MAP_ICONS['misc'],
-	'place_of_worship': MAP_ICONS['misc'],
-	'theatre': 			MAP_ICONS['misc'],
-	'bus_station': 		MAP_ICONS['misc'],
-	'parking': 			MAP_ICONS['misc'],
-	'fountain': 		MAP_ICONS['misc'],
-	'marketplace': 		MAP_ICONS['misc'],
-	'atm': 				MAP_ICONS['misc'],
+#	'bicycle_parking': 	MAP_ICONS['misc'],
+#	'place_of_worship': MAP_ICONS['misc'],
+#	'theatre': 			MAP_ICONS['misc'],
+#	'bus_station': 		MAP_ICONS['misc'],
+#	'parking': 			MAP_ICONS['misc'],
+#	'fountain': 		MAP_ICONS['misc'],
+#	'marketplace': 		MAP_ICONS['misc'],
+#	'atm': 				MAP_ICONS['misc'],
 }
 
 pygame.font.init()
