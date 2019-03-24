@@ -23,5 +23,5 @@ class Module(BaseModule):
 	
 	def handle_resume(self):
 		print "Hit handle ITEMS"
-		self.parent.pypboy.header.headline = "ITEMS"
-		self.parent.pypboy.header.title = " Wg 186/280  |  HP 160/175"
+		self.pypboy.header.headline = "ITEMS"
+		self.pypboy.header.title = " Wg 186/280  |  HP 160/175"
