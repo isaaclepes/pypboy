@@ -73,7 +73,7 @@ class Pypboy(game.core.Engine):
 				self.active.handle_action("pause")
 				self.remove(self.active)
 			self.active = self.modules[module]
-			print "Switching to %s" % (self.active)
+			#print "Switching to %s" % (self.active)
 			self.active.parent = self
 			self.active.handle_action("resume")
 			self.add(self.active)
