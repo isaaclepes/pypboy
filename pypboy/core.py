@@ -54,7 +54,6 @@ class Pypboy(game.core.Engine):
 	def check_gpio_input(self):
 		for pin in self.gpio_actions.keys():
 			if GPIO.input(pin) == False:
-				#print "GPIO %s is off"  % (pin) 
 				self.handle_action(self.gpio_actions[pin])
 
 	def update(self):
@@ -74,10 +73,10 @@ class Pypboy(game.core.Engine):
 				self.active.handle_action("pause")
 				self.remove(self.active)
 			self.active = self.modules[module]
+			print "Switching to %s" % (self.active)
 			self.active.parent = self
 			self.active.handle_action("resume")
 			self.add(self.active)
-			print "Switching to %s" % (module)
 		else:
 			print "Module '%s' not implemented." % module
 
