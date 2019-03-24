@@ -44,6 +44,7 @@ class BaseModule(game.EntityGroup):
 			self.active.move(x, y)
 
 	def switch_submodule(self, module):
+		print "Changing submodules"
 		if hasattr(self, 'active') and self.active:
 			self.active.handle_action("pause")
 			self.remove(self.active)
