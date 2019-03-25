@@ -84,8 +84,14 @@ AMENITIES = {
 }
 
 INVENTORY = [
-"TestTestTest",
-"Test2"
+"Chinese Assault Rifle",
+"Combat Shotgun",
+"Deathclaw Gauntlet",
+"Flamer",
+"Hunting Rifle",
+"Minigun",
+"Missile Launcher"
+"Pulse Grenade (2)"
 ]
 
 
