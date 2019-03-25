@@ -20,10 +20,10 @@ class Module(pypboy.SubModule):
 		self.menu.rect[1] = 60
 		self.add(self.menu)
 
-	def handle_resume(self):
-		self.parent.pypboy.header.headline = "STATUS"
-		self.parent.pypboy.header.title = " HP 160/175  |  AP 62/62"
-		super(Module, self).handle_resume()
+#	def handle_resume(self):
+#		self.parent.pypboy.header.headline = "STATUS"
+#		self.parent.pypboy.header.title = " HP 160/175  |  AP 62/62"
+#		super(Module, self).handle_resume()
 
 	def show_cnd(self):
 		print "CND"

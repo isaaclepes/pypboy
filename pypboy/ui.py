@@ -6,7 +6,7 @@ import datetime
 
 class Header(game.Entity):
 
-	def __init__(self, headline="", title=""):
+	def __init__(self, headline="", title=[]):
 		self.headline = headline
 		self.title = []
 		super(Header, self).__init__((config.WIDTH, config.HEIGHT))
