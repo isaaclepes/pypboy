@@ -30,7 +30,7 @@ class Header(game.Entity):
 			self.image.blit(text, (26, 8))
 			text = config.FONTS[14].render(self._date, True, (95, 255, 177), (0, 0, 0))
 			self.image.blit(text, ((config.WIDTH - 141), 19))
-			headerposcount = 149
+			headerposcount = 146
 			for section in self.title:
 				headerposcount = headerposcount + 8
 				text = config.FONTS[14].render(section, True, (95, 255, 177), (0, 0, 0))
