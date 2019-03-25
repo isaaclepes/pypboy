@@ -90,7 +90,7 @@ INVENTORY = [
 "Flamer",
 "Hunting Rifle",
 "Minigun",
-"Missile Launcher"
+"Missile Launcher",
 "Pulse Grenade (2)"
 ]
 
