@@ -57,7 +57,7 @@ class Module(BaseModule):
 			
 			#HP
 			text = config.FONTS[14].render("HP  291/340", True, (95, 255, 177), (0, 0, 0))
-			headerposcount = headerposcount + text.get_width() + HeaderGap
+			headerposcount = headerposcount + text.get_width() + self.HeaderGap
 			self.pypboy.header.image.blit(text, (config.WIDTH - headerposcount, 19))
 			
 			self.pypboy.header._date = new_date
