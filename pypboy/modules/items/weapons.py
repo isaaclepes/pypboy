@@ -16,6 +16,7 @@ class Module(pypboy.SubModule):
 		self.menu = pypboy.ui.Menu(100, config.INVENTORY, handlers, 0)
 		self.menu.rect[0] = 4
 		self.menu.rect[1] = 60
+		self.menu.xoffset = 15
 		self.add(self.menu)
 
 	def show_cnd(self):
