@@ -10,7 +10,10 @@ class Module(pypboy.SubModule):
 
 	def __init__(self, *args, **kwargs):
 		super(Module, self).__init__(*args, **kwargs)
-		self.menu = pypboy.ui.Menu(100, config.INVENTORY, self.change_items, 0)
+		handlers = []
+		for i in config.INVENTORY:
+			handlers.add(self.change_items)
+		self.menu = pypboy.ui.Menu(100, config.INVENTORY, handlers, 0)
 		self.menu.rect[0] = 4
 		self.menu.rect[1] = 60
 		self.add(self.menu)
