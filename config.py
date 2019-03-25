@@ -83,6 +83,11 @@ AMENITIES = {
 #	'atm': 				MAP_ICONS['misc'],
 }
 
+INVENTORY = [
+
+]
+
+
 pygame.font.init()
 FONTS = {}
 for x in range(10, 28):
