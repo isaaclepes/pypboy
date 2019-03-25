@@ -38,7 +38,7 @@ class Header(game.Entity):
 				headerposcount = headerposcount + text.get_width() + 5
 				self.image.blit(text, (config.WIDTH - headerposcount, 19))
 				pygame.draw.line(self.image, (95, 255, 177), (config.WIDTH - headerposcount, 15), (config.WIDTH - headerposcount_old, 15), 2) # Horizontal Bar
-			pygame.draw.line(self.image, (95, 255, 177), (15, 15), (config.WIDTH - headerposcount - 8, 15), 2) # Horizontal Bar	
+			pygame.draw.line(self.image, (95, 255, 177), (15, 15), (config.WIDTH - headerposcount, 15), 2) # Horizontal Bar	
 			self._date = new_date
 
 		super(Header, self).update(*args, **kwargs)
