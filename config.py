@@ -84,7 +84,7 @@ AMENITIES = {
 }
 
 INVENTORY = [
-"Test",
+"TestTestTest",
 "Test2"
 ]
 
