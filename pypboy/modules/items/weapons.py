@@ -19,15 +19,6 @@ class Module(pypboy.SubModule):
 		self.menu.rect[1] = 60
 		
 		self.add(self.menu)
-
-	def show_cnd(self):
-		print "CND"
-
-	def show_rad(self):
-		print "RAD"
-
-	def show_eff(self):
-		print "EFF"
 		
 	def change_items(self):
 		print "Changing"

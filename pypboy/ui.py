@@ -83,7 +83,7 @@ class Footer(game.Entity):
 
 class Menu(game.Entity):
 
-	xoffset = 5
+	xoffset = 15
 
 	def __init__(self, width, items=[], callbacks=[], selected=0):
 		super(Menu, self).__init__((width, config.HEIGHT - 80))
