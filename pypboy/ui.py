@@ -30,11 +30,12 @@ class Header(game.Entity):
 			self.image.blit(text, (26, 8))
 			text = config.FONTS[14].render(self._date, True, (95, 255, 177), (0, 0, 0))
 			self.image.blit(text, ((config.WIDTH - 141), 19))
-			headerposcount = 154
+			headerposcount = 149
 			for section in self.title:
+				headerposcount = headerposcount + 5
 				text = config.FONTS[14].render(section, True, (95, 255, 177), (0, 0, 0))
 				pygame.draw.line(self.image, (95, 255, 177), (config.WIDTH - headerposcount, 15), (config.WIDTH - headerposcount, 35), 2)	
-				headerposcount = headerposcount + text.get_width() + 10
+				headerposcount = headerposcount + text.get_width() + 5
 				self.image.blit(text, (config.WIDTH - headerposcount, 19))
 							
 			self._date = new_date
