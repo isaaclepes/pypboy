@@ -34,7 +34,7 @@ class Header(game.Entity):
 			for section in self.title:
 				text = config.FONTS[14].render(section, True, (95, 255, 177), (0, 0, 0))
 				headerposcount = headerposcount + text.get_width() + 10
-				self.image.blit(text, ((config.WIDTH - 154) - text.get_width() - 10, 19))	
+				self.image.blit(text, (config.WIDTH - headerposcount, 19))	
 			self._date = new_date
 
 		super(Header, self).update(*args, **kwargs)
