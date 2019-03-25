@@ -32,7 +32,7 @@ class Header(game.Entity):
 			self.image.blit(text, ((config.WIDTH - 141), 19))
 			headerposcount = 154
 			for section in self.title:
-			print "%s" % section
+				print "%s" % section
 				text = config.FONTS[14].render(section, True, (95, 255, 177), (0, 0, 0))
 				headerposcount = headerposcount + text.get_width() + 10
 				self.image.blit(text, (config.WIDTH - headerposcount, 19))	
