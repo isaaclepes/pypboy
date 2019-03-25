@@ -45,8 +45,12 @@ class Module(BaseModule):
 			#self.pypboy.header.image.blit(text, ((config.WIDTH - 180) - text.get_width() - 10, 19))
 			#text = config.FONTS[14].render("HP  291/340", True, (95, 255, 177), (0, 0, 0))
 			#self.pypboy.header.image.blit(text, ((config.WIDTH - 168) - text.get_width() - 10, 19))
-			text = config.FONTS[14].render("DR  20", True, (95, 255, 177), (0, 0, 0))
-			self.pypboy.header.image.blit(text, ((config.WIDTH - 154) - text.get_width() - 10, 19))
+			
+			#Date
 			text = config.FONTS[14].render(self.pypboy.header._date, True, (95, 255, 177), (0, 0, 0))
 			self.pypboy.header.image.blit(text, ((config.WIDTH - 141), 19))
+			#DR
+			text = config.FONTS[14].render("DR  20", True, (95, 255, 177), (0, 0, 0))
+			self.pypboy.header.image.blit(text, ((config.WIDTH - 154) - text.get_width() - 10, 19))
+			
 			self.pypboy.header._date = new_date
