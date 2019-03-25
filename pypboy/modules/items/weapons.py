@@ -14,7 +14,7 @@ class Module(pypboy.SubModule):
 		for i in config.INVENTORY:
 			handlers.add(self.change_items)
 		#self.menu = pypboy.ui.Menu(100, config.INVENTORY, handlers, 0)
-		self.menu = pypboy.ui.Menu(100, ["TestItemA", "TestItemB", "TestItemC"], handlers, 0)
+		self.menu = pypboy.ui.Menu(100, config.INVENTORY, handlers, 0)
 		self.menu.rect[0] = 4
 		self.menu.rect[1] = 60
 		self.add(self.menu)
