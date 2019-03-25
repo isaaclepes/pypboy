@@ -119,7 +119,7 @@ class Menu(game.Entity):
 			if i == self.selected:
 				selected_rect = (5, offset - 2, text.get_size()[0] + 10, text.get_size()[1] + 3)
 				pygame.draw.rect(self.image, (95, 255, 177), selected_rect, 2)
-			#self.image.blit(text, (10, offset))
+			self.image.blit(text, (10, offset))
 			offset += text.get_size()[1] + 6
 
 
