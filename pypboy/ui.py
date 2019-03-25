@@ -118,7 +118,7 @@ class Menu(game.Entity):
 		offset = 5
 		for i in range(len(self.items)):
 			text = config.FONTS[14].render(" %s " % self.items[i], True, (105, 255, 187), (0, 0, 0))
-			print "Menu xval %s" $ (self.menuXVal)
+			print "Menu xval %s" % (self.menuXVal)
 			if i == self.selected:
 				selected_rect = (self.menuXVal, offset - 2, text.get_size()[0] + 10, text.get_size()[1] + 3)
 				pygame.draw.rect(self.image, (95, 255, 177), selected_rect, 2)
