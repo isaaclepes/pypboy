@@ -22,7 +22,7 @@ class Module(BaseModule):
 		super(Module, self).__init__(*args, **kwargs)
 		
 	def handle_resume(self):
-		self.pypboy.header.headline = "ITEMS"
-		self.pypboy.header.title = ["Wg 186/280","HP 160/175"]
+		self.pypboy.header.headline = "MAP"
+		self.pypboy.header.title = ["Wellington City"]
 		self.active.handle_action("resume")
 		
