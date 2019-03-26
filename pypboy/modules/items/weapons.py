@@ -3,18 +3,6 @@ import pygame
 import game
 import config
 
-class Weapon(game.Entity):
-	def __init__(self, name, imageloc, damage, weight, value, condition, notes): 
-		super(Weapon, self).__init__()
-		self.name = name
-		self.imageloc = imageloc
-		self.image = pygame.image.load(self.imageloc)
-		self.damage = damage
-		self.weight= weight
-		self.value = value
-		self.condition = condition
-		self.notes = notes
-
 class Module(pypboy.SubModule):
 
 	label = " Weapons "
@@ -53,3 +41,14 @@ class Module(pypboy.SubModule):
 	def change_items(self):
 		print "Changing"
 		
+class Weapon(game.Entity):
+	def __init__(self, name, imageloc, damage, weight, value, condition, notes): 
+		super(Weapon, self).__init__()
+		self.name = name
+		self.imageloc = imageloc
+		self.image = pygame.image.load(self.imageloc)
+		self.damage = damage
+		self.weight= weight
+		self.value = value
+		self.condition = condition
+		self.notes = notes
