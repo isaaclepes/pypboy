@@ -9,14 +9,14 @@ class Module(pypboy.SubModule):
 	label = " Weapons "
 	
 	INVENTORY = [
-		weapons.weapon("Chinese Assault Rifle",'images/inventory/flamer.png',0,0,0,0,''),
-		weapons.weapon("Combat Shotgun",'images/inventory/flamer.png',0,0,0,0,''),
-		weapons.weapon("Deathclaw Gauntlet",'images/inventory/flamer.png',0,0,0,0,''),
-		weapons.weapon("Flamer",'images/inventory/flamer.png',0,0,0,0,''),
-		weapons.weapon("Hunting Rifle",'images/inventory/flamer.png',0,0,0,0,''),
-		weapons.weapon("Minigun",'images/inventory/flamer.png',0,0,0,0,''),
-		weapons.weapon("Missile Launcher",'images/inventory/flamer.png',0,0,0,0,''),
-		weapons.weapon("Pulse Grenade (2)",'images/inventory/flamer.png',0,0,0,0,'')
+		Weapon("Chinese Assault Rifle",'images/inventory/flamer.png',0,0,0,0,''),
+		Weapon("Combat Shotgun",'images/inventory/flamer.png',0,0,0,0,''),
+		Weapon("Deathclaw Gauntlet",'images/inventory/flamer.png',0,0,0,0,''),
+		Weapon("Flamer",'images/inventory/flamer.png',0,0,0,0,''),
+		Weapon("Hunting Rifle",'images/inventory/flamer.png',0,0,0,0,''),
+		Weapon("Minigun",'images/inventory/flamer.png',0,0,0,0,''),
+		Weapon("Missile Launcher",'images/inventory/flamer.png',0,0,0,0,''),
+		Weapon("Pulse Grenade (2)",'images/inventory/flamer.png',0,0,0,0,'')
 	]
 
 	def __init__(self, *args, **kwargs):
