@@ -1,5 +1,4 @@
 import pygame
-from pypboy.modules.items import weapon
 
 WIDTH = 480
 HEIGHT = 320
