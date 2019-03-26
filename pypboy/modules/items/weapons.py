@@ -2,6 +2,7 @@ import pypboy
 import pygame
 import game
 import config
+from pypboy.modules.items import weapon
 
 
 class Module(pypboy.SubModule):
@@ -11,9 +12,11 @@ class Module(pypboy.SubModule):
 	def __init__(self, *args, **kwargs):
 		super(Module, self).__init__(*args, **kwargs)
 		handlers = []
+		item_names = []
 		for i in config.INVENTORY:
 			handlers.append(self.change_items)
-		self.menu = pypboy.ui.Menu(200, config.INVENTORY, handlers, 0, 15)
+			item_names.append(i.name)
+		self.menu = pypboy.ui.Menu(200, config.INVENTORY, handlers, 3, 15)
 		self.menu.rect[0] = 4
 		self.menu.rect[1] = 60
 		
@@ -22,14 +25,4 @@ class Module(pypboy.SubModule):
 	def change_items(self):
 		print "Changing"
 		
-class Weapon:
-	
-	def __init__(self, name, imageloc, damage, weight, value, condition, notes): 
-		self.name = name
-		self.imageloc = imageloc
-		self.damage = damage
-		self.weight= weight
-		self.value = value
-		self.condition = condition
-		self.notes = notes
 		
