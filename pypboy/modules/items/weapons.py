@@ -33,7 +33,7 @@ class Module(pypboy.SubModule):
 		handlers = []
 		item_names = []
 		for i in self.INVENTORY:
-		print "%s" % (i.name)
+			print "%s" % (i.name)
 			handlers.append(self.change_items)
 			item_names.append(i.name)
 		self.menu = pypboy.ui.Menu(200, self.INVENTORY, handlers, 3, 15)
