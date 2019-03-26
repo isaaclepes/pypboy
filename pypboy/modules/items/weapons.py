@@ -3,6 +3,16 @@ import pygame
 import game
 import config
 
+class Weapon:
+	
+	def __init__(self, name, imageloc, damage, weight, value, condition, notes): 
+		self.name = name
+		self.imageloc = imageloc
+		self.damage = damage
+		self.weight= weight
+		self.value = value
+		self.condition = condition
+		self.notes = notes
 
 class Module(pypboy.SubModule):
 
@@ -35,13 +45,3 @@ class Module(pypboy.SubModule):
 	def change_items(self):
 		print "Changing"
 		
-class Weapon:
-	
-	def __init__(self, name, imageloc, damage, weight, value, condition, notes): 
-		self.name = name
-		self.imageloc = imageloc
-		self.damage = damage
-		self.weight= weight
-		self.value = value
-		self.condition = condition
-		self.notes = notes
