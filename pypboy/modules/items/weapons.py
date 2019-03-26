@@ -3,8 +3,9 @@ import pygame
 import game
 import config
 
-class Weapon():
+class Weapon(game.Entity):
 	def __init__(self, name, imageloc, damage, weight, value, condition, notes): 
+		super(Weapon, self).__init__()
 		self.name = name
 		self.imageloc = imageloc
 		self.image = pygame.image.load(self.imageloc)
