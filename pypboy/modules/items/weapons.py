@@ -37,7 +37,7 @@ class Module(pypboy.SubModule):
 			print "%s" % (i.name)
 			handlers.append(self.change_items)
 			item_names.append(i.name)
-		self.menu = pypboy.ui.Menu(200, item_names, handlers, selected, 15)
+		self.menu = pypboy.ui.Menu(200, item_names, handlers, self.selected, 15)
 		self.menu.rect[0] = 4
 		self.menu.rect[1] = 60
 		self.add(self.menu)
