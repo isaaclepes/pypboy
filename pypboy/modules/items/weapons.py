@@ -36,7 +36,9 @@ class Module(pypboy.SubModule):
 		weapon_to_display.image = weapon_to_display.image.convert()
 		weapon_to_display.rect[0] = 200
 		weapon_to_display.rect[1] = 40	
-		self.add(weapon_to_display)		
+		self.add(weapon_to_display)	
+
+		self.image.fill((0, 0, 0))		
 		#Show Weapon stats - Value
 		text = config.FONTS[14].render("%s" %(weapon_to_display.value), True, (95, 255, 177), (0, 0, 0))
 		pygame.draw.line(self.image, (95, 255, 177), (config.WIDTH - 13, weapon_to_display.rect[1] + weapon_to_display.rect[3] + 5 ), (config.WIDTH - 13, weapon_to_display.rect[1] + weapon_to_display.rect[3] + 25), 2)	#End of title Verticle bar
