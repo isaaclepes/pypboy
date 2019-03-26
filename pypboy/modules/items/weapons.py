@@ -47,6 +47,7 @@ class Module(pypboy.SubModule):
 		weapon_to_display.image = weapon_to_display.image.convert()
 		weapon_to_display.rect[0] = 200
 		weapon_to_display.rect[1] = 40
+		self.add(weapon_to_display)
 		
 	def change_items(self):
 		print "Changing"
