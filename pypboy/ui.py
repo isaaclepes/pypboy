@@ -74,8 +74,8 @@ class Header(game.Entity):
 			#text = config.FONTS[14].render("100", True, (95, 255, 177), (0, 0, 0))
 			#self.image.blit(text, (config.WIDTH - 13 - 190 - (text.get_width() + 5), 234))
 			cndlength = 50
-			pygame.draw.rect(self.image, (95, 255, 177), (config.WIDTH - 13 - 190,234,cndlength * (80/100),12)) #Condition bar
-			pygame.draw.rect(self.image, (0, 70, 0), (config.WIDTH - 13 - 190 + cndlength * (80/100),234,cndlength * (20/100),12))#Filler bar
+			pygame.draw.rect(self.image, (95, 255, 177), (config.WIDTH - 13 - 190 - 50,234,40,12)) #Condition bar
+			pygame.draw.rect(self.image, (0, 70, 0), (config.WIDTH - 13 - 190 - 50+ 40,234,10,12))#Filler bar
 			text = config.FONTS[14].render("CND", True, (95, 255, 177), (0, 0, 0))
 			self.image.blit(text, (config.WIDTH - 13  - 190 - 85 + 2, 234))
 			pygame.draw.line(self.image, (95, 255, 177), (config.WIDTH - 13 - 190 - 85, 230), (config.WIDTH - 13 - 190, 230), 2) # Horizontal Bar
