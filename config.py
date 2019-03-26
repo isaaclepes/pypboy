@@ -1,5 +1,4 @@
 import pygame
-import pypboy
 
 WIDTH = 480
 HEIGHT = 320
@@ -95,16 +94,6 @@ INVENTORY_OLD = [
 "Pulse Grenade (2)"
 ]
 
-INVENTORY = [
-pypboy.modules.items.weapon("Chinese Assault Rifle",'images/inventory/flamer.png',0,0,0,0,''),
-pypboy.modules.items.weapon("Combat Shotgun",'images/inventory/flamer.png',0,0,0,0,''),
-pypboy.modules.items.weapon("Deathclaw Gauntlet",'images/inventory/flamer.png',0,0,0,0,''),
-pypboy.modules.items.weapon("Flamer",'images/inventory/flamer.png',0,0,0,0,''),
-pypboy.modules.items.weapon("Hunting Rifle",'images/inventory/flamer.png',0,0,0,0,''),
-pypboy.modules.items.weapon("Minigun",'images/inventory/flamer.png',0,0,0,0,''),
-pypboy.modules.items.weapon("Missile Launcher",'images/inventory/flamer.png',0,0,0,0,''),
-pypboy.modules.items.weapon("Pulse Grenade (2)",'images/inventory/flamer.png',0,0,0,0,'')
-]
 
 
 pygame.font.init()
