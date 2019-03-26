@@ -66,11 +66,9 @@ class Header(game.Entity):
 					
 			#Row 2
 			pygame.draw.line(self.image, (95, 255, 177), (config.WIDTH - 13 - 0, 230), (config.WIDTH - 13 - 0, 250), 2)
-			text = config.FONTS[14].render("25", True, (95, 255, 177), (0, 0, 0))
-			self.image.blit(text, (config.WIDTH - 13 - 0 - (text.get_width() + 5), 234))
-			text = config.FONTS[14].render("VAL", True, (95, 255, 177), (0, 0, 0))
+			text = config.FONTS[14].render("-- --", True, (95, 255, 177), (0, 0, 0))
 			self.image.blit(text, (config.WIDTH - 13 - 0 - 85 + 2, 234))
-			pygame.draw.line(self.image, (95, 255, 177), (config.WIDTH - 13 - 85, 230), (config.WIDTH - 13, 230), 2) # Horizontal Bar
+			pygame.draw.line(self.image, (95, 255, 177), (config.WIDTH - 13 - 95 - 85, 230), (config.WIDTH - 13, 230), 2) # Horizontal Bar
 			
 			#Test ends here
 
