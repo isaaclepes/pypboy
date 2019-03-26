@@ -39,7 +39,14 @@ class Header(game.Entity):
 				pygame.draw.line(self.image, (95, 255, 177), (config.WIDTH - headerposcount, 15), (config.WIDTH - headerposcount_old, 15), 2) # Horizontal Bar
 			pygame.draw.line(self.image, (95, 255, 177), (5, 15), (config.WIDTH - headerposcount, 15), 2) # Horizontal Bar
 			text = config.FONTS[14].render("  %s  " % self.headline, True, (105, 251, 187), (0, 0, 0))
+			
+			#Test starts here
+			text = "VAL    25"
 			pygame.draw.line(self.image, (95, 255, 177), (config.WIDTH - 13, 200 ), (config.WIDTH - 13, 215), 2)
+			self.image.blit(text, (config.WIDTH - 13 - (text.get_width() + 5), 204))
+			pygame.draw.line(self.image, (95, 255, 177), (config.WIDTH - 13 - 90, 200), (config.WIDTH - 13, 200), 2) # Horizontal Bar
+			
+			#Test ends here
 			self.image.blit(text, (26, 8))
 			self._date = new_date
 
