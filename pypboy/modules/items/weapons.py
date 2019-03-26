@@ -46,9 +46,9 @@ class Module(pypboy.SubModule):
 		#weapon_to_display.image.blit(text, (config.WIDTH - (text.get_width() + 5), weapon_to_display.rect[1] + weapon_to_display.image.get_rect()[3] + 9))
 		#pygame.draw.line(weapon_to_display.image, (95, 255, 177), (config.WIDTH - 50, 15), (config.WIDTH - 13, weapon_to_display.rect[1] + weapon_to_display.image.get_rect()[3] + 5 ), 2) # Horizontal Bar
 		
-		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (config.WIDTH - 13, 200 ), (config.WIDTH - 13, 215), 2)	#End of title Verticle bar
-		weapon_to_display.image.blit(text, (config.WIDTH - (text.get_width() + 5), weapon_to_display.rect[1] + weapon_to_display.image.get_rect()[3] + 9))
-		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (config.WIDTH - 50, 15), (config.WIDTH - 13, weapon_to_display.rect[1] + weapon_to_display.image.get_rect()[3] + 5 ), 2) # Horizontal Bar
+		#pygame.draw.line(weapon_to_display.image, (95, 255, 177), (config.WIDTH - 13, 200 ), (config.WIDTH - 13, 215), 2)	#End of title Verticle bar
+		#weapon_to_display.image.blit(text, (config.WIDTH - (text.get_width() + 5), weapon_to_display.rect[1] + weapon_to_display.image.get_rect()[3] + 9))
+		#pygame.draw.line(weapon_to_display.image, (95, 255, 177), (config.WIDTH - 50, 15), (config.WIDTH - 13, weapon_to_display.rect[1] + weapon_to_display.image.get_rect()[3] + 5 ), 2) # Horizontal Bar
 		
 		
 	def change_items(self):
