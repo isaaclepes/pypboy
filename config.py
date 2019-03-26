@@ -1,4 +1,5 @@
 import pygame
+import pypboy
 
 WIDTH = 480
 HEIGHT = 320
