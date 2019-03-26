@@ -2,7 +2,6 @@ import pypboy
 import pygame
 import game
 import config
-from pypboy.modules.items import weapon
 
 
 class Module(pypboy.SubModule):
