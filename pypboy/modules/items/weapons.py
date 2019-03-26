@@ -2,7 +2,6 @@ import pypboy
 import pygame
 import game
 import config
-from pypboy.modules.items import weapon
 
 
 class Module(pypboy.SubModule):
@@ -10,15 +9,15 @@ class Module(pypboy.SubModule):
 	label = " Weapons "
 	
 	INVENTORY = [
-weapon("Chinese Assault Rifle",'images/inventory/flamer.png',0,0,0,0,''),
-weapon("Combat Shotgun",'images/inventory/flamer.png',0,0,0,0,''),
-weapon("Deathclaw Gauntlet",'images/inventory/flamer.png',0,0,0,0,''),
-weapon("Flamer",'images/inventory/flamer.png',0,0,0,0,''),
-weapon("Hunting Rifle",'images/inventory/flamer.png',0,0,0,0,''),
-weapon("Minigun",'images/inventory/flamer.png',0,0,0,0,''),
-weapon("Missile Launcher",'images/inventory/flamer.png',0,0,0,0,''),
-weapon("Pulse Grenade (2)",'images/inventory/flamer.png',0,0,0,0,'')
-]
+		weapon("Chinese Assault Rifle",'images/inventory/flamer.png',0,0,0,0,''),
+		weapon("Combat Shotgun",'images/inventory/flamer.png',0,0,0,0,''),
+		weapon("Deathclaw Gauntlet",'images/inventory/flamer.png',0,0,0,0,''),
+		weapon("Flamer",'images/inventory/flamer.png',0,0,0,0,''),
+		weapon("Hunting Rifle",'images/inventory/flamer.png',0,0,0,0,''),
+		weapon("Minigun",'images/inventory/flamer.png',0,0,0,0,''),
+		weapon("Missile Launcher",'images/inventory/flamer.png',0,0,0,0,''),
+		weapon("Pulse Grenade (2)",'images/inventory/flamer.png',0,0,0,0,'')
+	]
 
 	def __init__(self, *args, **kwargs):
 		super(Module, self).__init__(*args, **kwargs)
@@ -36,4 +35,13 @@ weapon("Pulse Grenade (2)",'images/inventory/flamer.png',0,0,0,0,'')
 	def change_items(self):
 		print "Changing"
 		
-		
+class Weapon:
+	
+	def __init__(self, name, imageloc, damage, weight, value, condition, notes): 
+		self.name = name
+		self.imageloc = imageloc
+		self.damage = damage
+		self.weight= weight
+		self.value = value
+		self.condition = condition
+		self.notes = notes
