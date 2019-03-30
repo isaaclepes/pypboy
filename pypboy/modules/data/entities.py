@@ -183,6 +183,7 @@ class MapGrid(game.Entity):
 			# 		0
 			# 	)
 				self.image.blit(text, (self.tags[name][0] + 17, self.tags[name][1] + 4))
+				print "AMENITY %s. IMAGE %s" % (text, image)
 			# 	pygame.draw.rect(
 			# 		self,
 			# 		(95, 255, 177),
