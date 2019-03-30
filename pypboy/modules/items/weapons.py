@@ -31,7 +31,7 @@ class Module(pypboy.SubModule):
 		self.add(self.menu)
 		#show weapon image
 		weapon_to_display = INVENTORY[selected]
-		weapon_to_display.rect = weapon_to_display.image.get_rect()
+		#weapon_to_display.rect = weapon_to_display.image.get_rect()
 		weapon_to_display.image = weapon_to_display.image.convert()
 		weapon_to_display.rect[0] = 200
 		weapon_to_display.rect[1] = 40	
@@ -94,7 +94,7 @@ class Module(pypboy.SubModule):
 		#Test ends here
 		
 		self.add(weapon_to_display)	
-		
+		print "RECTANGLE %s %s %s %s" % (weapon_to_display.rect[0],weapon_to_display.rect[1],weapon_to_display.rect[2],weapon_to_display.rect[3])
 		
 		
 	def change_items(self):
