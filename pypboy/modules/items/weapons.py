@@ -35,8 +35,8 @@ class Module(pypboy.SubModule):
 		weapon_to_display.image = weapon_to_display.image.convert()
 		weapon_to_display.rect[0] = 200
 		weapon_to_display.rect[1] = 40	
-		weapon_to_display.rect[2] = 280	
-		weapon_to_display.rect[3] = 280	
+		#weapon_to_display.rect[2] = 280	
+		#weapon_to_display.rect[3] = 280	
 		
 		print "RECTANGLE %s %s %s %s" % (weapon_to_display.rect[0],weapon_to_display.rect[1],weapon_to_display.rect[2],weapon_to_display.rect[3])
 		
