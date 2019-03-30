@@ -37,7 +37,7 @@ class Module(pypboy.SubModule):
 		weapon_to_display.rect[1] = 40	
 		weapon_to_display.rect[2] = 320	
 		weapon_to_display.rect[3] = 320	
-		self.add(weapon_to_display)	
+
 		
 		#Show Weapon stats - Value
 		#text = config.FONTS[14].render("%s" %(weapon_to_display.value), True, (95, 255, 177), (0, 0, 0))
@@ -92,7 +92,7 @@ class Module(pypboy.SubModule):
 		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (config.WIDTH - weapon_to_display.rect[0] - 13 - 190 - 85, 230-weapon_to_display.rect[1]), (config.WIDTH - weapon_to_display.rect[0] - 13 - 190, 230-weapon_to_display.rect[1]), 2) # Horizontal Bar
 		#Test ends here
 		
-		
+		self.add(weapon_to_display)	
 		
 		
 		
