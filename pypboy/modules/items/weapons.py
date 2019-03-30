@@ -54,7 +54,7 @@ class Module(pypboy.SubModule):
 		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (config.WIDTH - weapon_to_display.rect[0] - 13 - 0, 160), (config.WIDTH - weapon_to_display.rect[0] - 13 - 0, 180), 2)#Verticle Bar
 		text = config.FONTS[14].render("25", True, (95, 255, 177), (0, 0, 0))
 		#weapon_to_display.image.blit(text, (10, 204-weapon_to_display.rect[1]))
-		weapon_to_display.image.blit(text, (config.WIDTH - weapon_to_display.rect[0] - 13 - 0 - (text.get_width() + 5), 10))
+		weapon_to_display.image.blit(text, (config.WIDTH - weapon_to_display.rect[0] - 13 - 0 - (text.get_width() + 5), 164))
 		text = config.FONTS[14].render("VAL", True, (95, 255, 177), (0, 0, 0))
 		weapon_to_display.image.blit(text, (config.WIDTH - weapon_to_display.rect[0] - 13 - 0 - 85 + 2, 204-weapon_to_display.rect[1]))
 		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (config.WIDTH - weapon_to_display.rect[0] - 13 - 85, 200-weapon_to_display.rect[1]), (config.WIDTH - weapon_to_display.rect[0] - 13, 200-weapon_to_display.rect[1]), 2) # Horizontal Bar
