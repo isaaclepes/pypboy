@@ -42,44 +42,7 @@ class Header(game.Entity):
 			self.image.blit(text, (26, 8))
 			self._date = new_date
 			
-			#Test starts here
-			pygame.draw.line(self.image, (95, 255, 177), (config.WIDTH - 13 - 0, 200 ), (config.WIDTH - 13 - 0, 220), 2)
-			text = config.FONTS[14].render("25", True, (95, 255, 177), (0, 0, 0))
-			self.image.blit(text, (config.WIDTH - 13 - 0 - (text.get_width() + 5), 204))
-			text = config.FONTS[14].render("VAL", True, (95, 255, 177), (0, 0, 0))
-			self.image.blit(text, (config.WIDTH - 13 - 0 - 85 + 2, 204))
-			pygame.draw.line(self.image, (95, 255, 177), (config.WIDTH - 13 - 85, 200), (config.WIDTH - 13, 200), 2) # Horizontal Bar
-			
-			pygame.draw.line(self.image, (95, 255, 177), (config.WIDTH - 13 - 95, 200), (config.WIDTH - 13 - 95, 220), 2)#Verticle Bar
-			text = config.FONTS[14].render("10", True, (95, 255, 177), (0, 0, 0))
-			self.image.blit(text, (config.WIDTH - 13 - 95 - (text.get_width() + 5), 204))
-			text = config.FONTS[14].render("WG", True, (95, 255, 177), (0, 0, 0))
-			self.image.blit(text, (config.WIDTH - 13  - 95 - 85 + 2, 204))
-			pygame.draw.line(self.image, (95, 255, 177), (config.WIDTH - 13 - 95 - 85, 200), (config.WIDTH - 13 - 95, 200), 2) # Horizontal Bar
-			
-			pygame.draw.line(self.image, (95, 255, 177), (config.WIDTH - 13 - 190, 200), (config.WIDTH - 13 - 190, 220), 2)#Verticle Bar
-			text = config.FONTS[14].render("20", True, (95, 255, 177), (0, 0, 0))
-			self.image.blit(text, (config.WIDTH - 13 - 190 - (text.get_width() + 5), 204))
-			text = config.FONTS[14].render("DAM", True, (95, 255, 177), (0, 0, 0))
-			self.image.blit(text, (config.WIDTH - 13  - 190 - 85 + 2, 204))
-			pygame.draw.line(self.image, (95, 255, 177), (config.WIDTH - 13 - 190 - 85, 200), (config.WIDTH - 13 - 190, 200), 2) # Horizontal Bar
-					
-			#Row 2
-			pygame.draw.line(self.image, (95, 255, 177), (config.WIDTH - 13 - 0, 230), (config.WIDTH - 13 - 0, 250), 2)
-			text = config.FONTS[14].render("-- --", True, (95, 255, 177), (0, 0, 0))
-			self.image.blit(text, (config.WIDTH - 13 - 95 - 85 + 2, 234))
-			pygame.draw.line(self.image, (95, 255, 177), (config.WIDTH - 13 - 95 - 85, 230), (config.WIDTH - 13, 230), 2) # Horizontal Bar
-			
-			pygame.draw.line(self.image, (95, 255, 177), (config.WIDTH - 13 - 190, 230), (config.WIDTH - 13 - 190, 250), 2)#Verticle Bar
-			#text = config.FONTS[14].render("100", True, (95, 255, 177), (0, 0, 0))
-			#self.image.blit(text, (config.WIDTH - 13 - 190 - (text.get_width() + 5), 234))
-			cndlength = 50
-			pygame.draw.rect(self.image, (95, 255, 177), (config.WIDTH - 13 - 190 - 55,237,40,12)) #Condition bar
-			pygame.draw.rect(self.image, (0, 70, 0), (config.WIDTH - 13 - 190 - 55 + 40,237,10,12))#Filler bar
-			text = config.FONTS[14].render("CND", True, (95, 255, 177), (0, 0, 0))
-			self.image.blit(text, (config.WIDTH - 13  - 190 - 85 + 2, 234))
-			pygame.draw.line(self.image, (95, 255, 177), (config.WIDTH - 13 - 190 - 85, 230), (config.WIDTH - 13 - 190, 230), 2) # Horizontal Bar
-			#Test ends here
+
 
 
 		super(Header, self).update(*args, **kwargs)
