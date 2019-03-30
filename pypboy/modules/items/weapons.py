@@ -33,10 +33,10 @@ class Module(pypboy.SubModule):
 		weapon_to_display = INVENTORY[selected]
 		weapon_to_display.rect = weapon_to_display.image.get_rect()
 		weapon_to_display.image = weapon_to_display.image.convert()
-		#weapon_to_display.rect[0] = 200
-		#weapon_to_display.rect[1] = 40	
-		#weapon_to_display.rect[2] = 280	
-		#weapon_to_display.rect[3] = 165	
+		weapon_to_display.rect[0] = 200
+		weapon_to_display.rect[1] = 40	
+		weapon_to_display.rect[2] = 280	
+		weapon_to_display.rect[3] = 280	
 
 		
 		#Show Weapon stats - Value
@@ -51,7 +51,7 @@ class Module(pypboy.SubModule):
 		
 		#Test starts here
 		#Value
-		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (config.WIDTH - weapon_to_display.rect[0] - 13 - 0, 160), (config.WIDTH - weapon_to_display.rect[0] - 13 - 0, 180), 2)#Verticle Bar
+		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (weapon_to_display.rect[2] - 13 - 0, 160), (weapon_to_display.rect[2] - 13 - 0, 180), 2)#Verticle Bar
 		text = config.FONTS[14].render("25", True, (95, 255, 177), (0, 0, 0))
 		#weapon_to_display.image.blit(text, (10, 204-weapon_to_display.rect[1]))
 		weapon_to_display.image.blit(text, (config.WIDTH - weapon_to_display.rect[0] - 13 - 0 - (text.get_width() + 5), 204-weapon_to_display.rect[1]))
