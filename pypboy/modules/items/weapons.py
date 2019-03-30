@@ -51,7 +51,7 @@ class Module(pypboy.SubModule):
 		
 		#Test starts here
 		#Value
-		#pygame.draw.line(weapon_to_display.image, (95, 255, 177), (config.WIDTH - weapon_to_display.rect[0] - 13 - 0, 200-weapon_to_display.rect[1]), (config.WIDTH - weapon_to_display.rect[0] - 13 - 0, 220-weapon_to_display.rect[1]), 2)#Verticle Bar
+		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (config.WIDTH - weapon_to_display.rect[0] - 13 - 0, 160), (config.WIDTH - weapon_to_display.rect[0] - 13 - 0, 180), 2)#Verticle Bar
 		text = config.FONTS[14].render("25", True, (95, 255, 177), (0, 0, 0))
 		weapon_to_display.image.blit(text, (config.WIDTH - weapon_to_display.rect[0] - 13 - 0 - (text.get_width() + 5), 204-weapon_to_display.rect[1]))
 		text = config.FONTS[14].render("VAL", True, (95, 255, 177), (0, 0, 0))
