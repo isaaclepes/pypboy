@@ -8,7 +8,7 @@ class Module(pypboy.SubModule):
 	label = " Weapons "
 
 	def __init__(self, *args, **kwargs):
-		super(Module, self).__init__(*args, **kwargs)
+		super(Module, self).__init__((config.WIDTH, config.HEIGHT))
 		handlers = []
 		item_names = []
 		INVENTORY = [
@@ -94,8 +94,7 @@ class Module(pypboy.SubModule):
 		#Test ends here
 		
 		self.add(weapon_to_display)	
-		print "RECTANGLE %s %s %s %s" % (weapon_to_display.rect[0],weapon_to_display.rect[1],weapon_to_display.rect[2],weapon_to_display.rect[3])
-		
+
 		
 	def change_items(self):
 		print "Changing"
