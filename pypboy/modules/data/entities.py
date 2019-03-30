@@ -63,13 +63,14 @@ class Map(game.Entity):
 		for tag in self._mapper.transpose_tags((self._size / coef, self._size / coef), (self._size / 2, self._size / 2)):
 			if tag[3] in config.AMENITIES:
 				image = config.AMENITIES[tag[3]]
-			else:
+				pygame.transform.scale(image, (10, 10))
+				self._map_surface.blit(image, (tag[1], tag[2]))
+				text = config.FONTS[12].render(tag[0], True, (95, 255, 177), (0, 0, 0))
+				self._map_surface.blit(text, (tag[1] + 17, tag[2] + 4))
+			#else:
 				#print "Unknown amenity: %s" % tag[3]
-				image = config.MAP_ICONS['misc']
-			pygame.transform.scale(image, (10, 10))
-			self._map_surface.blit(image, (tag[1], tag[2]))
-			text = config.FONTS[12].render(tag[0], True, (95, 255, 177), (0, 0, 0))
-			self._map_surface.blit(text, (tag[1] + 17, tag[2] + 4))
+				#image = config.MAP_ICONS['misc']
+
 		
 		self.image.blit(self._map_surface, (0, 0), area=self._render_rect)
 
@@ -161,7 +162,6 @@ class MapGrid(game.Entity):
 
 
 	def draw_tags(self):
-		print "DRAWING TAGS"
 		self.tags = {}
 		for square in self._grid:
 			self.tags.update(square.tags)
@@ -184,7 +184,6 @@ class MapGrid(game.Entity):
 			# 		0
 			# 	)
 				self.image.blit(text, (self.tags[name][0] + 17, self.tags[name][1] + 4))
-				print "AMENITY %s. IMAGE %s" % (text, image)
 			# 	pygame.draw.rect(
 			# 		self,
 			# 		(95, 255, 177),

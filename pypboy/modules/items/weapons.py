@@ -23,7 +23,6 @@ class Module(pypboy.SubModule):
 		]
 		selected = 3
 		for i in INVENTORY:
-			print "%s" % (i.name)
 			handlers.append(self.change_items)
 			item_names.append(i.name)
 		self.menu = pypboy.ui.Menu(200, item_names, handlers, selected, 15)
