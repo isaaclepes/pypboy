@@ -52,10 +52,10 @@ class Module(pypboy.SubModule):
 		#Test starts here
 		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (config.WIDTH - 13 - 0, 200 ), (config.WIDTH - 13 - 0, 220), 2)
 		text = config.FONTS[14].render("25", True, (95, 255, 177), (0, 0, 0))
-		weapon_to_display.image.blit(text, (config.WIDTH - 13 - 0 - (text.get_width() + 5), 204))
+		weapon_to_display.image.blit(text, (0), 0))
 		text = config.FONTS[14].render("VAL", True, (95, 255, 177), (0, 0, 0))
 		weapon_to_display.image.blit(text, (config.WIDTH - 13 - 0 - 85 + 2, 204))
-		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (config.WIDTH - 13 - 85, 200), (config.WIDTH - 13, 200), 2) # Horizontal Bar
+		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (0, 0), (config.WIDTH - 13, 200), 2) # Horizontal Bar
 		
 		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (config.WIDTH - 13 - 95, 200), (config.WIDTH - 13 - 95, 220), 2)#Verticle Bar
 		text = config.FONTS[14].render("10", True, (95, 255, 177), (0, 0, 0))
