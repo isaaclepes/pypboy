@@ -35,8 +35,8 @@ class Module(pypboy.SubModule):
 		weapon_to_display.image = weapon_to_display.image.convert()
 		weapon_to_display.rect[0] = 200
 		weapon_to_display.rect[1] = 40	
-		weapon_to_display.rect[2] = 320	
-		weapon_to_display.rect[3] = 320	
+		weapon_to_display.rect[2] = 280	
+		weapon_to_display.rect[3] = 180	
 
 		
 		#Show Weapon stats - Value
