@@ -161,6 +161,7 @@ class MapGrid(game.Entity):
 
 
 	def draw_tags(self):
+		print "DRAWING TAGS"
 		self.tags = {}
 		for square in self._grid:
 			self.tags.update(square.tags)
