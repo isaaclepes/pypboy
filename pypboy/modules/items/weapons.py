@@ -8,7 +8,7 @@ class Module(pypboy.SubModule):
 	label = " Weapons "
 
 	def __init__(self, *args, **kwargs):
-		super(Module, self).__init__((config.WIDTH, config.HEIGHT))
+		super(Module, self).__init__((config.WIDTH, config.HEIGHT), *args, **kwargs)
 		handlers = []
 		item_names = []
 		INVENTORY = [
@@ -35,8 +35,8 @@ class Module(pypboy.SubModule):
 		weapon_to_display.image = weapon_to_display.image.convert()
 		weapon_to_display.rect[0] = 200
 		weapon_to_display.rect[1] = 40	
-		#weapon_to_display.rect[2] = 280	
-		#weapon_to_display.rect[3] = 280	
+		weapon_to_display.rect[2] = 280	
+		weapon_to_display.rect[3] = 280	
 		
 		print "RECTANGLE %s %s %s %s" % (weapon_to_display.rect[0],weapon_to_display.rect[1],weapon_to_display.rect[2],weapon_to_display.rect[3])
 		
@@ -101,7 +101,7 @@ class Module(pypboy.SubModule):
 		
 class Weapon(game.Entity):
 	def __init__(self, name, imageloc, damage, weight, value, condition, notes): 
-		super(Weapon, self).__init__()
+		super(Weapon, self).__init__((config.WIDTH, config.HEIGHT))
 		self.name = name
 		self.imageloc = imageloc
 		self.image = pygame.image.load(self.imageloc)
