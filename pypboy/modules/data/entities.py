@@ -62,6 +62,7 @@ class Map(game.Entity):
 			)
 		for tag in self._mapper.transpose_tags((self._size / coef, self._size / coef), (self._size / 2, self._size / 2)):
 			if tag[3] in config.AMENITIES:
+				print "Known amenity: %s as %s" % (tag[0],tag[3])
 				image = config.AMENITIES[tag[3]]
 				pygame.transform.scale(image, (10, 10))
 				self._map_surface.blit(image, (tag[1], tag[2]))
