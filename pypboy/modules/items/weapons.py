@@ -33,7 +33,7 @@ class Module(pypboy.SubModule):
 		weapon_to_display = INVENTORY[selected]
 		weapon_to_display.rect = weapon_to_display.image.get_rect()
 		weapon_to_display.image = weapon_to_display.image.convert()
-		weapon_to_display.rect[0] = 200
+		weapon_to_display.rect[0] = 187
 		weapon_to_display.rect[1] = 40
 		
 		print "RECTANGLE %s %s %s %s" % (weapon_to_display.rect[0],weapon_to_display.rect[1],weapon_to_display.rect[2],weapon_to_display.rect[3])
@@ -50,50 +50,50 @@ class Module(pypboy.SubModule):
 		
 		#Test starts here
 		#Value
-		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (weapon_to_display.rect[2] - 13 - 0, 200-weapon_to_display.rect[1]), (weapon_to_display.rect[2] - 13 - 0, 220-weapon_to_display.rect[1]), 2)#Verticle Bar
-		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (weapon_to_display.rect[2] - 13 - 85, 200-weapon_to_display.rect[1]), (weapon_to_display.rect[2] - 13, 200-weapon_to_display.rect[1]), 2) # Horizontal Bar
+		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (weapon_to_display.rect[2] - 0, 200-weapon_to_display.rect[1]), (weapon_to_display.rect[2] - 0, 220-weapon_to_display.rect[1]), 2)#Verticle Bar
+		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (weapon_to_display.rect[2] - 85, 200-weapon_to_display.rect[1]), (weapon_to_display.rect[2], 200-weapon_to_display.rect[1]), 2) # Horizontal Bar
 		text = config.FONTS[14].render("25", True, (95, 255, 177), (0, 0, 0))
-		weapon_to_display.image.blit(text, (weapon_to_display.rect[2] - 13 - 0 - (text.get_width() + 5), 204-weapon_to_display.rect[1]))
+		weapon_to_display.image.blit(text, (weapon_to_display.rect[2] - 0 - (text.get_width() + 5), 204-weapon_to_display.rect[1]))
 		text = config.FONTS[14].render("VAL", True, (95, 255, 177), (0, 0, 0))
-		weapon_to_display.image.blit(text, (weapon_to_display.rect[2] - 13 - 0 - 85 + 2, 204-weapon_to_display.rect[1]))
+		weapon_to_display.image.blit(text, (weapon_to_display.rect[2] - 0 - 85 + 2, 204-weapon_to_display.rect[1]))
 		
 		
 		
 		#Weight
-		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (config.WIDTH - weapon_to_display.rect[0] - 13 - 95, 200-weapon_to_display.rect[1]), (config.WIDTH - weapon_to_display.rect[0] - 13 - 95, 220-weapon_to_display.rect[1]), 2)#Verticle Bar
+		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (weapon_to_display.rect[2] - 95, 200-weapon_to_display.rect[1]), (config.WIDTH - weapon_to_display.rect[0] - 13 - 95, 220-weapon_to_display.rect[1]), 2)#Verticle Bar
 		text = config.FONTS[14].render("10", True, (95, 255, 177), (0, 0, 0))
-		weapon_to_display.image.blit(text, (weapon_to_display.rect[2] - 13 - 95 - (text.get_width() + 5), 204-weapon_to_display.rect[1]))
+		weapon_to_display.image.blit(text, (weapon_to_display.rect[2] - 95 - (text.get_width() + 5), 204-weapon_to_display.rect[1]))
 		text = config.FONTS[14].render("WG", True, (95, 255, 177), (0, 0, 0))
-		weapon_to_display.image.blit(text, (weapon_to_display.rect[2] - 13  - 95 - 85 + 2, 204-weapon_to_display.rect[1]))
-		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (config.WIDTH - weapon_to_display.rect[0] - 13 - 95 - 85, 200-weapon_to_display.rect[1]), (config.WIDTH - weapon_to_display.rect[0] - 13 - 95, 200-weapon_to_display.rect[1]), 2) # Horizontal Bar
+		weapon_to_display.image.blit(text, (weapon_to_display.rect[2]  - 95 - 85 + 2, 204-weapon_to_display.rect[1]))
+		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (weapon_to_display.rect[2] - 95 - 85, 200-weapon_to_display.rect[1]), (weapon_to_display.rect[2] - 95, 200-weapon_to_display.rect[1]), 2) # Horizontal Bar
 		
 		
 		
 		#Damage
-		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (weapon_to_display.rect[2] - 13 - 190, weapon_to_display.rect[3] - 80 - weapon_to_display.rect[1]), (weapon_to_display.rect[2] - 13 - 190, weapon_to_display.rect[3] - 60 - weapon_to_display.rect[1]), 2)#Verticle Bar
+		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (weapon_to_display.rect[2] - 190, weapon_to_display.rect[3] - 80 - weapon_to_display.rect[1]), (weapon_to_display.rect[2] - 190, weapon_to_display.rect[3] - 60 - weapon_to_display.rect[1]), 2)#Verticle Bar
 		text = config.FONTS[14].render("20", True, (95, 255, 177), (0, 0, 0))
-		weapon_to_display.image.blit(text, (weapon_to_display.rect[2] - 13 - 190 - (text.get_width() + 5), 204-weapon_to_display.rect[1]))
+		weapon_to_display.image.blit(text, (weapon_to_display.rect[2] - 190 - (text.get_width() + 5), 204-weapon_to_display.rect[1]))
 		text = config.FONTS[14].render("DAM", True, (95, 255, 177), (0, 0, 0))
-		damXCoord = weapon_to_display.rect[2] - 13  - 190 - 85 + 2
+		damXCoord = weapon_to_display.rect[2]  - 190 - 85 + 2
 		weapon_to_display.image.blit(text, (damXCoord, 204-weapon_to_display.rect[1]))
 		print "DamXCoord %s" % (damXCoord)
-		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (config.WIDTH - weapon_to_display.rect[0] - 13 - 190 - 85, 200-weapon_to_display.rect[1]), (config.WIDTH - weapon_to_display.rect[0] - 13 - 190, 200-weapon_to_display.rect[1]), 2) # Horizontal Bar
+		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (weapon_to_display.rect[2] - 190 - 85, 200-weapon_to_display.rect[1]), (weapon_to_display.rect[2] - 190, 200-weapon_to_display.rect[1]), 2) # Horizontal Bar
 				
 		#Row 2
-		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (config.WIDTH - weapon_to_display.rect[0] - 13 - 0, 230-weapon_to_display.rect[1]), (config.WIDTH - weapon_to_display.rect[0] - 13 - 0, 250-weapon_to_display.rect[1]), 2)
+		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (weapon_to_display.rect[2] - 0, 230-weapon_to_display.rect[1]), (weapon_to_display.rect[2] - 0, 250-weapon_to_display.rect[1]), 2)
 		text = config.FONTS[14].render("-- --", True, (95, 255, 177), (0, 0, 0))
-		weapon_to_display.image.blit(text, (config.WIDTH - weapon_to_display.rect[0] - 13 - 95 - 85 + 2, 234-weapon_to_display.rect[1]))
-		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (config.WIDTH - weapon_to_display.rect[0] - 13 - 95 - 85, 230-weapon_to_display.rect[1]), (config.WIDTH - weapon_to_display.rect[0] - 13, 230-weapon_to_display.rect[1]), 2) # Horizontal Bar
+		weapon_to_display.image.blit(text, (weapon_to_display.rect[2] - 95 - 85 + 2, 234-weapon_to_display.rect[1]))
+		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (weapon_to_display.rect[2] - 95 - 85, 230-weapon_to_display.rect[1]), (config.WIDTH - weapon_to_display.rect[0] - 13, 230-weapon_to_display.rect[1]), 2) # Horizontal Bar
 		
-		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (config.WIDTH - weapon_to_display.rect[0] - 13 - 190, 230-weapon_to_display.rect[1]), (config.WIDTH - weapon_to_display.rect[0] - 13 - 190, 250-weapon_to_display.rect[1]), 2)#Verticle Bar
+		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (weapon_to_display.rect[2] - 190, 230-weapon_to_display.rect[1]), (weapon_to_display.rect[2] - 190, 250-weapon_to_display.rect[1]), 2)#Verticle Bar
 		#text = config.FONTS[14].render("100", True, (95, 255, 177), (0, 0, 0))
 		#weapon_to_display.image.blit(text, (config.WIDTH - 13 - 190 - (text.get_width() + 5), 234))
 		cndlength = 50
-		pygame.draw.rect(weapon_to_display.image, (95, 255, 177), (config.WIDTH - weapon_to_display.rect[0] - 13 - 190 - 55,237-weapon_to_display.rect[1],40,12)) #Condition bar
-		pygame.draw.rect(weapon_to_display.image, (0, 70, 0), (config.WIDTH - weapon_to_display.rect[0] - 13 - 190 - 55 + 40,237-weapon_to_display.rect[1],10,12))#Filler bar
+		pygame.draw.rect(weapon_to_display.image, (95, 255, 177), (weapon_to_display.rect[2] - 190 - 55,237-weapon_to_display.rect[1],40,12)) #Condition bar
+		pygame.draw.rect(weapon_to_display.image, (0, 70, 0), (weapon_to_display.rect[2] - 190 - 55 + 40,237-weapon_to_display.rect[1],10,12))#Filler bar
 		text = config.FONTS[14].render("CND", True, (95, 255, 177), (0, 0, 0))
-		weapon_to_display.image.blit(text, (config.WIDTH - weapon_to_display.rect[0] - 13  - 190 - 85 + 2, 234-weapon_to_display.rect[1]))
-		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (config.WIDTH - weapon_to_display.rect[0] - 13 - 190 - 85, 230-weapon_to_display.rect[1]), (config.WIDTH - weapon_to_display.rect[0] - 13 - 190, 230-weapon_to_display.rect[1]), 2) # Horizontal Bar
+		weapon_to_display.image.blit(text, (weapon_to_display.rect[2]  - 190 - 85 + 2, 234-weapon_to_display.rect[1]))
+		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (weapon_to_display.rect[2] - 190 - 85, 230-weapon_to_display.rect[1]), (config.WIDTH - weapon_to_display.rect[0] - 13 - 190, 230-weapon_to_display.rect[1]), 2) # Horizontal Bar
 		#Test ends here
 		
 		self.add(weapon_to_display)	
