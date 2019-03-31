@@ -34,9 +34,7 @@ class Module(pypboy.SubModule):
 		#weapon_to_display.rect = weapon_to_display.image.get_rect()
 		weapon_to_display.image = weapon_to_display.image.convert()
 		weapon_to_display.rect[0] = 200
-		weapon_to_display.rect[1] = 40	
-		weapon_to_display.rect[2] = 280	
-		weapon_to_display.rect[3] = 280	
+		weapon_to_display.rect[1] = 40
 		
 		print "RECTANGLE %s %s %s %s" % (weapon_to_display.rect[0],weapon_to_display.rect[1],weapon_to_display.rect[2],weapon_to_display.rect[3])
 		
@@ -110,7 +108,3 @@ class Weapon(game.Entity):
 		self.value = value
 		self.condition = condition
 		self.notes = notes
-		self.rect[0] = 200
-		self.rect[1] = 40	
-		self.rect[2] = 280	
-		self.rect[3] = 280	
