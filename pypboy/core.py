@@ -31,9 +31,9 @@ class Pypboy(game.core.Engine):
 		self.header = pypboy.ui.Header()
 		self.root_children.add(self.header)
 		scanlines = pypboy.ui.Scanlines(800, 480, 3, 1, [(0, 13, 3, 50), (6, 42, 22, 100), (0, 13, 3, 50)])
-		#self.root_children.add(scanlines)
+		self.root_children.add(scanlines)
 		scanlines2 = pypboy.ui.Scanlines(800, 480, 8, 40, [(0, 10, 1, 0), (21, 62, 42, 90), (61, 122, 82, 100), (21, 62, 42, 90)] + [(0, 10, 1, 0) for x in range(50)], True)
-		#self.root_children.add(scanlines2)
+		self.root_children.add(scanlines2)
 
 	def init_modules(self):
 		self.modules = {
@@ -109,7 +109,7 @@ class Pypboy(game.core.Engine):
 				self.handle_event(event)
 			self.update()
 			self.render()
-			pygame.time.wait(10)
+			pygame.time.wait(1)
 
 		try:
 			pygame.mixer.quit()
