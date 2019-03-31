@@ -33,7 +33,7 @@ class Module(pypboy.SubModule):
 		weapon_to_display = INVENTORY[selected]
 		weapon_to_display.rect = weapon_to_display.image.get_rect()
 		weapon_to_display.image = weapon_to_display.image.convert()
-		weapon_to_display.rect[0] = 200
+		weapon_to_display.rect[0] = 189
 		weapon_to_display.rect[1] = 40
 		
 		print "RECTANGLE %s %s %s %s" % (weapon_to_display.rect[0],weapon_to_display.rect[1],weapon_to_display.rect[2],weapon_to_display.rect[3])
@@ -72,13 +72,14 @@ class Module(pypboy.SubModule):
 		
 		#Damage
 		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (weapon_to_display.rect[2] - 190, weapon_to_display.rect[3] - 80 - weapon_to_display.rect[1]), (weapon_to_display.rect[2] - 190, weapon_to_display.rect[3] - 60 - weapon_to_display.rect[1]), 2)#Verticle Bar
+		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (weapon_to_display.rect[2] - 190 - 85, 200-weapon_to_display.rect[1]), (weapon_to_display.rect[2] - 190, 200-weapon_to_display.rect[1]), 2) # Horizontal Bar
 		text = config.FONTS[14].render("20", True, (95, 255, 177), (0, 0, 0))
 		weapon_to_display.image.blit(text, (weapon_to_display.rect[2] - 190 - (text.get_width() + 5), 204-weapon_to_display.rect[1]))
 		text = config.FONTS[14].render("DAM", True, (95, 255, 177), (0, 0, 0))
 		damXCoord = weapon_to_display.rect[2]  - 190 - 85 + 2
 		weapon_to_display.image.blit(text, (damXCoord, 204-weapon_to_display.rect[1]))
 		print "DamXCoord %s" % (damXCoord)
-		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (weapon_to_display.rect[2] - 190 - 85, 200-weapon_to_display.rect[1]), (weapon_to_display.rect[2] - 190, 200-weapon_to_display.rect[1]), 2) # Horizontal Bar
+		
 				
 		#Row 2
 		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (weapon_to_display.rect[2] - 2, 230-weapon_to_display.rect[1]), (weapon_to_display.rect[2] - 2, 250-weapon_to_display.rect[1]), 2)
