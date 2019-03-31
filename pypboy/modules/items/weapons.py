@@ -110,3 +110,7 @@ class Weapon(game.Entity):
 		self.value = value
 		self.condition = condition
 		self.notes = notes
+		self.rect[0] = 200
+		self.rect[1] = 40	
+		self.rect[2] = 280	
+		self.rect[3] = 280	
