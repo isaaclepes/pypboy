@@ -25,7 +25,7 @@ class Module(pypboy.SubModule):
 		for i in INVENTORY:
 			handlers.append(self.change_items)
 			item_names.append(i.name)
-		self.menu = pypboy.ui.Menu(160, item_names, handlers, selected, 15)
+		self.menu = pypboy.ui.Menu(200, item_names, handlers, selected, 15)
 		self.menu.rect[0] = 4
 		self.menu.rect[1] = 60
 		self.add(self.menu)
@@ -74,7 +74,9 @@ class Module(pypboy.SubModule):
 		text = config.FONTS[14].render("20", True, (95, 255, 177), (0, 0, 0))
 		weapon_to_display.image.blit(text, (weapon_to_display.rect[2] - 13 - 190 - (text.get_width() + 5), 204-weapon_to_display.rect[1]))
 		text = config.FONTS[14].render("DAM", True, (95, 255, 177), (0, 0, 0))
-		weapon_to_display.image.blit(text, (weapon_to_display.rect[2] - 13  - 190 - 85 + 2, 204-weapon_to_display.rect[1]))
+		damXCoord = weapon_to_display.rect[2] - 13  - 190 - 85 + 2
+		weapon_to_display.image.blit(text, (damXCoord, 204-weapon_to_display.rect[1]))
+		print "DamXCoord %s" % (damXCoord)
 		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (config.WIDTH - weapon_to_display.rect[0] - 13 - 190 - 85, 200-weapon_to_display.rect[1]), (config.WIDTH - weapon_to_display.rect[0] - 13 - 190, 200-weapon_to_display.rect[1]), 2) # Horizontal Bar
 				
 		#Row 2
