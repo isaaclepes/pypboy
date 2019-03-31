@@ -76,9 +76,7 @@ class Module(pypboy.SubModule):
 		text = config.FONTS[14].render("20", True, (95, 255, 177), (0, 0, 0))
 		weapon_to_display.image.blit(text, (weapon_to_display.rect[2] - 190 - (text.get_width() + 5), 204-weapon_to_display.rect[1]))
 		text = config.FONTS[14].render("DAM", True, (95, 255, 177), (0, 0, 0))
-		damXCoord = weapon_to_display.rect[2]  - 190 - 85 + 2
-		weapon_to_display.image.blit(text, (damXCoord, 204-weapon_to_display.rect[1]))
-		print "DamXCoord %s" % (damXCoord)
+		weapon_to_display.image.blit(text, (weapon_to_display.rect[2]  - 190 - 85 + 2, 204-weapon_to_display.rect[1]))
 		
 				
 		#Row 2
