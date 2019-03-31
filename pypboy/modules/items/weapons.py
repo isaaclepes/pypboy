@@ -50,7 +50,7 @@ class Module(pypboy.SubModule):
 		
 		#Test starts here
 		#Value
-		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (weapon_to_display.rect[2] - 2, 200-weapon_to_display.rect[1]), (weapon_to_display.rect[2] - 2, 220-weapon_to_display.rect[1]), 2)#Verticle Bar
+		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (weapon_to_display.rect[2] + 2, 200-weapon_to_display.rect[1]), (weapon_to_display.rect[2] + 2, 220-weapon_to_display.rect[1]), 2)#Verticle Bar
 		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (weapon_to_display.rect[2] - 85, 200-weapon_to_display.rect[1]), (weapon_to_display.rect[2], 200-weapon_to_display.rect[1]), 2) # Horizontal Bar
 		text = config.FONTS[14].render("25", True, (95, 255, 177), (0, 0, 0))
 		weapon_to_display.image.blit(text, (weapon_to_display.rect[2] - 0 - (text.get_width() + 5), 204-weapon_to_display.rect[1]))
@@ -82,7 +82,7 @@ class Module(pypboy.SubModule):
 		
 				
 		#Row 2
-		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (weapon_to_display.rect[2] - 2, 230-weapon_to_display.rect[1]), (weapon_to_display.rect[2] - 2, 250-weapon_to_display.rect[1]), 2)
+		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (weapon_to_display.rect[2] + 2, 230-weapon_to_display.rect[1]), (weapon_to_display.rect[2] + 2, 250-weapon_to_display.rect[1]), 2)
 		text = config.FONTS[14].render("-- --", True, (95, 255, 177), (0, 0, 0))
 		weapon_to_display.image.blit(text, (weapon_to_display.rect[2] - 95 - 85 + 2, 234-weapon_to_display.rect[1]))
 		pygame.draw.line(weapon_to_display.image, (95, 255, 177), (weapon_to_display.rect[2] - 95 - 85, 230-weapon_to_display.rect[1]), (weapon_to_display.rect[2], 230-weapon_to_display.rect[1]), 2) # Horizontal Bar
