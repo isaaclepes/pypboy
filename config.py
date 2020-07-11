@@ -84,13 +84,13 @@ AMENITIES = {
 }
 
 INVENTORY_OLD = [
-"Chinese Assault Rifle",
-"Combat Shotgun",
+"Ranger Sequoia",
+"Anti-Materiel Rifle ",
 "Deathclaw Gauntlet",
 "Flamer",
-"Hunting Rifle",
-"Minigun",
-"Missile Launcher",
+"NCR dogtag",
+".45-70 Gov't(20)",
+".44 Magnum(20)",
 "Pulse Grenade (2)"
 ]
 
