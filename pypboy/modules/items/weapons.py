@@ -21,7 +21,7 @@ class Module(pypboy.SubModule):
 			Weapon('M.50 MG(50)','images/inventory/flamer.png',0,0,0,0,''),
 			Weapon('Pulse Grenade (2)','images/inventory/flamer.png',0,0,0,0,'')
 		]
-		selected = 3
+		selected = 1
 		for i in INVENTORY:
 			handlers.append(self.change_items)
 			item_names.append(i.name)
