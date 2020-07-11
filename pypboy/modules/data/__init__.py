@@ -23,6 +23,6 @@ class Module(BaseModule):
 		
 	def handle_resume(self):
 		self.pypboy.header.headline = "MAP"
-		self.pypboy.header.title = ["Wellington City"]
+		self.pypboy.header.title = ["Santa Clarita"]
 		self.active.handle_action("resume")
 		
