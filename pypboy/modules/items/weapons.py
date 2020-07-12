@@ -14,11 +14,6 @@ class Module(pypboy.SubModule):
 		INVENTORY = [
 			Weapon('Ranger Sequoia','images/inventory/RangerSequoia.png',62,30,104,100,''),
 			Weapon('Anti-materiel rifle','images/inventory/flamer.png',0,0,0,0,''),
-			Weapon('Deathclaw Gauntlet','images/inventory/flamer.png',0,0,0,0,''),
-			Weapon('Ranger Sequoia','images/inventory/RangerSequoia.png',62,4,250,100,''),
-			Weapon('Hunting Rifle','images/inventory/flamer.png',0,0,0,0,''),
-			Weapon('.45-70 Govt(20)','images/inventory/flamer.png',0,0,0,0,''),
-			Weapon('M.50 MG(50)','images/inventory/flamer.png',0,0,0,0,''),
 			Weapon('Pulse Grenade (2)','images/inventory/flamer.png',0,0,0,0,'')
 		]
 		selected = 0
