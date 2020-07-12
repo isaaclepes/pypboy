@@ -34,11 +34,11 @@ GPIO_ACTIONS = {
     	4: "module_stats", #GPIO 4
 	17: "module_items", #GPIO 14
 	27: "module_data", #GPIO 15
-	18:	"knob_1", #GPIO 17
-#	18: "knob_2", #GPIO 18
+#	18:	"knob_1", #GPIO 17
+	18: "knob_2", #GPIO 18
 #	7: "knob_3", #GPIO 7
-	22: "knob_4", #GPIO 22
-	25: "dial_up", #GPIO 25
+#	22: "knob_4", #GPIO 22
+#	25: "dial_up", #GPIO 25
 #	31: "dial_up", #GPIO 23
 #	27: "dial_down" #GPIO 7
 }
