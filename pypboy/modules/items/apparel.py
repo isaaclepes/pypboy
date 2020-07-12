@@ -71,7 +71,7 @@ class Module(pypboy.SubModule):
 		pygame.draw.line(apparel_to_display.image, (95, 255, 177), (apparel_to_display.rect[2] - 190 - 85, 200-apparel_to_display.rect[1]), (apparel_to_display.rect[2] - 190, 200-apparel_to_display.rect[1]), 2) # Horizontal Bar
 		text = config.FONTS[14].render("%s" %(apparel_to_display.armor), True, (95, 255, 177), (0, 0, 0))
 		apparel_to_display.image.blit(text, (apparel_to_display.rect[2] - 190 - (text.get_width() + 5), 204-apparel_to_display.rect[1]))
-		text = config.FONTS[14].render("DAM", True, (95, 255, 177), (0, 0, 0))
+		text = config.FONTS[14].render("DT", True, (95, 255, 177), (0, 0, 0))
 		apparel_to_display.image.blit(text, (apparel_to_display.rect[2]  - 190 - 85 + 2, 204-apparel_to_display.rect[1]))
 		
 				
