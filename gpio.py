@@ -6,7 +6,7 @@ button17 = Button(17)
 button18 = Button(18)
 button27 = Button(27)
 button22 = Button(22)
-#button23 = Button(23)
+#button23 = Button(23) Reboots system if called
 button24 = Button(24)
 button25 = Button(25)
 while True:
