@@ -30,6 +30,7 @@ ACTIONS = {
 }
 
 # Using GPIO.BCM as mode
+#GPIO 23 pin16 reboot
 GPIO_ACTIONS = {
     	4: "module_stats", #GPIO 4
 	17: "module_items", #GPIO 14
@@ -41,7 +42,7 @@ GPIO_ACTIONS = {
 #	22: "dial_down", #GPIO 22
 #	25: "dial_up", #GPIO 25
 	24: "knob_2", #GPIO 24
-	23: "knob_3" #GPIO 23
+	25: "knob_3" #GPIO 23
 }
 
 
