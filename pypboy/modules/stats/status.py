@@ -40,4 +40,4 @@ class Health(game.Entity):
 		self.image = self.image.convert()
 		text = config.FONTS[18].render("DoNotPanik - Level 20", True, (105, 251, 20), (0, 0, 0))
 		text_width = text.get_size()[0]
-		self.image.blit(text, (config.WIDTH / 2 - 8 - text_width / 2, 250))
+		self.image.blit(text, (config.WIDTH / 2 - 8 - text_width / 2, 20))
