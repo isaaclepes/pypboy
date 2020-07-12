@@ -31,6 +31,7 @@ ACTIONS = {
 
 # Using GPIO.BCM as mode
 #GPIO 23 pin16 reboot
+#GPIO 25 pin 22 blank screen do not use
 GPIO_ACTIONS = {
     	4: "module_stats", #GPIO 4
 	17: "module_items", #GPIO 14
@@ -38,11 +39,11 @@ GPIO_ACTIONS = {
 #	18:	"knob_1", #GPIO 18 Do Not enable messes with the screen. 
 #	18: "knob_2", #GPIO 18 Turns screen off do not use
 #	7: "knob_3", #GPIO 7
-#	22: "knob_4", #GPIO 22
+	22: "knob_4", #GPIO 22
 #	22: "dial_down", #GPIO 22
 #	25: "dial_up", #GPIO 25
 	24: "knob_2", #GPIO 24
-	25: "knob_3" #GPIO 23
+#	25: "knob_3" #GPIO 23
 }
 
 
