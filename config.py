@@ -40,8 +40,8 @@ GPIO_ACTIONS = {
 #	22: "knob_4", #GPIO 22
 #	22: "dial_down", #GPIO 22
 #	25: "dial_up", #GPIO 25
-	24: "dial_up", #GPIO 24
-	23: "dial_down" #GPIO 23
+	24: "knob_2", #GPIO 24
+	23: "knob_3" #GPIO 23
 }
 
 
