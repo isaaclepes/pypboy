@@ -6,7 +6,11 @@ import pypboy.ui
 if config.GPIO_AVAILABLE:
 	import RPi.GPIO as GPIO
 
-
+class GameState(Enum):
+	DATA = -1
+    	ITEMS = 0
+        STATS = 1
+	
 class BaseModule(game.EntityGroup):
 
 	submodules = []
