@@ -23,8 +23,8 @@ while True:
         print("22 Pressed pin 15")
     #elif button23.is_pressed:
     #    print("23 Pressed pin 16")
-    elif button24.is_pressed:
-        print("24 Pressed pin 18")
+    #elif button24.is_pressed:
+    #    print("24 Pressed pin 18")
     elif button25.is_pressed:
         print("25 Pressed pin 22")
     else:
