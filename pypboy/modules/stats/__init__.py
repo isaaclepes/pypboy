@@ -8,20 +8,20 @@ from pypboy.modules.stats import general
 
 class Module(BaseModule):
 
-	label = "STATS"
-	GPIO_LED_ID = 30 #GPIO 22 #19
+    label = "STATS"
+    GPIO_LED_ID = 30 #GPIO 22 #19
 
-	def __init__(self, *args, **kwargs):
-		self.submodules = [
-			status.Module(self),
-			special.Module(self),
-			skills.Module(self),
-			perks.Module(self),
-			general.Module(self)
-		]
-		super(Module, self).__init__(*args, **kwargs)
-		
-	def handle_resume(self):
-		self.pypboy.header.headline = "STATS"
-		self.pypboy.header.title = ["AP  75/99","HP  160/999", "LVL 20"]
-		self.active.handle_action("resume")
+    def __init__(self, *args, **kwargs):
+        self.submodules = [
+            status.Module(self),
+            special.Module(self),
+            skills.Module(self),
+            perks.Module(self),
+            general.Module(self)
+        ]
+        super(Module, self).__init__(*args, **kwargs)
+        
+    def handle_resume(self):
+        self.pypboy.header.headline = "STATS"
+        self.pypboy.header.title = ["AP  75/99","HP  160/999", "LVL 20"]
+        self.active.handle_action("resume")

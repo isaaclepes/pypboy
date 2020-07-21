@@ -6,7 +6,7 @@ import config
 
 class Module(pypboy.SubModule):
 
-	label = "Ammo"
+    label = "Ammo"
 
-	def __init__(self, *args, **kwargs):
-		super(Module, self).__init__(*args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super(Module, self).__init__(*args, **kwargs)
