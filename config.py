@@ -28,8 +28,10 @@ ACTIONS = {
     pygame.K_5: "knob_5",
     pygame.K_UP: "dial_up",
     pygame.K_DOWN: "dial_down",
-    pygame.K_MINUS : "zoom_out",
-    pygame.K_PLUS : "zoom_in"
+    pygame.K_PLUS: "zoom_in",
+    pygame.K_MINUS: "zoom_out",
+    pygame.K_KP_PLUS: "zoom_in",
+    pygame.K_KP_MINUS: "zoom_out",
 }
 
 # Using GPIO.BCM as mode
