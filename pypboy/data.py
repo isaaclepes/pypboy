@@ -72,7 +72,7 @@ class Maps(object):
         map_data = response.text.encode('UTF-8')
         #Write to cache file
         f = open("map.cache", "w")
-        f.write(map_data)
+        f.write(str(map_data))
         f.close()
         self.display_map(map_data)
     
