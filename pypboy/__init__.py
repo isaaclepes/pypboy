@@ -2,6 +2,7 @@ import pygame
 import game
 import config
 import pypboy.ui
+from enum import Enum
 
 if config.GPIO_AVAILABLE:
     import RPi.GPIO as GPIO

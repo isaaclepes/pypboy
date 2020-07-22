@@ -9,7 +9,7 @@ class Module(pypboy.SubModule):
     label = " Apparel "
 
     def __init__(self, *args, **kwargs):
-            super(Module, self).__init__((config.WIDTH, config.HEIGHT), *args, **kwargs)
+        super(Module, self).__init__((config.WIDTH, config.HEIGHT), *args, **kwargs)
         handlers = []
         item_names = []
         INVENTORY = [
