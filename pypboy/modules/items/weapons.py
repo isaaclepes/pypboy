@@ -31,7 +31,7 @@ class Module(pypboy.SubModule):
         weapon_to_display.rect[0] = 189
         weapon_to_display.rect[1] = 40
         
-        print "RECTANGLE %s %s %s %s" % (weapon_to_display.rect[0],weapon_to_display.rect[1],weapon_to_display.rect[2],weapon_to_display.rect[3])
+        print("RECTANGLE %s %s %s %s" % (weapon_to_display.rect[0],weapon_to_display.rect[1],weapon_to_display.rect[2],weapon_to_display.rect[3]))
         
         #Show Weapon stats - Value
         #text = config.FONTS[14].render("%s" %(weapon_to_display.value), True, (95, 255, 177), (0, 0, 0))
@@ -95,7 +95,7 @@ class Module(pypboy.SubModule):
 
         
     def change_items(self):
-        print "Changing"
+        print("Changing")
         
 class Weapon(game.Entity):
     def __init__(self, name, imageloc, damage, weight, value, condition, notes): 

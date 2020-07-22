@@ -8,8 +8,8 @@ HEIGHT = 320
 
 #MAP_FOCUS = (-5.9347681, 54.5889076)
 #MAP_FOCUS = (-102.3016145, 21.8841274) #Old Default?
-#MAP_FOCUS = (-118.5723894,34.3917171)#CodeNinjasValencia
-***REMOVED***
+MAP_FOCUS = (-118.5723894,34.3917171)#CodeNinjasValencia
+#***REMOVED***
 
 LOAD_CACHED_MAP = False
 
@@ -99,7 +99,6 @@ INVENTORY_OLD = [
 ".44 Magnum(20)",
 "Pulse Grenade (2)"
 ]
-
 
 
 pygame.font.init()

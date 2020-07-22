@@ -9,10 +9,11 @@ class Engine(object):
     def __init__(self, title, width, height, *args, **kwargs):
         super(Engine, self).__init__(*args, **kwargs)
         #self.window = pygame.display.set_mode((width, height),pygame.FULLSCREEN)
+        pygame.init()
         self.window = pygame.display.set_mode((width, height))
         self.screen = pygame.display.get_surface()
         pygame.display.set_caption(title)
-        pygame.mouse.set_visible(True)
+        pygame.mouse.set_visible(False)
 
         self.groups = []
         self.root_children = EntityGroup()

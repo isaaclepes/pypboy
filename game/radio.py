@@ -163,8 +163,9 @@ class Oscilloscope:
             pygame.surfarray.blit_array(self.screen, pixels)	 # Blit the screen buffer
             if not self.embedded:
                 pygame.display.flip()  
-        except Exception,e:
-            print traceback.format_exc()
+        except Exception:
+            _, err, _ = sys.exc_info()
+            print(traceback.format_exc())
 
 def play_pygame(file):
     
@@ -217,5 +218,6 @@ if __name__ == "__main__":
         files = load_files()
         if files:
             play_pygame(files[randint(0,len(files)-1)])
-    except Exception, e:
-        print traceback.format_exc()
+    except Exception:
+        _, err, _ = sys.exc_info()
+        print(traceback.format_exc())

@@ -15,6 +15,10 @@ Supports caching and offline loading of maps.
 * Pypboy will now load the cached map on starting
 
 ## Autors
+* Fixes and Updates by kingpinzs
+
+* Fixes and Updates by amolloy
+
 * Fixes and Updates by Goldstein
 
 * Updates by Sabas of The Inventor's House Hackerspace

@@ -49,7 +49,7 @@ class BaseModule(game.EntityGroup):
             self.active.move(x, y)
 
     def switch_submodule(self, module):
-        print "Changing submodules"
+        print("Changing submodules")
         if hasattr(self, 'active') and self.active:
             self.active.handle_action("pause")
             self.remove(self.active)
@@ -60,7 +60,7 @@ class BaseModule(game.EntityGroup):
             self.footer.select(self.footer.menu[module])
             self.add(self.active)
         else:
-            print "No submodule at %d" % module
+            print("No submodule at %d" % module)
 
     def render(self, interval): 
         self.active.render(interval)
