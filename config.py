@@ -8,8 +8,8 @@ HEIGHT = 320
 
 #MAP_FOCUS = (-5.9347681, 54.5889076)
 #MAP_FOCUS = (-102.3016145, 21.8841274) #Old Default?
-MAP_FOCUS = (-118.5723894,34.3917171)#CodeNinjasValencia
-
+#MAP_FOCUS = (-118.5723894,34.3917171)#CodeNinjasValencia
+***REMOVED***
 
 LOAD_CACHED_MAP = False
 
@@ -27,7 +27,9 @@ ACTIONS = {
     pygame.K_4: "knob_4",
     pygame.K_5: "knob_5",
     pygame.K_UP: "dial_up",
-    pygame.K_DOWN: "dial_down"
+    pygame.K_DOWN: "dial_down",
+    pygame.K_MINUS : "zoom_out",
+    pygame.K_PLUS : "zoom_in"
 }
 
 # Using GPIO.BCM as mode
