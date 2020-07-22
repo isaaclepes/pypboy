@@ -74,7 +74,7 @@ class Maps(object):
         f.close()
         self.display_map(map_data)
     
-    def load_map_coordinates(self, coords,range):
+    def load_map_coordinates(self, coords, range):
         return self.load_map((
                 coords[0] - range,
                 coords[1] - range,
@@ -175,8 +175,6 @@ class Maps(object):
                 wp[2] += offset[1] * 2
             transtags.append(wp)
         return transtags
-
-
 
 class SoundSpectrum: 
     """ 
@@ -288,6 +286,6 @@ class LogSpectrum(SoundSpectrum):
         result = numpy.zeros(length) 
         ind = numpy.searchsorted(bins, f) 
         for i,j in zip(ind, p): 
-            if i<length: 
+            if i < length: 
                 result[i] += j 
         return bins, result 
