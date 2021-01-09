@@ -28,7 +28,6 @@ class Map(game.Entity):
         self.image.blit(text, (10, 10))
 
     def fetch_map(self, position, radius):
-        #(-5.9234923, 54.5899493)
         self._fetching = threading.Thread(target=self._internal_fetch_map, args=(position, radius))
         self._fetching.start()
 
@@ -68,11 +67,10 @@ class Map(game.Entity):
                 self._map_surface.blit(image, (tag[1], tag[2]))
                 text = config.FONTS[12].render(tag[0], True, (95, 255, 177), (0, 0, 0))
                 self._map_surface.blit(text, (tag[1] + 17, tag[2] + 4))
-            #else:
-                #print "Unknown amenity: %s" % tag[3]
-                #image = config.MAP_ICONS['misc']
+            else:
+                print("Unknown amenity: %s") % tag[3]
+                image = config.MAP_ICONS['misc']
 
-        
         self.image.blit(self._map_surface, (0, 0), area=self._render_rect)
 
 class MapSquare(game.Entity):
@@ -217,38 +215,40 @@ class RadioStation(game.Entity):
     def play_random(self):
         start_pos = 0
         f = False
+        if config.SOUND_ENABLED:
+            if hasattr(self, 'last_filename') and self.last_filename:
+                pygame.mixer.music.load(self.last_filename)
 
-        if hasattr(self, 'last_filename') and self.last_filename:
-            pygame.mixer.music.load(self.last_filename)
-
-            now = time.time()
-            curpos = self.last_playpos + (now - self.last_playtime)
-            # TODO
-        f = choice(self.files)
-        self.filename = f
-        pygame.mixer.music.load(f)
-        pygame.mixer.music.play(0, start_pos)
-        self.state = self.STATES['playing']
+                now = time.time()
+                curpos = self.last_playpos + (now - self.last_playtime)
+                # TODO
+            f = choice(self.files)
+            self.filename = f
+            pygame.mixer.music.load(f)
+            pygame.mixer.music.play(0, start_pos)
+            self.state = self.STATES['playing']
         
     def play(self):
-        if self.state == self.STATES['paused']:
-            pygame.mixer.music.unpause()
-            self.state = self.STATES['playing']
-        else:
-            self.play_random()
+        if config.SOUND_ENABLED:
+            if self.state == self.STATES['paused']:
+                pygame.mixer.music.unpause()
+                self.state = self.STATES['playing']
+            else:
+                self.play_random()
         
     def pause(self):
-        self.state = self.STATES['paused']
-        pygame.mixer.music.pause()
+        if config.SOUND_ENABLED:
+            self.state = self.STATES['paused']
+            pygame.mixer.music.pause()
         
     def stop(self):
-        self.state = self.STATES['stopped']
-        if self.filename:
-            self.last_filename = self.filename
-            self.last_playpos = pygame.mixer.music.get_pos()
-            self.last_playtime = time.time()
-
-        pygame.mixer.music.stop()
+        if config.SOUND_ENABLED:
+            self.state = self.STATES['stopped']
+            if self.filename:
+                self.last_filename = self.filename
+                self.last_playpos = pygame.mixer.music.get_pos()
+                self.last_playtime = time.time()
+            pygame.mixer.music.stop()
 
     def load_files(self):
         files = []
@@ -302,6 +302,7 @@ class ViolinRadio(RadioStation):
 
 class F3Radio(RadioStation):
     def __init__(self, *args, **kwargs):
+        
         self.label = 'F3 Radio'
         self.directory = 'sounds/radio/F3/'
         super(F3Radio, self).__init__(self, *args, **kwargs)

@@ -95,8 +95,9 @@ class Pypboy(game.core.Engine):
         elif event.type == pygame.QUIT:
             self.running = False
         elif event.type == config.EVENTS['SONG_END']:
-            if hasattr(config, 'radio'):
-                config.radio.handle_event(event)
+            if config.SOUND_ENABLED:
+                if hasattr(config, 'radio'):
+                    config.radio.handle_event(event)
         else:
             if hasattr(self, 'active'):
                 self.active.handle_event(event)

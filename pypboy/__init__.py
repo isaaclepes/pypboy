@@ -8,8 +8,10 @@ if config.GPIO_AVAILABLE:
     import RPi.GPIO as GPIO
 
 class GameState(Enum):
+    RADIO = -3
+    MAP = -2
     DATA = -1
-    ITEMS = 0
+    inv = 0
     STATS = 1
 
 class BaseModule(game.EntityGroup):

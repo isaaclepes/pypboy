@@ -49,13 +49,14 @@ class Maps(object):
                 bounds[0] + self.width,
                 bounds[1] + self.height
         )
+        
         url = "http://www.openstreetmap.org/api/0.6/map?bbox=%f,%f,%f,%f" % (
                         bounds[0],
                         bounds[1],
                         bounds[2],
                         bounds[3]
                 )
-        print("wtf")
+
         print("[Fetching maps... (%f, %f) to (%f, %f)]" % (
                         bounds[0],
                         bounds[1],
@@ -110,10 +111,13 @@ class Maps(object):
                                         amenity = tag2["@v"]
                                 self.tags.append((float(node['@lat']), float(node['@lon']), tag["@v"], amenity))
                             #Personal Addresses - Removed
-                            #if tag["@k"] == "addr:housenumber":
-                            #	   for t2 in node['tag']:
-                            #			   if t2["@k"] == "addr:street":
-                            #					   self.tags.append((float(node['@lat']), float(node['@lon']),tag["@v"]+" "+t2["@v"]))
+                            if tag["@k"] == "addr:housenumber":
+                                   for t2 in node['tag']:
+                                           if t2["@k"] == "addr:street":
+                                                   self.tags.append((float(node['@lat']), float(node['@lon']),tag["@v"]+" "+t2["@v"]))
+                                                   print(tag["@v"])
+                            if tag["@k"] == "tiger:county":
+                                print(tag["@v"])
                         except Exception():
                             pass
 

@@ -51,5 +51,5 @@ class Module(pypboy.SubModule):
 
     def handle_resume(self):
         self.parent.pypboy.header.headline = "DATA"
-        self.parent.pypboy.header.title = "Radio"
+        self.parent.pypboy.header.title = ["Radio"]
         super(Module, self).handle_resume()

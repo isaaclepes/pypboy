@@ -19,14 +19,17 @@ class Radio(game.Entity):
         super(Radio, self).__init__((globals.WIDTH, globals.HEIGHT))
         # set up the mixer
         
-        try: pygame.mixer.quit()
-        except: pass
+        try: 
+            pygame.mixer.quit()
+        except: 
+            pass
         
         freq = 44100	 # audio CD quality
         bitsize = -16	# unsigned 16 bit
         channels = 2	 # 1 is mono, 2 is stereo
         buffer = 2048	# number of samples (experiment to get right sound)
-        pygame.mixer.init(freq, bitsize, channels, buffer)
+        if config.SOUND_ENABLED:
+            pygame.mixer.init(freq, bitsize, channels, buffer)
         self.osc = Oscilloscope() 
         self.osc.open(self)
         self.paused = True
@@ -35,17 +38,18 @@ class Radio(game.Entity):
         self.filename = ""
     
     def play_rnd(self):
-        files = load_files()
-        file = files[randint(0,len(files)-1)]
-        self.filename = file
-        pygame.mixer.music.load(file)
-        self.spectrum = LogSpectrum(file,force_mono=True) 
-        pygame.mixer.music.play()
-        self.loaded = True
-        self.paused = False
+        if config.SOUND_ENABLED:
+            files = load_files()
+            file = files[randint(0,len(files)-1)]
+            self.filename = file
+            pygame.mixer.music.load(file)
+            self.spectrum = LogSpectrum(file,force_mono=True) 
+            pygame.mixer.music.play()
+            self.loaded = True
+            self.paused = False
         
     def play(self):
-        if self.loaded:
+        if self.loaded and config.SOUND_ENABLED:
             self.paused = False
             pygame.mixer.music.unpause()
         else:
@@ -168,55 +172,56 @@ class Oscilloscope:
             print(traceback.format_exc())
 
 def play_pygame(file):
-    
-    clock = pygame.time.Clock()
-    # set up the mixer
-    freq = 44100	 # audio CD quality
-    bitsize = -16	# unsigned 16 bit
-    channels = 2	 # 1 is mono, 2 is stereo
-    buffer = 2048	# number of samples (experiment to get right sound)
-    pygame.mixer.init(freq, bitsize, channels, buffer)
-    
-    while not pygame.mixer.get_init():
-        clock.tick(50)
-    
-    pygame.mixer.music.load(file)
-    s = LogSpectrum(file,force_mono=True) 
-    osc = Oscilloscope() 
-    osc.open()
-    
-    f = None
-    p = None
-    running = True
-    paused = False
-    pygame.mixer.music.play()
-    
-    while pygame.mixer.music.get_busy() and running : 
-        if not paused:
-            start = pygame.mixer.music.get_pos() / 1000.0
-            try:
-                f,p = s.get_mono(start-0.001, start+0.001)
-            except:
-                pass
-            osc.update(start*50,f,p)			 
-        pygame.time.wait(50)
+    if config.SOUND_ENABLED:
+        clock = pygame.time.Clock()
+        # set up the mixer
+        freq = 44100	 # audio CD quality
+        bitsize = -16	# unsigned 16 bit
+        channels = 2	 # 1 is mono, 2 is stereo
+        buffer = 2048	# number of samples (experiment to get right sound)
+        if config.SOUND_ENABLED:
+            pygame.mixer.init(freq, bitsize, channels, buffer)
         
-        for event in pygame.event.get():
-            if (event.type == pygame.KEYUP) or (event.type == pygame.KEYDOWN):
-                if (event.key == pygame.K_UP):
-                    pygame.mixer.music.pause()
-                    paused = True
-                elif (event.key == pygame.K_DOWN):
-                    pygame.mixer.music.unpause()
-                    paused = False
-            elif event.type == pygame.QUIT:
-                running = False
-    pygame.mixer.quit()
+        while not pygame.mixer.get_init():
+            clock.tick(50)
+        
+        pygame.mixer.music.load(file)
+        s = LogSpectrum(file,force_mono=True) 
+        osc = Oscilloscope() 
+        osc.open()
+        
+        f = None
+        p = None
+        running = True
+        paused = False
+        pygame.mixer.music.play()
+        
+        while pygame.mixer.music.get_busy() and running : 
+            if not paused:
+                start = pygame.mixer.music.get_pos() / 1000.0
+                try:
+                    f,p = s.get_mono(start-0.001, start+0.001)
+                except:
+                    pass
+                osc.update(start*50,f,p)			 
+            pygame.time.wait(50)
+            
+            for event in pygame.event.get():
+                if (event.type == pygame.KEYUP) or (event.type == pygame.KEYDOWN):
+                    if (event.key == pygame.K_UP):
+                        pygame.mixer.music.pause()
+                        paused = True
+                    elif (event.key == pygame.K_DOWN):
+                        pygame.mixer.music.unpause()
+                        paused = False
+                elif event.type == pygame.QUIT:
+                    running = False
+        pygame.mixer.quit()
             
 if __name__ == "__main__":
     try:
         files = load_files()
-        if files:
+        if files and config.SOUND_ENABLED:
             play_pygame(files[randint(0,len(files)-1)])
     except Exception:
         _, err, _ = sys.exc_info()
