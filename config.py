@@ -9,7 +9,8 @@ HEIGHT = 320
 #MAP_FOCUS = (-5.9347681, 54.5889076)
 #MAP_FOCUS = (-102.3016145, 21.8841274) #Old Default?
 #MAP_FOCUS = (-118.5723894,34.3917171)#CodeNinjasValencia
-
+#MAP_FOCUS = (32.7157, 117.1611)
+MAP_FOCUS = (117.1611, 32.7157)
 
 LOAD_CACHED_MAP = False
 
@@ -38,16 +39,16 @@ ACTIONS = {
 #GPIO 23 pin16 reboot
 #GPIO 25 pin 22 blank screen do not use
 GPIO_ACTIONS = {
-    4: "module_stats", #GPIO 4
-    17: "module_items", #GPIO 14
-    27: "module_data", #GPIO 15
+    19: "module_stats", #GPIO 4
+    26: "module_items", #GPIO 14
+    16: "module_data", #GPIO 15
 #	18:	"knob_1", #GPIO 18 Do Not enable messes with the screen. 
 #	18: "knob_2", #GPIO 18 Turns screen off do not use
 #	7: "knob_3", #GPIO 7
 #	22: "knob_1", #GPIO 22
 #	22: "dial_down", #GPIO 22
 #	25: "dial_up", #GPIO 25
-    24: "knob_2", #GPIO 24
+    20: "knob_2", #GPIO 24
 #	25: "knob_3" #GPIO 23
 }
 

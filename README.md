@@ -41,3 +41,14 @@ Contributing to this software is warmly welcomed. You can do this basically by [
 Thanks for your contribution.
 
 Enjoy!
+
+
+### Enable app to startup on boot
+pi@XXXX:~/Downloads/pypboy $ cat ~/launch_pipboy.sh
+#!/bin/bash
+cd ~/Downloads/pypboy
+python ./main.py
+
+pi@XXXX:~/Downloads/pypboy $ grep launch_pipboy /etc/lightdm/lightdm.conf
+session-setup-script=/home/pi/launch_pipboy.sh
+pi@XXXX:~/Downloads/pypboy $
