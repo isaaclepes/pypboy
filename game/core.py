@@ -62,6 +62,9 @@ class EntityGroup(pygame.sprite.LayeredDirty):
         for child in self:
             child.rect.move(x, y)
 
+    def __len__(self):
+        return 0
+
 
 class Entity(pygame.sprite.DirtySprite):
     def __init__(self, dimensions=(0, 0), layer=0, *args, **kwargs):
@@ -79,3 +82,10 @@ class Entity(pygame.sprite.DirtySprite):
 
     def update(self, *args, **kwargs):
         pass
+
+    def __le__(self, other):
+        return False
+
+    def __len__(Self):
+        return 0
+
