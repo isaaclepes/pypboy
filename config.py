@@ -10,7 +10,10 @@ HEIGHT = 320
 #MAP_FOCUS = (-102.3016145, 21.8841274) #Old Default?
 #MAP_FOCUS = (-118.5723894,34.3917171)#CodeNinjasValencia
 #MAP_FOCUS = (32.7157, 117.1611)
-MAP_FOCUS = (117.1611, 32.7157)
+#MAP_FOCUS = (-92.3341, 38.9517)
+MAP_FOCUS = (-92.1943197, 38.5653437)
+
+WORLD_MAP_FOCUS = 0.07 #Needed to handle the 50k node limit from OSM
 
 LOAD_CACHED_MAP = False
 
@@ -73,8 +76,8 @@ AMENITIES = {
     'pub': 				MAP_ICONS['vault'],
     'nightclub': 		MAP_ICONS['vault'],
     'bar': 				MAP_ICONS['vault'],
-    'fast_food': 		MAP_ICONS['sewer'],
-#	'cafe': 			MAP_ICONS['sewer'],
+    'fast_food': 		MAP_ICONS['settlement'],
+	'cafe': 			MAP_ICONS['settlement'],
 #	'drinking_water': 	MAP_ICONS['sewer'],
     'restaurant': 		MAP_ICONS['settlement'],
     'cinema': 			MAP_ICONS['office'],
@@ -84,12 +87,13 @@ AMENITIES = {
     'townhall': 		MAP_ICONS['monument'],
 #	'bicycle_parking': 	MAP_ICONS['misc'],
 #	'place_of_worship': MAP_ICONS['misc'],
-#	'theatre': 			MAP_ICONS['misc'],
+	'theatre': 			MAP_ICONS['office'],
 #	'bus_station': 		MAP_ICONS['misc'],
 #	'parking': 			MAP_ICONS['misc'],
 #	'fountain': 		MAP_ICONS['misc'],
 #	'marketplace': 		MAP_ICONS['misc'],
 #	'atm': 				MAP_ICONS['misc'],
+    'misc':             MAP_ICONS['misc']
 }
 
 INVENTORY_OLD = [

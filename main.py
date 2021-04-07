@@ -29,7 +29,7 @@ from pypboy.core import Pypboy
 try:
     pygame.mixer.init(44100, -16, 2, 2048)
     config.SOUND_ENABLED = True
-except:
+except Exception as e:
     config.SOUND_ENABLED = False
 
 if __name__ == "__main__":

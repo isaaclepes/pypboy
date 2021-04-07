@@ -38,6 +38,6 @@ class Health(game.Entity):
         self.image = pygame.image.load('images/pipboy.png')
         self.rect = self.image.get_rect()
         self.image = self.image.convert()
-        text = config.FONTS[18].render("DoNotPanik - Level 20", True, (105, 251, 20), (0, 0, 0))
+        text = config.FONTS[18].render("Lone Wonderer - Level 31", True, (105, 251, 20), (0, 0, 0))
         text_width = text.get_size()[0]
         self.image.blit(text, (config.WIDTH / 2 - 8 - text_width / 2, 20))

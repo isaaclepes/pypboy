@@ -114,5 +114,6 @@ class Pypboy(game.core.Engine):
 
         try:
             pygame.mixer.quit()
-        except:
+        except Exception as e:
+            print(e)
             pass

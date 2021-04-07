@@ -20,8 +20,6 @@ class Module(pypboy.SubModule):
             entities.F3Radio()
         ]
         for station in self.stations:
-            print("STATION")
-            print(station)
             self.add(station)
         self.active_station = None
         config.radio = self

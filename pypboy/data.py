@@ -56,6 +56,7 @@ class Maps(object):
                         bounds[2],
                         bounds[3]
                 )
+        print(url)
 
         print("[Fetching maps... (%f, %f) to (%f, %f)]" % (
                         bounds[0],
@@ -66,7 +67,8 @@ class Maps(object):
         while True:
             try:
                 response = requests.get(url)
-            except:
+            except Exception as e:
+                print(e)
                 pass
             else:
                 break
@@ -97,39 +99,42 @@ class Maps(object):
         self.display_map(map_data)
             
     def display_map(self, map_data):
-        osm_dict = xmltodict.parse(map_data)
         try:
-            for node in osm_dict['osm']['node']:
-                self.nodes[node['@id']] = node
-                if 'tag' in node:
-                    for tag in node['tag']:
-                        try:
-                            #Named Amenities
-                            if tag["@k"] == "name":
-                                for tag2 in node['tag']:
-                                    if tag2["@k"] == "amenity":
-                                        amenity = tag2["@v"]
-                                self.tags.append((float(node['@lat']), float(node['@lon']), tag["@v"], amenity))
-                            #Personal Addresses - Removed
-                            if tag["@k"] == "addr:housenumber":
-                                   for t2 in node['tag']:
-                                           if t2["@k"] == "addr:street":
-                                                   self.tags.append((float(node['@lat']), float(node['@lon']),tag["@v"]+" "+t2["@v"]))
-                                                   print(tag["@v"])
-                            if tag["@k"] == "tiger:county":
-                                print(tag["@v"])
-                        except Exception():
-                            pass
+            osm_dict = xmltodict.parse(map_data)
+            try:
+                for node in osm_dict['osm']['node']:
+                    self.nodes[node['@id']] = node
+                    if 'tag' in node:
+                        for tag in node['tag']:
+                            if type(tag) is not str:
+                                try:
+                                    #Named Amenities
+                                    if tag["@k"] == "name":
+                                        for tag2 in node['tag']:
+                                            if tag2["@k"] == "amenity":
+                                                amenity = tag2["@v"]
+                                                self.tags.append((float(node['@lat']), float(node['@lon']), tag["@v"], amenity))
+                                    #Personal Addresses - Removed
+                                    if tag["@k"] == "addr:housenumber":
+                                        for t2 in node['tag']:
+                                                if t2["@k"] == "addr:street":
+                                                        self.tags.append((float(node['@lat']), float(node['@lon']),tag["@v"]+" "+t2["@v"]))
+                                except Exception as e:
+                                    print("Exception: " + e.__str__())
+                                    pass
 
-            for way in osm_dict['osm']['way']:
-                waypoints = []
-                for node_id in way['nd']:
-                    node = self.nodes[node_id['@ref']]
-                    waypoints.append((float(node['@lat']), float(node['@lon'])))
-                self.ways.append(waypoints)
-        except Exception:
-            _, err, _ = sys.exc_info()
-            print(err)
+                for way in osm_dict['osm']['way']:
+                    waypoints = []
+                    for node_id in way['nd']:
+                        node = self.nodes[node_id['@ref']]
+                        waypoints.append((float(node['@lat']), float(node['@lon'])))
+                    self.ways.append(waypoints)
+            except Exception as e:
+                print(e)
+        except Exception as e:
+            if e.__str__() == "syntax error: line 1, column 0":
+                print(map_data)
+            print(e)
     
 
     def fetch_by_coordinate(self, coords, range):
@@ -175,7 +180,7 @@ class Maps(object):
                             tag[2],
                             (lat * w_coef) + offset[0],
                             (lng * h_coef) + offset[1],
-                            tag[3]
+                            tag[3] if len(tag) == 4 else 'misc'
             ]
             if flip_y:
                 wp[2] *= -1

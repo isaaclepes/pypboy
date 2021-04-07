@@ -21,7 +21,8 @@ class Radio(game.Entity):
         
         try: 
             pygame.mixer.quit()
-        except: 
+        except Exception as e: 
+            print(e)
             pass
         
         freq = 44100	 # audio CD quality
@@ -68,7 +69,8 @@ class Radio(game.Entity):
             start = pygame.mixer.music.get_pos() / 1000.0
             try:
                 f,p = self.spectrum.get_mono(start-0.001, start+0.001)
-            except:
+            except Exception as e:
+                print(e)
                 pass
             self.osc.update(start*50,f,p)	
         if self.osc:
@@ -152,7 +154,8 @@ class Oscilloscope:
                     pow = power[int(x/10)]
                     log = math.log10( pow )
                     offset = ((pow / math.pow(10, math.floor(log))) + log)*1.8
-                except:
+                except Exception as e:
+                    print(e)
                     pass
                 try: 
                     y = float(self.xaxis) - (math.sin((float(x)+float(time))/5.0)*2.0*offset) 
@@ -162,7 +165,8 @@ class Oscilloscope:
                     if abs(y) > 120:
                         pixels[x][y-2] = self.AFTER
                         pixels[x][y+2] = self.AFTER
-                except: 
+                except Exception as e: 
+                    print(e)
                     pass
             pygame.surfarray.blit_array(self.screen, pixels)	 # Blit the screen buffer
             if not self.embedded:
@@ -201,7 +205,8 @@ def play_pygame(file):
                 start = pygame.mixer.music.get_pos() / 1000.0
                 try:
                     f,p = s.get_mono(start-0.001, start+0.001)
-                except:
+                except Exception as e:
+                    print(e)
                     pass
                 osc.update(start*50,f,p)			 
             pygame.time.wait(50)

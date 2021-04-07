@@ -11,7 +11,7 @@ class Module(pypboy.SubModule):
     def __init__(self, *args, **kwargs):
         super(Module, self).__init__(*args, **kwargs)
         mapgrid = entities.Map(480, pygame.Rect(0, 0, config.WIDTH - 8, config.HEIGHT - 80))
-        mapgrid.fetch_map(config.MAP_FOCUS, 0.1)
+        mapgrid.fetch_map(config.MAP_FOCUS, config.WORLD_MAP_FOCUS)
         self.add(mapgrid)
         mapgrid.rect[0] = 4
         mapgrid.rect[1] = 40

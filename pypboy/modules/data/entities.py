@@ -68,7 +68,9 @@ class Map(game.Entity):
                 text = config.FONTS[12].render(tag[0], True, (95, 255, 177), (0, 0, 0))
                 self._map_surface.blit(text, (tag[1] + 17, tag[2] + 4))
             else:
-                print("Unknown amenity: %s") % tag[3]
+                if len(tag) == 4 and type(tag[3]) is str:
+                    print("Unknown amenity")
+                    print(tag[3])
                 image = config.MAP_ICONS['misc']
 
         self.image.blit(self._map_surface, (0, 0), area=self._render_rect)
