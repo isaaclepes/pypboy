@@ -73,6 +73,9 @@ class Maps(object):
             else:
                 break
         map_data = response.text.encode('UTF-8')
+
+        #TODO: REMOVE \n character and b' and ' from beginning and end of string
+        
         #Write to cache file
         if isWorld:
             f = open("worldMap.cache", "w")
