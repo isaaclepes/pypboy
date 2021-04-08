@@ -23,5 +23,5 @@ class Module(BaseModule):
         
     def handle_resume(self):
         self.pypboy.header.headline = self.label
-        self.pypboy.header.title = ["AP  75/99","HP  160/999", "LVL 20"]
+        self.pypboy.header.title = ["AP  75/99","HP  159/314", "LVL 31"]
         self.active.handle_action("resume")

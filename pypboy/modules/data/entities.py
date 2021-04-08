@@ -27,20 +27,20 @@ class Map(game.Entity):
         text = config.FONTS[14].render(loading_type, True, (95, 255, 177), (0, 0, 0))
         self.image.blit(text, (10, 10))
 
-    def fetch_map(self, position, radius):
-        self._fetching = threading.Thread(target=self._internal_fetch_map, args=(position, radius))
+    def fetch_map(self, position, radius, isWorld):
+        self._fetching = threading.Thread(target=self._internal_fetch_map, args=(position, radius, isWorld))
         self._fetching.start()
 
-    def _internal_fetch_map(self, position, radius):
-        self._mapper.fetch_by_coordinate(position, radius)
+    def _internal_fetch_map(self, position, radius, isWorld):
+        self._mapper.fetch_by_coordinate(position, radius, isWorld)
         self.redraw_map()
         
-    def load_map(self, position, radius):
-        self._fetching = threading.Thread(target=self._internal_load_map, args=(position, radius))
+    def load_map(self, position, radius, isWorld):
+        self._fetching = threading.Thread(target=self._internal_load_map, args=(position, radius, isWorld))
         self._fetching.start()
 
-    def _internal_load_map(self, position, radius):
-        self._mapper.load_map_coordinates(position, radius)
+    def _internal_load_map(self, position, radius, isWorld):
+        self._mapper.load_map_coordinates(position, radius, isWorld)
         self.redraw_map()
 
     def update(self, *args, **kwargs):
@@ -61,16 +61,12 @@ class Map(game.Entity):
             )
         for tag in self._mapper.transpose_tags((self._size / coef, self._size / coef), (self._size / 2, self._size / 2)):
             if tag[3] in config.AMENITIES:
-                print("Known amenity: %s as %s" % (tag[0],tag[3]))
                 image = config.AMENITIES[tag[3]]
                 pygame.transform.scale(image, (10, 10))
                 self._map_surface.blit(image, (tag[1], tag[2]))
                 text = config.FONTS[12].render(tag[0], True, (95, 255, 177), (0, 0, 0))
                 self._map_surface.blit(text, (tag[1] + 17, tag[2] + 4))
             else:
-                if len(tag) == 4 and type(tag[3]) is str:
-                    print("Unknown amenity")
-                    print(tag[3])
                 image = config.MAP_ICONS['misc']
 
         self.image.blit(self._map_surface, (0, 0), area=self._render_rect)

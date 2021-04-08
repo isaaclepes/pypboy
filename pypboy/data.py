@@ -42,7 +42,7 @@ class Maps(object):
                 lng + self.GRID_SIZE
         ])
 
-    def fetch_area(self, bounds):
+    def fetch_area(self, bounds, isWorld):
         self.width = (bounds[2] - bounds[0]) / 2
         self.height = (bounds[3] - bounds[1]) / 2
         self.origin = (
@@ -73,30 +73,39 @@ class Maps(object):
             else:
                 break
         map_data = response.text.encode('UTF-8')
+        print(map_data)
         #Write to cache file
-        f = open("map.cache", "w")
+        if isWorld:
+            f = open("worldMap.cache", "w")
+        else:
+            f = open("localMap.cache", "w")
         f.write(str(map_data))
         f.close()
         self.display_map(map_data)
     
-    def load_map_coordinates(self, coords, range):
+    def load_map_coordinates(self, coords, range, isWorld):
         return self.load_map((
                 coords[0] - range,
                 coords[1] - range,
                 coords[0] + range,
                 coords[1] + range
-        ))
+        ), isWorld)
     
-    def load_map(self, bounds):
+    def load_map(self, bounds, isWorld):
         self.width = (bounds[2] - bounds[0]) / 2
         self.height = (bounds[3] - bounds[1]) / 2
         self.origin = (
                 bounds[0] + self.width,
                 bounds[1] + self.height
         )
-        with open('map.cache', 'r') as mapcache:
-            map_data = mapcache.read()
-        self.display_map(map_data)
+        if isWorld:
+            with open('worldMap.cache', 'r', encoding="utf-8") as mapcache:
+                map_data = mapcache.read()
+            self.display_map(map_data)
+        else:
+            with open('localMap.cache', 'r', encoding="utf-8") as mapcache:
+                map_data = mapcache.read()
+            self.display_map(map_data)
             
     def display_map(self, map_data):
         try:
@@ -132,18 +141,16 @@ class Maps(object):
             except Exception as e:
                 print(e)
         except Exception as e:
-            if e.__str__() == "syntax error: line 1, column 0":
-                print(map_data)
             print(e)
     
 
-    def fetch_by_coordinate(self, coords, range):
+    def fetch_by_coordinate(self, coords, range, isWorld):
         return self.fetch_area((
                 coords[0] - range,
                 coords[1] - range,
                 coords[0] + range,
                 coords[1] + range
-        ))
+        ), isWorld)
 
     def transpose_ways(self, dimensions, offset, flip_y=True):
         width = dimensions[0]

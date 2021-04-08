@@ -15,11 +15,11 @@ class Module(pypboy.SubModule):
         if(config.LOAD_CACHED_MAP):
             print("Loading cached map")
             self.mapgrid = entities.Map(config.WIDTH, pygame.Rect(4, (config.WIDTH - config.HEIGHT) / 2, config.WIDTH - 8, config.HEIGHT - 80), "Loading cached map")
-            self.mapgrid.load_map(config.MAP_FOCUS, self.zoom)
+            self.mapgrid.load_map(config.MAP_FOCUS, self.zoom, False)
         else:
             print("Loading map from the internet")
             self.mapgrid = entities.Map(config.WIDTH, pygame.Rect(4, (config.WIDTH - config.HEIGHT) / 2, config.WIDTH - 8, config.HEIGHT - 80), "Loading map from the internet")
-            self.mapgrid.fetch_map(config.MAP_FOCUS, self.zoom)
+            self.mapgrid.fetch_map(config.MAP_FOCUS, self.zoom, False)
         self.add(self.mapgrid)
         self.mapgrid.rect[0] = 4
         self.mapgrid.rect[1] = 40
@@ -27,11 +27,14 @@ class Module(pypboy.SubModule):
     def handle_action(self, action, value=0):
         if action == "zoom_in":
             self.zoom = self.zoom - 0.003
-            print(self.zoom)
         if action == "zoom_out":
             self.zoom = self.zoom + 0.003
-            print(self.zoom)
-        self.mapgrid.fetch_map(config.MAP_FOCUS, self.zoom)
+        if config.LOAD_CACHED_MAP:
+            print("Loading cached map")
+            self.mapgrid.load_map(config.MAP_FOCUS, self.zoom, False)
+        else:
+            print("Loading map from the internet")
+            self.mapgrid.fetch_map(config.MAP_FOCUS, self.zoom, False)
         self.add(self.mapgrid)
         self.mapgrid.rect[0] = 4
         self.mapgrid.rect[1] = 40
