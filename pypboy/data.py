@@ -73,7 +73,6 @@ class Maps(object):
             else:
                 break
         map_data = response.text.encode('UTF-8')
-        print(map_data)
         #Write to cache file
         if isWorld:
             f = open("worldMap.cache", "w")
