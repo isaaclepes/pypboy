@@ -259,11 +259,23 @@ class RadioStation(game.Entity):
         print(files)
         return files
 
-class GalaxyNewsRadio(RadioStation):
+    def __le__(self, other):
+        if type(other) is not RadioStation:
+            return 0
+        else:
+            return self.label <= other.label
+    
+    def __ge__(self, other):
+        if type(other) is not RadioStation:
+            return 0
+        else:
+            return self.label >= other.label
+
+class ClassicalRadio(RadioStation):
     def __init__(self, *args, **kwargs):
-        self.label = 'Galaxy News Radio'
-        self.directory = 'sounds/radio/gnr/'
-        super(GalaxyNewsRadio, self).__init__(self, *args, **kwargs)
+        self.label = 'Classical Radio'
+        self.directory = 'sounds/radio/Classical/'
+        super(ClassicalRadio, self).__init__(self, *args, **kwargs)
 
 class DiamondCityRadio(RadioStation):
     def __init__(self, *args, **kwargs):

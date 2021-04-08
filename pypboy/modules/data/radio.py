@@ -10,8 +10,8 @@ class Module(pypboy.SubModule):
     def __init__(self, *args, **kwargs):
         super(Module, self).__init__(*args, **kwargs)
         self.stations = [
-            entities.GalaxyNewsRadio()
-            #entities.DiamondCityRadio(),
+            entities.ClassicalRadio(),
+            entities.DiamondCityRadio()
             #entities.EnclaveRadio(),
             #entities.InstituteRadio(),
             #entities.MinutemenRadio(),

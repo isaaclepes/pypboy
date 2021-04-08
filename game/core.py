@@ -81,8 +81,10 @@ class Entity(pygame.sprite.DirtySprite):
         pass
 
     def __le__(self, other):
-        return False
+        if type(self) == type(other):
+            return self.label <= other.label
+        else:
+            return 0
 
     def __str__(self):
         return "Entity"
-

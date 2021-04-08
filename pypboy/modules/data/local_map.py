@@ -6,17 +6,15 @@ from pypboy.modules.data import entities
 
 class Module(pypboy.SubModule):
     label = "Local Map"
-    load_cached_map = False
+    title = "Cosplacon"
     zoom = 0.003
 
     def __init__(self, *args, **kwargs):
         super(Module, self).__init__(*args, **kwargs)
         self.mapgrid = entities.Map(config.WIDTH, pygame.Rect(4, (config.WIDTH - config.HEIGHT) / 2, config.WIDTH - 8, config.HEIGHT - 80))
-        load_cached_map = config.LOAD_CACHED_MAP
         if(config.LOAD_CACHED_MAP):
             print("Loading cached map")
             self.mapgrid = entities.Map(config.WIDTH, pygame.Rect(4, (config.WIDTH - config.HEIGHT) / 2, config.WIDTH - 8, config.HEIGHT - 80), "Loading cached map")
-            map_data_location = 'map.cache'
             self.mapgrid.load_map(config.MAP_FOCUS, self.zoom)
         else:
             print("Loading map from the internet")
@@ -38,9 +36,9 @@ class Module(pypboy.SubModule):
         self.mapgrid.rect[0] = 4
         self.mapgrid.rect[1] = 40
         self.parent.pypboy.header.headline = "DATA"
-        self.parent.pypboy.header.title = ["Santa Clarita"]
+        self.parent.pypboy.header.title = [self.title]
     
     def handle_resume(self):
         self.parent.pypboy.header.headline = "DATA"
-        self.parent.pypboy.header.title = ["Santa Clarita"]
+        self.parent.pypboy.header.title = [self.title]
         super(Module, self).handle_resume()
