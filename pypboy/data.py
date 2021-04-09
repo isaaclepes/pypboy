@@ -72,10 +72,10 @@ class Maps(object):
                 pass
             else:
                 break
-        map_data = response.text.encode('UTF-8')
+        map_data = response.text.encode('utf-8')
 
         #TODO: REMOVE \n character and b' and ' from beginning and end of string
-        
+
         #Write to cache file
         if isWorld:
             f = open("worldMap.cache", "w")
@@ -102,11 +102,11 @@ class Maps(object):
         )
         if isWorld:
             with open('worldMap.cache', 'r', encoding="utf-8") as mapcache:
-                map_data = mapcache.read()
+                map_data = mapcache.read().replace("b'", "").replace("\\n", "")[0:-1]
             self.display_map(map_data)
         else:
             with open('localMap.cache', 'r', encoding="utf-8") as mapcache:
-                map_data = mapcache.read()
+                map_data = mapcache.read().replace("b'", "").replace("\\n", "")[0:-1]
             self.display_map(map_data)
             
     def display_map(self, map_data):
