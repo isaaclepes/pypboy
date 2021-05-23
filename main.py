@@ -10,14 +10,14 @@ parser = optparse.OptionParser(usage='python %prog -c True\nor:\npython %prog -c
 parser.add_option('-c','--cached-map',        action="store_true", help="Loads the cached map file stored in map.cache", dest="load_cached", default=False)
 options, args = parser.parse_args()
 
-# try:
-#     import RPi.GPIO as GPIO
-#     GPIO.setmode(GPIO.BCM)
-#     config.GPIO_AVAILABLE = True
-# except Exception:
-#     _, err, _ = sys.exc_info()
-#     print("GPIO UNAVAILABLE (%s)" % err)
-config.GPIO_AVAILABLE = False
+try:
+    import RPi.GPIO as GPIO
+    GPIO.setmode(GPIO.BCM)
+    config.GPIO_AVAILABLE = True
+except Exception:
+    _, err, _ = sys.exc_info()
+    print("GPIO UNAVAILABLE (%s)" % err)
+    config.GPIO_AVAILABLE = False
 
 if config.GPIO_AVAILABLE:
 # Init framebuffer/touchscreen environment variables
