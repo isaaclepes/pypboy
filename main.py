@@ -15,7 +15,7 @@ options, args = parser.parse_args()
 # except Exception:
 #     _, err, _ = sys.exc_info()
 #     print("GPIO UNAVAILABLE (%s)" % err)
-    config.GPIO_AVAILABLE = False
+config.GPIO_AVAILABLE = False
 
 if config.GPIO_AVAILABLE:
 # Init framebuffer/touchscreen environment variables
