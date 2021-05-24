@@ -53,3 +53,10 @@ class Module(pypboy.SubModule):
         self.parent.pypboy.header.headline = "DATA"
         self.parent.pypboy.header.title = ["Radio"]
         super(Module, self).handle_resume()
+
+    def handle_tap(self):
+        if self.menu.handle_tap() == False:
+            if self.active_station.state == 1:
+                self.active_station.pause()
+            else:
+                self.active_station.play()

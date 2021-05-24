@@ -125,6 +125,20 @@ class Menu(game.Entity):
                 pygame.draw.rect(self.image, (95, 255, 177), selected_rect, 2)
             self.image.blit(text, (self.menuXVal + 5, offset))
             offset += text.get_size()[1] + 6
+        
+    def handle_tap(self):
+        x,y = pygame.mouse.get_pos()
+        offset = 5 + self.rect[1]
+        print("X: " + str(x) + " Y: " + str(y))
+        for i in range(len(self.items)):
+            text = config.FONTS[14].render(" %s " % self.items[i], True, (105, 255, 187), (0, 0, 0))
+            menuRect = (self.menuXVal, offset - 2, text.get_size()[0] + 10, text.get_size()[1] + 3)
+            print (menuRect)
+            if x >= menuRect[0] and x < (menuRect[0] + menuRect[2]) and y >= menuRect[1] and y < (menuRect[1] + menuRect[3]) and i != self.selected:
+                self.select(i)
+                return True
+            offset += text.get_size()[1] + 6
+        return False
 
 
 class Scanlines(game.Entity):
