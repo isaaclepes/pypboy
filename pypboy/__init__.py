@@ -17,6 +17,7 @@ class GameState(Enum):
 class BaseModule(game.EntityGroup):
 
     submodules = []
+    currentSubmodule = 0
 
     def __init__(self, boy, *args, **kwargs):
         super(BaseModule, self).__init__()
@@ -85,15 +86,34 @@ class BaseModule(game.EntityGroup):
 
     def handle_pause(self):
         self.paused = True
+        self.currentSubmodule = 0
+        self.switch_submodule(0)
         #if config.GPIO_AVAILABLE:
             #GPIO.output(self.GPIO_LED_ID, False)
 
     def handle_resume(self):
         self.paused = False
+        self.currentSubmodule = 0
+        self.switch_submodule(0)
         #if config.GPIO_AVAILABLE:
             #GPIO.output(self.GPIO_LED_ID, True)
         if config.SOUND_ENABLED:
             self.module_change_sfx.play()
+
+    def handle_swipe(self, swipe):
+        print("Handle Swipe")
+        if swipe == 2:
+            self.currentSubmodule -= 1
+            if self.currentSubmodule < 0:
+                self.currentSubmodule = self.submodules.__len__() - 1
+            self.switch_submodule(self.currentSubmodule)
+        elif swipe == 1:
+            self.currentSubmodule += 1
+            if self.currentSubmodule >= self.submodules.__len__():
+                self.currentSubmodule = 0
+            self.switch_submodule(self.currentSubmodule)
+        else:
+            print("CLICKING!!!")
 
 
 class SubModule(game.EntityGroup):

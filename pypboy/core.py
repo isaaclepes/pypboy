@@ -13,6 +13,13 @@ if config.GPIO_AVAILABLE:
 
 class Pypboy(game.core.Engine):
 
+    # Mouse related variables
+    minSwipe = 50
+    maxClick = 15
+    longPressTime = 200
+
+    currentModule = 0
+
     def __init__(self, *args, **kwargs):
         if hasattr(config, 'OUTPUT_WIDTH') and hasattr(config, 'OUTPUT_HEIGHT'):
             self.rescale = True
@@ -78,6 +85,22 @@ class Pypboy(game.core.Engine):
         else:
             print("Module '%s' not implemented." % module)
 
+    def handle_swipe(self, swipe):
+        if swipe == -1:
+            return
+        if swipe == 4: #UP
+            self.currentModule += 1
+            if self.currentModule > 2:
+                self.currentModule = 0
+            self.switch_module(config.MODULES[self.currentModule])
+        elif swipe == 3: #DOWN
+            self.currentModule -= 1
+            if self.currentModule < 0:
+                self.currentModule = 2
+            self.switch_module(config.MODULES[self.currentModule])
+        else:
+            self.active.handle_swipe(swipe)
+
     def handle_action(self, action):
         if action.startswith('module_'):
             self.switch_module(action[7:])
@@ -98,9 +121,40 @@ class Pypboy(game.core.Engine):
             if config.SOUND_ENABLED:
                 if hasattr(config, 'radio'):
                     config.radio.handle_event(event)
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            mouseDownTime = pygame.time.get_ticks()
+            mouseDownPos = pygame.mouse.get_pos()
+            pygame.mouse.get_rel()
+        elif event.type == pygame.MOUSEBUTTONUP:
+            swipe = self.getSwipeType()
+            self.handle_swipe(swipe)
         else:
             if hasattr(self, 'active'):
                 self.active.handle_event(event)
+
+    # Function to detect swipes
+    # -1 is that it was not detected as a swipe or click
+    # It will return 1 , 2 for horizontal swipe
+    # If the swipe is vertical will return 3, 4
+    # If it was a click it will return 0
+    def getSwipeType(self):
+        x,y=pygame.mouse.get_rel()
+        if abs(x)<=self.minSwipe:
+            if abs(y)<=self.minSwipe:
+                if abs(x) < self.maxClick and abs(y)< self.maxClick:
+                    return 0
+                else:
+                    return -1
+            elif y>self.minSwipe:
+                return 3
+            elif y<-self.minSwipe:
+                return 4
+        elif abs(y)<=self.minSwipe:
+            if x>self.minSwipe:
+                return 1
+            elif x<-self.minSwipe:
+                return 2
+        return 0
 
     def run(self):
         self.running = True

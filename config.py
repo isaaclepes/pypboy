@@ -20,6 +20,12 @@ EVENTS = {
     'SONG_END': pygame.USEREVENT + 1
 }
 
+MODULES = {
+    0: "stats",
+    1: "items",
+    2: "data"
+}
+
 ACTIONS = {
     pygame.K_F1: "module_stats",
     pygame.K_F2: "module_items",
@@ -34,7 +40,7 @@ ACTIONS = {
     pygame.K_PLUS: "zoom_in",
     pygame.K_MINUS: "zoom_out",
     pygame.K_KP_PLUS: "zoom_in",
-    pygame.K_KP_MINUS: "zoom_out",
+    pygame.K_KP_MINUS: "zoom_out"
 }
 
 # Using GPIO.BCM as mode
