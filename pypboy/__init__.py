@@ -101,7 +101,7 @@ class BaseModule(game.EntityGroup):
             self.module_change_sfx.play()
 
     def handle_swipe(self, swipe):
-        print("Handle Swipe")
+        print("Handle Swipe " + str(swipe))
         if swipe == 2:
             self.currentSubmodule -= 1
             if self.currentSubmodule < 0:
