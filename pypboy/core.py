@@ -139,6 +139,7 @@ class Pypboy(game.core.Engine):
     # If it was a click it will return 0
     def getSwipeType(self):
         x,y=pygame.mouse.get_rel()
+        print("X: " + str(x) + " Y: " + str(y))
         if abs(x)<=self.minSwipe:
             if abs(y)<=self.minSwipe:
                 if abs(x) < self.maxClick and abs(y)< self.maxClick:
