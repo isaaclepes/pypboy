@@ -7,6 +7,7 @@ minSwipe = 50
 maxClick = 15
 longPressTime = 200
 touchScale = 1
+invertPosition = False
 
 # OUTPUT_WIDTH = 320
 # OUTPUT_HEIGHT = 240

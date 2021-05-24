@@ -26,6 +26,7 @@ if config.GPIO_AVAILABLE:
     os.putenv('SDL_MOUSEDRV'   , 'TSLIB')
     os.putenv('SDL_MOUSEDEV'   , '/dev/input/event2')
     config.touchScale = 100
+    config.invertPosition = True
 
 from pypboy.core import Pypboy
 

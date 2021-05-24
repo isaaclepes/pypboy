@@ -136,6 +136,10 @@ class Pypboy(game.core.Engine):
         x,y=pygame.mouse.get_rel()
         x = x / config.touchScale
         y = y / config.touchScale
+        if config.invertPosition:
+            temp = x
+            x = y
+            y = x
         print("X: " + str(x) + " Y: " + str(y))
         if abs(x)<=config.minSwipe:
             if abs(y)<=config.minSwipe:
