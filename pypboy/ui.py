@@ -127,6 +127,7 @@ class Menu(game.Entity):
             offset += text.get_size()[1] + 6
         
     def handle_tap(self):
+        print("Handle Tap")
         x,y = pygame.mouse.get_pos()
         offset = 5 + self.rect[1]
         print("X: " + str(x) + " Y: " + str(y))
