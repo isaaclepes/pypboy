@@ -143,6 +143,11 @@ class Pypboy(game.core.Engine):
             x = mouseRel[0] / config.touchScale
             y = mouseRel[1] / config.touchScale
 
+        if abs(x) > abs(y):
+            y = 0
+        else:
+            x = 0
+
         print("X: " + str(x) + " Y: " + str(y))
         if abs(x)<=config.minSwipe:
             if abs(y)<=config.minSwipe:
