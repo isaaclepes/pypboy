@@ -13,11 +13,6 @@ if config.GPIO_AVAILABLE:
 
 class Pypboy(game.core.Engine):
 
-    # Mouse related variables
-    minSwipe = 15
-    maxClick = 5
-    longPressTime = 200
-
     currentModule = 0
 
     def __init__(self, *args, **kwargs):
@@ -139,21 +134,23 @@ class Pypboy(game.core.Engine):
     # If it was a click it will return 0
     def getSwipeType(self):
         x,y=pygame.mouse.get_rel()
+        x = x / config.touchScale
+        y = y / config.touchScale
         print("X: " + str(x) + " Y: " + str(y))
-        if abs(x)<=self.minSwipe:
-            if abs(y)<=self.minSwipe:
-                if abs(x) < self.maxClick and abs(y)< self.maxClick:
+        if abs(x)<=config.minSwipe:
+            if abs(y)<=config.minSwipe:
+                if abs(x) < config.maxClick and abs(y)< config.maxClick:
                     return 0
                 else:
                     return -1
-            elif y>self.minSwipe:
+            elif y>config.minSwipe:
                 return 3
-            elif y<-self.minSwipe:
+            elif y<-config.minSwipe:
                 return 4
-        elif abs(y)<=self.minSwipe:
-            if x>self.minSwipe:
+        elif abs(y)<=config.minSwipe:
+            if x>config.minSwipe:
                 return 1
-            elif x<-self.minSwipe:
+            elif x<-config.minSwipe:
                 return 2
         return 0
 

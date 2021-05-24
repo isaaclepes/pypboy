@@ -25,6 +25,7 @@ if config.GPIO_AVAILABLE:
     os.putenv('SDL_FBDEV'      , '/dev/fb1')
     os.putenv('SDL_MOUSEDRV'   , 'TSLIB')
     os.putenv('SDL_MOUSEDEV'   , '/dev/input/event2')
+    config.touchScale = 1000
 
 from pypboy.core import Pypboy
 

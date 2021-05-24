@@ -3,6 +3,11 @@ import pygame
 WIDTH = 480
 HEIGHT = 320
 
+minSwipe = 50
+maxClick = 15
+longPressTime = 200
+touchScale = 1
+
 # OUTPUT_WIDTH = 320
 # OUTPUT_HEIGHT = 240
 
