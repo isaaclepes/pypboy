@@ -133,13 +133,16 @@ class Pypboy(game.core.Engine):
     # If the swipe is vertical will return 3, 4
     # If it was a click it will return 0
     def getSwipeType(self):
-        x,y=pygame.mouse.get_rel()
-        x = x / config.touchScale
-        y = y / config.touchScale
+        mouseRel=pygame.mouse.get_rel()
+        x = 0
+        y = 0
         if config.invertPosition:
-            temp = x
-            x = y
-            y = x
+            x = mouseRel[1] / config.touchScale
+            y = mouseRel[0] / config.touchScale
+        else:
+            x = mouseRel[0] / config.touchScale
+            y = mouseRel[1] / config.touchScale
+
         print("X: " + str(x) + " Y: " + str(y))
         if abs(x)<=config.minSwipe:
             if abs(y)<=config.minSwipe:
