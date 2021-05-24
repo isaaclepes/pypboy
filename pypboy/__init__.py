@@ -113,7 +113,7 @@ class BaseModule(game.EntityGroup):
                 self.currentSubmodule = 0
             self.switch_submodule(self.currentSubmodule)
         else:
-            print("CLICKING!!!")
+            self.active.handle_tap()
 
 
 class SubModule(game.EntityGroup):
@@ -147,3 +147,6 @@ class SubModule(game.EntityGroup):
         self.paused = False
         if config.SOUND_ENABLED:
             self.submodule_change_sfx.play()
+    
+    def handle_tap(self):
+        pass
