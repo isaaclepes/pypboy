@@ -14,8 +14,8 @@ if config.GPIO_AVAILABLE:
 class Pypboy(game.core.Engine):
 
     # Mouse related variables
-    minSwipe = 50
-    maxClick = 15
+    minSwipe = 15
+    maxClick = 5
     longPressTime = 200
 
     currentModule = 0
