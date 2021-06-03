@@ -2,6 +2,7 @@ import pygame
 import config
 import game
 import pypboy.ui
+from math import atan2, pi, degrees
 
 from pypboy.modules import data
 from pypboy.modules import items
@@ -117,15 +118,53 @@ class Pypboy(game.core.Engine):
                 if hasattr(config, 'radio'):
                     config.radio.handle_event(event)
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            mouseDownTime = pygame.time.get_ticks()
-            mouseDownPos = pygame.mouse.get_pos()
+            self.mouseDownTime = pygame.time.get_ticks()
+            self.mouseDownPos = pygame.mouse.get_pos()
             pygame.mouse.get_rel()
         elif event.type == pygame.MOUSEBUTTONUP:
-            swipe = self.getSwipeType()
+            self.mouseUpPos = pygame.mouse.get_pos()
+            swipe = self.getSwipeType2()
+            #swipe = self.getSwipeType()
             self.handle_swipe(swipe)
+            self.mouseDownTime = 0
         else:
             if hasattr(self, 'active'):
                 self.active.handle_event(event)
+
+    def inRange(self, angle, init, end):
+        return (angle >= init) and (angle < end)
+
+    def getSwipeType2(self):
+        timeDown = (pygame.time.get_ticks() - self.mouseDownTime)
+        x1 = self.mouseDownPos[0]
+        y1 = self.mouseDownPos[1]
+        x2 = self.mouseUpPos[0]
+        y2 = self.mouseUpPos[1]
+
+        dx = x2 - x1
+        dy = y2 - y1
+
+        if (timeDown) < 75 or (abs(dx) < 25 and abs(dy) < 25):
+            return 0
+        
+        rads = atan2(-dy,dx)
+        rads %= 2*pi
+        angle = degrees(rads)
+
+        #Up: [45, 135]
+        #Right: [0,45] and [315, 360]
+        #Down: [225, 315]
+        #Left: [135, 225]
+        if (self.inRange(angle, 45, 135)): #UP
+            return 3
+        elif (self.inRange(angle, 0, 45) or self.inRange(angle, 315, 360)): #RIGHT
+            return 1
+        elif (self.inRange(angle, 225, 315)): #DOWN
+            return 4
+        elif (self.inRange(angle, 135, 225)): #LEFT
+            return 2
+
+        return -1
 
     # Function to detect swipes
     # -1 is that it was not detected as a swipe or click
