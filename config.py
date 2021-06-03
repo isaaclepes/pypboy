@@ -138,9 +138,46 @@ AID = [
     "Stim Pack (2)"
 ]
 
-MISC = []
+MISC = [
+    "Pencil",
+    "Pre-War Money (250)",
+    "Super Glue",
+    "Toy Mini-Nuke"
+]
 
-AMMO = []
+AMMO = [
+    "10mm Rounds (15)",
+    "Fusion Cells (28)"
+]
+
+QUESTS = [
+    "Cosplacon",
+    "Cosplay Royale",
+    "Drink n Draw",
+    "Queens of Cosplay"
+]
+
+SKILLS = [
+    "Action Boy",
+    "Animal Friend",
+    "Awareness",
+    "Gunslinger"
+    "Hacker",
+    "Mysterious Stranger",
+    "Rifleman",
+    "Science"   
+]
+
+PERKS = [
+    "Action Boy",
+    "Animal Friend",
+    "Awareness",
+    "Gunslinger"
+    "Hacker",
+    "Mysterious Stranger",
+    "Rifleman",
+    "Science"   
+]
 
 pygame.font.init()
 FONTS = {}
