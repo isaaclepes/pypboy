@@ -12,7 +12,7 @@ class Module(pypboy.SubModule):
     def __init__(self, *args, **kwargs):
         super(Module, self).__init__(*args, **kwargs)
 
-        self.stat = Stat('images/special_strength.png', 'Strength')
+        self.stat = Stat('images/special_strength.png')
         self.stat.rect[0] = 4
         self.stat.rect[1] = 40
         self.add(self.stat)
@@ -29,50 +29,44 @@ class Module(pypboy.SubModule):
         self.menu.rect[1] = 60
         self.add(self.menu)
 
-    def changeStat(self, imageUrl, description):
+    def changeStat(self, imageUrl):
         self.stat.image = pygame.image.load(imageUrl)
         self.stat.rect = self.stat.image.get_rect()
         self.stat.rect[0] = 100
         self.stat.rect[1] = 0
         self.stat.image = self.stat.image.convert()
-        #text = config.FONTS[18].render(description, True, (105, 251, 20), (0, 0, 0))
-        #text_width = text.get_size()[0]
-        #self.stat.image.blit(text, (config.WIDTH / 2 - 8 - text_width / 2, 200))
 
     def show_str(self):
-        self.changeStat('images/special_strength.png', config.SPECIAL['strength'])
+        self.changeStat('images/special_strength.png')
         print("Strength")
 
     def show_per(self):
-        self.changeStat('images/special_perception.png', config.SPECIAL['perception'])
+        self.changeStat('images/special_perception.png')
         print("Perception")
 
     def show_end(self):
-        self.changeStat('images/special_endurance.png', config.SPECIAL['endurance'])
+        self.changeStat('images/special_endurance.png')
         print("Endurance")
 
     def show_cha(self):
-        self.changeStat('images/special_charisma.png', config.SPECIAL['charisma'])
+        self.changeStat('images/special_charisma.png')
         print("Charisma")
 
     def show_int(self):
-        self.changeStat('images/special_intelligence.png', config.SPECIAL['intelligence'])
+        self.changeStat('images/special_intelligence.png')
         print("Intelligence")
 
     def show_agi(self):
-        self.changeStat('images/special_agility.png', config.SPECIAL['agility'])
+        self.changeStat('images/special_agility.png')
         print("Agility")
 
     def show_luc(self):
-        self.changeStat('images/special_luck.png', config.SPECIAL['luck'])
+        self.changeStat('images/special_luck.png')
         print("Luck")
 
 class Stat(game.Entity):
-    def __init__(self, imageUrl, description):
+    def __init__(self, imageUrl):
         super(Stat, self).__init__()
         self.image = pygame.image.load(imageUrl)
         self.rect = self.image.get_rect()
         self.image = self.image.convert()
-        #text = config.FONTS[18].render(description, True, (105, 251, 20), (0, 0, 0))
-        #text_width = text.get_size()[0]
-        #self.image.blit(text, (config.WIDTH / 2 - 8 - text_width / 2, 150))
