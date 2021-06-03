@@ -118,6 +118,15 @@ INVENTORY_OLD = [
 "Pulse Grenade (2)"
 ]
 
+SPECIAL = {
+    'strength': 'Strength is a measure of your raw physical power. It affects how much you can carry, and the damage of all melee attacks.',
+    'perception': 'Perception affects your awareness of nearby enemies, your ability to detect stealthy movement, and your weapon accuracy in V.A.T.S.',
+    'endurance': 'Endurance is a measure of your overall physical fitness. It affects your total Health, Action Point drain from sprinting, and your resistance to disease.',
+    'charisma': 'Charisma is your ability to lead and help others.',
+    'intelligence': 'Intelligence is a measure of your overall mental acuity, and affects your ability to hack terminals, the condition and durability of items that you craft, and the return you get from scrapping.',
+    'agility': 'Agility is a measure of your overall finesse and reflexes. It affects the number of Action Points in V.A.T.S and your ability to sneak.',
+    'luck': 'Luck is a measure of your general good foturne, and affects the recharge rate of Critical Hits as well as the condition and durability of items that you loot.'
+}
 
 pygame.font.init()
 FONTS = {}
