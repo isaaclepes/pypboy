@@ -1,8 +1,9 @@
 import pygame
 
-WIDTH = 480
-HEIGHT = 320
+WIDTH = 720
+HEIGHT = 680
 
+touchEnabled = True
 minSwipe = 50
 maxClick = 15
 longPressTime = 200
@@ -16,7 +17,8 @@ invertPosition = False
 #MAP_FOCUS = (-102.3016145, 21.8841274) #Old Default?
 #MAP_FOCUS = (-118.5723894,34.3917171)#CodeNinjasValencia
 #MAP_FOCUS = (32.7157, 117.1611)
-MAP_FOCUS = (-92.1943197, 38.5653437)
+#MAP_FOCUS = (-92.1943197, 38.5653437)
+MAP_FOCUS = (-98.0878917, 30.1914818) # ZapWizard's Town
 
 WORLD_MAP_FOCUS = 0.07 #Needed to handle the 50k node limit from OSM
 
