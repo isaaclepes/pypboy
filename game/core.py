@@ -10,11 +10,10 @@ class Engine(object):
         super(Engine, self).__init__(*args, **kwargs)
         pygame.init()
         self.window = pygame.display.set_mode((width, height),pygame.FULLSCREEN)
-        #self.window = pygame.display.set_mode((width, height))
         self.screen = pygame.display.get_surface()
         pygame.display.set_caption(title)
         pygame.mouse.set_visible(False)
-
+        
         self.groups = []
         self.root_children = EntityGroup()
         self.background = pygame.surface.Surface(self.screen.get_size()).convert()
@@ -68,7 +67,7 @@ class Entity(pygame.sprite.DirtySprite):
         super(Entity, self).__init__(*args, **kwargs)
         self.image = pygame.surface.Surface(dimensions)
         self.rect = self.image.get_rect()
-        self.image = self.image.convert()
+        self.image = self.image.convert_alpha()
         self.groups = pygame.sprite.LayeredDirty()
         self.layer = layer
         self.dirty = 2

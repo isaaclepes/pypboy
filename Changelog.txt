@@ -1,0 +1,7 @@
+ZapWizard's Functional Pip-Boy ChangeLog
+-Lots of changes to make the interface match the Pip-Boy 3000 MK IV from Fallout 4(Not the 3000 from Fallout 3)
+-Removed background line effect (not needed when using a real display)
+-Make the scanline effect be more subtle
+-Converted text to freetype
+-Lots of changes to make guide match in-game look
+-Added a boot screen module

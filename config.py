@@ -1,14 +1,19 @@
 import pygame
+import pygame.freetype
 
 WIDTH = 720
-HEIGHT = 680
+HEIGHT = 720
 
-touchEnabled = True
+touchEnabled = False
 minSwipe = 50
 maxClick = 15
 longPressTime = 200
 touchScale = 1
 invertPosition = False
+
+#Header, Footer heights
+header_height = 50
+footer_height = 50
 
 # OUTPUT_WIDTH = 320
 # OUTPUT_HEIGHT = 240
@@ -18,7 +23,7 @@ invertPosition = False
 #MAP_FOCUS = (-118.5723894,34.3917171)#CodeNinjasValencia
 #MAP_FOCUS = (32.7157, 117.1611)
 #MAP_FOCUS = (-92.1943197, 38.5653437)
-MAP_FOCUS = (-98.0878917, 30.1914818) # ZapWizard's Town
+MAP_FOCUS = (-98.0878917, 30.1914818) # ZapWizard's Hometown
 
 WORLD_MAP_FOCUS = 0.07 #Needed to handle the 50k node limit from OSM
 
@@ -38,6 +43,7 @@ ACTIONS = {
     pygame.K_F1: "module_stats",
     pygame.K_F2: "module_items",
     pygame.K_F3: "module_data",
+    pygame.K_F4: "module_boot",
     pygame.K_1:	"knob_1",
     pygame.K_2: "knob_2",
     pygame.K_3: "knob_3",
@@ -182,6 +188,15 @@ PERKS = [
 ]
 
 pygame.font.init()
-FONTS = {}
-for x in range(10, 28):
-    FONTS[x] = pygame.font.Font('monofonto.ttf', x)
+RobotoB = {}
+for x in range(10, 34):
+    RobotoB[x] = pygame.font.Font('fonts/RobotoCondensed-Bold.ttf', x)    
+
+pygame.freetype.init()
+FreeRobotoB = {}
+FreeRobotoR = {}
+FreeTechMono = {}
+for x in range(10, 34):
+    FreeRobotoB[x] = pygame.freetype.Font('fonts/RobotoCondensed-Bold.ttf', x)    
+    FreeRobotoR[x] = pygame.freetype.Font('fonts/RobotoCondensed-Regular.ttf', x)    
+    FreeTechMono[x] = pygame.freetype.Font('fonts/TechMono.ttf', x)

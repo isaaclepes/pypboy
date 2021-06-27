@@ -7,6 +7,7 @@ from math import atan2, pi, degrees
 from pypboy.modules import data
 from pypboy.modules import items
 from pypboy.modules import stats
+from pypboy.modules import boot
 
 if config.GPIO_AVAILABLE:
     import RPi.GPIO as GPIO
@@ -17,8 +18,11 @@ class Pypboy(game.core.Engine):
     currentModule = 0
 
     def __init__(self, *args, **kwargs):
+        # Support rescaling
         if hasattr(config, 'OUTPUT_WIDTH') and hasattr(config, 'OUTPUT_HEIGHT'):
-            self.rescale = True
+            self.rescale = False
+            
+        #Initialize modules
         super(Pypboy, self).__init__(*args, **kwargs)
         self.init_children()
         self.init_modules()
@@ -28,13 +32,10 @@ class Pypboy(game.core.Engine):
             # self.init_gpio_controls()
 
     def init_children(self):
-        self.background = pygame.image.load('images/overlay.png')
-        # border = pypboy.ui.Border()
-        # self.root_children.add(border)
-        scanlines = pypboy.ui.Scanlines(800, 480, 3, 1, [(0, 13, 3, 50), (6, 42, 22, 100), (0, 13, 3, 50)])
+        self.background = pygame.image.load('images/background.png').convert()
+        gradient = [(0, 4, 0, 0), (0, 6, 0, 0), (0, 12, 0, 0), (0, 18, 0, 0), (0, 24, 0, 0), (0, 18, 0, 0), (0, 12, 0, 0), (0, 6, 0, 0), (0, 4, 0, 0)]
+        scanlines = pypboy.ui.Scanlines(720, 720, 4, 16, gradient + [(0, 0, 0, 0) for x in range(600)], True)
         self.root_children.add(scanlines)
-        scanlines2 = pypboy.ui.Scanlines(800, 480, 8, 40, [(0, 10, 1, 0), (21, 62, 42, 90), (61, 122, 82, 100), (21, 62, 42, 90)] + [(0, 10, 1, 0) for x in range(50)], True)
-        self.root_children.add(scanlines2)
         self.header = pypboy.ui.Header()
         self.root_children.add(self.header)
 
@@ -42,11 +43,12 @@ class Pypboy(game.core.Engine):
         self.modules = {
             "data": data.Module(self),
             "items": items.Module(self),
-            "stats": stats.Module(self)
+            "stats": stats.Module(self),
+            "boot": boot.Module(self)
         }
         for module in self.modules.values():
-            module.move(4, 40)
-        self.switch_module("stats")
+            module.move(0, config.header_height)
+        self.switch_module("boot")
 
     def init_gpio_controls(self):
         for pin in config.GPIO_ACTIONS.keys():

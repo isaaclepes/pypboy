@@ -13,8 +13,8 @@ class Module(pypboy.SubModule):
         super(Module, self).__init__(*args, **kwargs)
 
         self.stat = Stat('images/special_strength.png')
-        self.stat.rect[0] = 4
-        self.stat.rect[1] = 40
+        self.stat.rect[0] = 0
+        self.stat.rect[1] = config.header_height + 1
         self.add(self.stat)
 
         self.menu = pypboy.ui.Menu(240, [
@@ -25,12 +25,12 @@ class Module(pypboy.SubModule):
             "Intelligence           9", 
             "Agility                4", 
             "Luck                   6"], [self.show_str, self.show_per, self.show_end, self.show_cha, self.show_int, self.show_agi, self.show_luc], 0)
-        self.menu.rect[0] = 4
-        self.menu.rect[1] = 60
+        self.menu.rect[0] = 0
+        self.menu.rect[1] = 0
         self.add(self.menu)
 
     def changeStat(self, imageUrl):
-        self.stat.image = pygame.image.load(imageUrl)
+        self.stat.image = pygame.image.load(imageUrl).convert()
         self.stat.rect = self.stat.image.get_rect()
         self.stat.rect[0] = 100
         self.stat.rect[1] = 0
@@ -67,6 +67,6 @@ class Module(pypboy.SubModule):
 class Stat(game.Entity):
     def __init__(self, imageUrl):
         super(Stat, self).__init__()
-        self.image = pygame.image.load(imageUrl)
+        self.image = pygame.image.load(imageUrl).convert()
         self.rect = self.image.get_rect()
         self.image = self.image.convert()

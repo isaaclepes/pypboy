@@ -24,7 +24,7 @@ class Map(game.Entity):
         self._map_surface = pygame.Surface((width, width))
         self._render_rect = render_rect
         super(Map, self).__init__((width, width), *args, **kwargs)
-        text = config.FONTS[14].render(loading_type, True, (95, 255, 177), (0, 0, 0))
+        text = config.RobotoB[14].render(loading_type, True, (95, 255, 177), (0, 0, 0))
         self.image.blit(text, (10, 10))
 
     def fetch_map(self, position, radius, isWorld):
@@ -64,7 +64,7 @@ class Map(game.Entity):
                 image = config.AMENITIES[tag[3]]
                 pygame.transform.scale(image, (10, 10))
                 self._map_surface.blit(image, (tag[1], tag[2]))
-                text = config.FONTS[12].render(tag[0], True, (95, 255, 177), (0, 0, 0))
+                text = config.RobotoB[12].render(tag[0], True, (95, 255, 177), (0, 0, 0))
                 self._map_surface.blit(text, (tag[1] + 17, tag[2] + 4))
             else:
                 image = config.MAP_ICONS['misc']
@@ -170,7 +170,7 @@ class MapGrid(game.Entity):
                 pygame.transform.scale(image, (10, 10))
                 self.image.blit(image, (self.tags[name][0], self.tags[name][1]))
             # try:
-                text = config.FONTS[12].render(name, True, (95, 255, 177), (0, 0, 0))
+                text = config.RobotoB[12].render(name, True, (95, 255, 177), (0, 0, 0))
             # text_width = text.get_size()[0]
             # 	pygame.draw.rect(
             # 		self,
@@ -215,10 +215,8 @@ class RadioStation(game.Entity):
         if config.SOUND_ENABLED:
             if hasattr(self, 'last_filename') and self.last_filename:
                 pygame.mixer.music.load(self.last_filename)
-
                 now = time.time()
                 curpos = self.last_playpos + (now - self.last_playtime)
-                # TODO
             f = choice(self.files)
             self.filename = f
             pygame.mixer.music.load(f)
@@ -266,6 +264,13 @@ class RadioStation(game.Entity):
             return 0
         else:
             return self.label >= other.label
+
+
+class RadioOff(RadioStation):
+    def __init__(self, *args, **kwargs):
+        self.label = 'Radio Off'
+        self.directory = 'sounds/radio/RadioOff/'
+        super(RadioOff, self).__init__(self, *args, **kwargs)
 
 class ClassicalRadio(RadioStation):
     def __init__(self, *args, **kwargs):

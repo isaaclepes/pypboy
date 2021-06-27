@@ -8,6 +8,7 @@ if config.GPIO_AVAILABLE:
     import RPi.GPIO as GPIO
 
 class GameState(Enum):
+    BOOT = -4
     RADIO = -3
     MAP = -2
     DATA = -1
@@ -27,22 +28,23 @@ class BaseModule(game.EntityGroup):
             #GPIO.output(self.GPIO_LED_ID, False)
 
         self.pypboy = boy
-        self.position = (0, 40)
+        self.position = (0, config.header_height)
 
         self.footer = pypboy.ui.Footer()
         self.footer.menu = []
         for mod in self.submodules:
             self.footer.menu.append(mod.label)
         self.footer.selected = self.footer.menu[0]
-        self.footer.position = (0, config.HEIGHT - 53) #80
+        self.footer.position = (0, config.HEIGHT - config.footer_height) #80
         self.add(self.footer)
-
-        self.switch_submodule(0)
 
         self.action_handlers = {
             "pause": self.handle_pause,
             "resume": self.handle_resume
         }
+        
+        self.switch_submodule(0)
+        
         if config.SOUND_ENABLED:
             self.module_change_sfx = pygame.mixer.Sound('sounds/module_change.ogg')
 

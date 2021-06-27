@@ -10,6 +10,7 @@ class Module(pypboy.SubModule):
     def __init__(self, *args, **kwargs):
         super(Module, self).__init__(*args, **kwargs)
         self.stations = [
+            entities.RadioOff(),
             entities.ClassicalRadio(),
             entities.DiamondCityRadio()
             #entities.EnclaveRadio(),
@@ -31,8 +32,8 @@ class Module(pypboy.SubModule):
             stationCallbacks.append(lambda i=i: self.select_station(i))
 
         self.menu = pypboy.ui.Menu(200, stationLabels, stationCallbacks, 0)
-        self.menu.rect[0] = 4
-        self.menu.rect[1] = 60
+        self.menu.rect[0] = 0
+        self.menu.rect[1] = 0
         self.add(self.menu)
 
         self.menu.select(1)
@@ -41,8 +42,7 @@ class Module(pypboy.SubModule):
         if hasattr(self, 'active_station') and self.active_station:
             self.active_station.stop()
         self.active_station = self.stations[station]
-        self.active_station.play_random()
-
+        self.active_station.play_random() #Play a random station at startup
 
     def handle_event(self, event):
         if event.type == config.EVENTS['SONG_END']:
