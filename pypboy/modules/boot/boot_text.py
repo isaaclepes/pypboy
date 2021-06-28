@@ -19,7 +19,7 @@ def word_wrap(surf, text, font):
         #    raise ValueError("word too wide for the surface")
         #if y + bounds.height - bounds.y >= height:
         #    raise ValueError("text to long for the surface")
-        font.render_to(surf, (x, y), None, (0, 255, 0),None,1)
+        font.render_to(surf, (x, y), None, config.bright,None,1)
         x += bounds.width + space.width
     return x, y
 
@@ -34,6 +34,7 @@ class Module(pypboy.SubModule):
         boot.rect[0] = 0
         boot.rect[1] = config.header_height + 1
         self.add(boot)
+        
 
 class Boot(game.Entity):
 

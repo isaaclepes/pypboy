@@ -1,8 +1,17 @@
 import pygame
 import pygame.freetype
 
+name = "ZapWizard"
+
 WIDTH = 720
 HEIGHT = 720
+
+#Colors
+bright = (0,255,0)
+light = (0,172,0)
+mid = (0,128,0)
+dim = (0,64,0)
+dark = (0,32,0)
 
 touchEnabled = False
 minSwipe = 50

@@ -48,7 +48,7 @@ class Pypboy(game.core.Engine):
         }
         for module in self.modules.values():
             module.move(0, config.header_height)
-        self.switch_module("boot")
+        self.switch_module("stats")
 
     def init_gpio_controls(self):
         for pin in config.GPIO_ACTIONS.keys():
