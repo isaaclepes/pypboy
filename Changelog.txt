@@ -5,3 +5,4 @@ ZapWizard's Functional Pip-Boy ChangeLog
 -Converted text to freetype
 -Lots of changes to make guide match in-game look
 -Added a boot screen module
+-Disabled mouse and touch input (I won't be implimenting a touch-screen and the interaction caused issues with debugging)

@@ -24,20 +24,20 @@ class Pypboy(game.core.Engine):
             
         #Initialize modules
         super(Pypboy, self).__init__(*args, **kwargs)
-        self.init_children()
+        self.init_persistent()
         self.init_modules()
         
         self.gpio_actions = {}
         # if config.GPIO_AVAILABLE:
             # self.init_gpio_controls()
 
-    def init_children(self):
+    def init_persistent(self):
         self.background = pygame.image.load('images/background.png').convert()
         gradient = [(0, 4, 0, 0), (0, 6, 0, 0), (0, 12, 0, 0), (0, 18, 0, 0), (0, 24, 0, 0), (0, 18, 0, 0), (0, 12, 0, 0), (0, 6, 0, 0), (0, 4, 0, 0)]
         scanlines = pypboy.ui.Scanlines(720, 720, 4, 16, gradient + [(0, 0, 0, 0) for x in range(600)], True)
-        self.root_children.add(scanlines)
-        self.header = pypboy.ui.Header()
-        self.root_children.add(self.header)
+        self.root_persistent.add(scanlines)
+        #self.header = pypboy.ui.Header()
+        #self.root_persistent.add(self.header)
 
     def init_modules(self):
         self.modules = {
@@ -46,8 +46,6 @@ class Pypboy(game.core.Engine):
             "stats": stats.Module(self),
             "boot": boot.Module(self)
         }
-        for module in self.modules.values():
-            module.move(0, config.header_height)
         self.switch_module("stats")
 
     def init_gpio_controls(self):
@@ -84,20 +82,21 @@ class Pypboy(game.core.Engine):
             print("Module '%s' not implemented." % module)
 
     def handle_swipe(self, swipe):
-        if swipe == -1:
-            return
-        if swipe == 4: #UP
-            self.currentModule += 1
-            if self.currentModule > 2:
-                self.currentModule = 0
-            self.switch_module(config.MODULES[self.currentModule])
-        elif swipe == 3: #DOWN
-            self.currentModule -= 1
-            if self.currentModule < 0:
-                self.currentModule = 2
-            self.switch_module(config.MODULES[self.currentModule])
-        else:
-            self.active.handle_swipe(swipe)
+        pass #I won't be implimenting a touch-screen -Zap
+        # if swipe == -1:
+            # return
+        # if swipe == 4: #UP
+            # self.currentModule += 1
+            # if self.currentModule > 2:
+                # self.currentModule = 0
+            # self.switch_module(config.MODULES[self.currentModule])
+        # elif swipe == 3: #DOWN
+            # self.currentModule -= 1
+            # if self.currentModule < 0:
+                # self.currentModule = 2
+            # self.switch_module(config.MODULES[self.currentModule])
+        # else:
+            # self.active.handle_swipe(swipe)
 
     def handle_action(self, action):
         if action.startswith('module_'):
@@ -119,16 +118,16 @@ class Pypboy(game.core.Engine):
             if config.SOUND_ENABLED:
                 if hasattr(config, 'radio'):
                     config.radio.handle_event(event)
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            self.mouseDownTime = pygame.time.get_ticks()
-            self.mouseDownPos = pygame.mouse.get_pos()
-            pygame.mouse.get_rel()
-        elif event.type == pygame.MOUSEBUTTONUP:
-            self.mouseUpPos = pygame.mouse.get_pos()
-            swipe = self.getSwipeType2()
-            #swipe = self.getSwipeType()
-            self.handle_swipe(swipe)
-            self.mouseDownTime = 0
+        # elif event.type == pygame.MOUSEBUTTONDOWN:
+            # self.mouseDownTime = pygame.time.get_ticks()
+            # self.mouseDownPos = pygame.mouse.get_pos()
+            # pygame.mouse.get_rel()
+        # elif event.type == pygame.MOUSEBUTTONUP:
+            # self.mouseUpPos = pygame.mouse.get_pos()
+            # #swipe = self.getSwipeType2()
+            # #swipe = self.getSwipeType()
+            # self.handle_swipe(swipe)
+            # self.mouseDownTime = 0
         else:
             if hasattr(self, 'active'):
                 self.active.handle_event(event)
@@ -137,36 +136,37 @@ class Pypboy(game.core.Engine):
         return (angle >= init) and (angle < end)
 
     def getSwipeType2(self):
-        timeDown = (pygame.time.get_ticks() - self.mouseDownTime)
-        x1 = self.mouseDownPos[0]
-        y1 = self.mouseDownPos[1]
-        x2 = self.mouseUpPos[0]
-        y2 = self.mouseUpPos[1]
+        pass
+        # timeDown = (pygame.time.get_ticks() - self.mouseDownTime)
+        # x1 = self.mouseDownPos[0]
+        # y1 = self.mouseDownPos[1]
+        # x2 = self.mouseUpPos[0]
+        # y2 = self.mouseUpPos[1]
 
-        dx = x2 - x1
-        dy = y2 - y1
+        # dx = x2 - x1
+        # dy = y2 - y1
 
-        if (timeDown) < 75 or (abs(dx) < 25 and abs(dy) < 25):
-            return 0
+        # if (timeDown) < 75 or (abs(dx) < 25 and abs(dy) < 25):
+            # return 0
         
-        rads = atan2(-dy,dx)
-        rads %= 2*pi
-        angle = degrees(rads)
+        # rads = atan2(-dy,dx)
+        # rads %= 2*pi
+        # angle = degrees(rads)
 
-        #Up: [45, 135]
-        #Right: [0,45] and [315, 360]
-        #Down: [225, 315]
-        #Left: [135, 225]
-        if (self.inRange(angle, 45, 135)): #UP
-            return 3
-        elif (self.inRange(angle, 0, 45) or self.inRange(angle, 315, 360)): #RIGHT
-            return 1
-        elif (self.inRange(angle, 225, 315)): #DOWN
-            return 4
-        elif (self.inRange(angle, 135, 225)): #LEFT
-            return 2
+        # #Up: [45, 135]
+        # #Right: [0,45] and [315, 360]
+        # #Down: [225, 315]
+        # #Left: [135, 225]
+        # if (self.inRange(angle, 45, 135)): #UP
+            # return 3
+        # elif (self.inRange(angle, 0, 45) or self.inRange(angle, 315, 360)): #RIGHT
+            # return 1
+        # elif (self.inRange(angle, 225, 315)): #DOWN
+            # return 4
+        # elif (self.inRange(angle, 135, 225)): #LEFT
+            # return 2
 
-        return -1
+        # return -1
 
     # Function to detect swipes
     # -1 is that it was not detected as a swipe or click
@@ -174,37 +174,38 @@ class Pypboy(game.core.Engine):
     # If the swipe is vertical will return 3, 4
     # If it was a click it will return 0
     def getSwipeType(self):
-        mouseRel=pygame.mouse.get_rel()
-        x = 0
-        y = 0
-        if config.invertPosition:
-            x = mouseRel[1] / config.touchScale
-            y = mouseRel[0] / config.touchScale
-        else:
-            x = mouseRel[0] / config.touchScale
-            y = mouseRel[1] / config.touchScale
+        pass
+        # mouseRel=pygame.mouse.get_rel()
+        # x = 0
+        # y = 0
+        # if config.invertPosition:
+            # x = mouseRel[1] / config.touchScale
+            # y = mouseRel[0] / config.touchScale
+        # else:
+            # x = mouseRel[0] / config.touchScale
+            # y = mouseRel[1] / config.touchScale
 
-        if abs(x) > abs(y):
-            y = 0
-        else:
-            x = 0
+        # if abs(x) > abs(y):
+            # y = 0
+        # else:
+            # x = 0
 
-        if abs(x)<=config.minSwipe:
-            if abs(y)<=config.minSwipe:
-                if abs(x) < config.maxClick and abs(y)< config.maxClick:
-                    return 0
-                else:
-                    return -1
-            elif y>config.minSwipe:
-                return 3
-            elif y<-config.minSwipe:
-                return 4
-        elif abs(y)<=config.minSwipe:
-            if x>config.minSwipe:
-                return 1
-            elif x<-config.minSwipe:
-                return 2
-        return 0
+        # if abs(x)<=config.minSwipe:
+            # if abs(y)<=config.minSwipe:
+                # if abs(x) < config.maxClick and abs(y)< config.maxClick:
+                    # return 0
+                # else:
+                    # return -1
+            # elif y>config.minSwipe:
+                # return 3
+            # elif y<-config.minSwipe:
+                # return 4
+        # elif abs(y)<=config.minSwipe:
+            # if x>config.minSwipe:
+                # return 1
+            # elif x<-config.minSwipe:
+                # return 2
+        # return 0
 
     def run(self):
         self.running = True

@@ -17,6 +17,8 @@ class GameState(Enum):
 
 class BaseModule(game.EntityGroup):
 
+    modules = []
+    currentModule = 0
     submodules = []
     currentSubmodule = 0
 
@@ -30,13 +32,23 @@ class BaseModule(game.EntityGroup):
         self.pypboy = boy
         self.position = (0, config.header_height)
 
-        self.footer = pypboy.ui.Footer()
-        self.footer.menu = []
+
+        self.topmenu = pypboy.ui.TopMenu()
+        self.topmenu.menu = []
+        for mod in self.modules:
+           self.topmenu.menu.append(mod.label)
+        self.topmenu.selected = self.topmenu.menu[0]
+        self.topmenu.position = (config.top_menu_x, config.top_menu_y)
+        self.add(self.topmenu)
+
+
+        self.submenu = pypboy.ui.SubMenu()
+        self.submenu.menu = []
         for mod in self.submodules:
-            self.footer.menu.append(mod.label)
-        self.footer.selected = self.footer.menu[0]
-        self.footer.position = (0, config.HEIGHT - config.footer_height) #80
-        self.add(self.footer)
+           self.submenu.menu.append(mod.label)
+        self.submenu.selected = self.submenu.menu[0]
+        self.submenu.position = (config.sub_menu_x, config.sub_menu_y)
+        self.add(self.submenu)
 
         self.action_handlers = {
             "pause": self.handle_pause,
@@ -62,7 +74,7 @@ class BaseModule(game.EntityGroup):
             self.active = self.submodules[module]
             self.active.parent = self
             self.active.handle_action("resume")
-            self.footer.select(self.footer.menu[module])
+            self.submenu.select(self.submenu.menu[module])
             self.add(self.active)
         else:
             print("No submodule at %d" % module)
@@ -103,19 +115,20 @@ class BaseModule(game.EntityGroup):
             self.module_change_sfx.play()
 
     def handle_swipe(self, swipe):
-        print("Handle Swipe " + str(swipe))
-        if swipe == 2:
-            self.currentSubmodule -= 1
-            if self.currentSubmodule < 0:
-                self.currentSubmodule = self.submodules.__len__() - 1
-            self.switch_submodule(self.currentSubmodule)
-        elif swipe == 1:
-            self.currentSubmodule += 1
-            if self.currentSubmodule >= self.submodules.__len__():
-                self.currentSubmodule = 0
-            self.switch_submodule(self.currentSubmodule)
-        else:
-            self.active.handle_tap()
+        pass
+        # print("Handle Swipe " + str(swipe))
+        # if swipe == 2:
+            # self.currentSubmodule -= 1
+            # if self.currentSubmodule < 0:
+                # self.currentSubmodule = self.submodules.__len__() - 1
+            # self.switch_submodule(self.currentSubmodule)
+        # elif swipe == 1:
+            # self.currentSubmodule += 1
+            # if self.currentSubmodule >= self.submodules.__len__():
+                # self.currentSubmodule = 0
+            # self.switch_submodule(self.currentSubmodule)
+        # else:
+            # self.active.handle_tap()
 
 
 class SubModule(game.EntityGroup):

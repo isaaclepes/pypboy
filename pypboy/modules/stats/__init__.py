@@ -3,7 +3,6 @@ from pypboy.modules.stats import status
 from pypboy.modules.stats import special
 from pypboy.modules.stats import skills
 from pypboy.modules.stats import perks
-from pypboy.modules.stats import general
 
 
 class Module(BaseModule):
@@ -15,13 +14,11 @@ class Module(BaseModule):
         self.submodules = [
             status.Module(self),
             special.Module(self),
-            skills.Module(self),
-            perks.Module(self),
-            general.Module(self)
+            perks.Module(self)
         ]
         super(Module, self).__init__(*args, **kwargs)
         
     def handle_resume(self):
-        self.pypboy.header.headline = self.label
-        self.pypboy.header.title = ["AP  75/99","HP  159/314", "LVL 31"]
+        #self.pypboy.header.headline = self.label
+        #self.pypboy.header.title = ["STAT"]
         self.active.handle_action("resume")

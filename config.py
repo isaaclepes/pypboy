@@ -6,6 +6,7 @@ name = "ZapWizard"
 WIDTH = 720
 HEIGHT = 720
 
+
 #Colors
 bright = (0,255,0)
 light = (0,172,0)
@@ -23,6 +24,18 @@ invertPosition = False
 #Header, Footer heights
 header_height = 50
 footer_height = 50
+
+#Top Menu Position
+top_menu_x = 50
+top_menu_y = 0
+
+#Sub Menu Position
+sub_menu_x = 73
+sub_menu_y = 93
+
+#Menu Position
+menu_x = 33
+menu_y = 189
 
 # OUTPUT_WIDTH = 320
 # OUTPUT_HEIGHT = 240
@@ -198,8 +211,10 @@ PERKS = [
 
 pygame.font.init()
 RobotoB = {}
+RobotoR = {}
 for x in range(10, 34):
     RobotoB[x] = pygame.font.Font('fonts/RobotoCondensed-Bold.ttf', x)    
+    RobotoR[x] = pygame.font.Font('fonts/RobotoCondensed-Regular.ttf', x)    
 
 pygame.freetype.init()
 FreeRobotoB = {}

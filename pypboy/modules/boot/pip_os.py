@@ -6,7 +6,7 @@ import config
 
 class Module(pypboy.SubModule):
 
-    label = "Pip_OS"
+    label = "PIP_OS"
 
     def __init__(self, *args, **kwargs):
         super(Module, self).__init__(*args, **kwargs)

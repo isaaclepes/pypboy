@@ -6,7 +6,7 @@ from pypboy.modules.data import entities
 
 
 class Module(pypboy.SubModule):
-    label = "World Map"
+    label = "WORLD MAP"
     title = "Jefferson City"
 
     def __init__(self, *args, **kwargs):
@@ -22,6 +22,6 @@ class Module(pypboy.SubModule):
         mapgrid.rect[1] = 40
 
     def handle_resume(self):
-        self.parent.pypboy.header.headline = "DATA"
-        self.parent.pypboy.header.title = [self.title]
+        #self.parent.pypboy.header.headline = "DATA"
+        #self.parent.pypboy.header.title = [self.title]
         super(Module, self).handle_resume()

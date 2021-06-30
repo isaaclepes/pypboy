@@ -7,7 +7,7 @@ import pypboy.ui
 
 class Module(pypboy.SubModule):
 
-    label = "Status"
+    label = "STATUS"
 
     def __init__(self, *args, **kwargs):
         super(Module, self).__init__(*args, **kwargs)
@@ -15,10 +15,10 @@ class Module(pypboy.SubModule):
         health.rect[0] = 0
         health.rect[1] = config.header_height + 1
         self.add(health)
-        self.menu = pypboy.ui.Menu(100, ["CND", "RAD", "EFF"], [self.show_cnd, self.show_rad, self.show_eff], 0)
-        self.menu.rect[0] = 0
-        self.menu.rect[1] = 0
-        self.add(self.menu)
+        #self.menu = pypboy.ui.Menu(100, ["CND", "RAD", "EFF"], [self.show_cnd, self.show_rad, self.show_eff], 0)
+        #self.menu.rect[0] = config.menu_x
+        #self.menu.rect[1] = config.menu_y
+        #self.add(self.menu)
 
 
     def show_cnd(self):
@@ -47,9 +47,9 @@ class Health(game.Entity):
         config.FreeRobotoB[33].render_to(self.image, (527, 0), "RADIO", config.bright)
         
         # Sub Text
-        config.FreeRobotoR[30].render_to(self.image, (93, 51), "STATUS", config.bright)
-        config.FreeRobotoR[30].render_to(self.image, (203, 51), "SPECIAL", config.mid)
-        config.FreeRobotoR[30].render_to(self.image, (319, 51), "PERKS", config.mid)
+        #config.FreeRobotoR[30].render_to(self.image, (93, 51), "STATUS", config.bright)
+        #config.FreeRobotoR[30].render_to(self.image, (203, 51), "SPECIAL", config.mid)
+        #config.FreeRobotoR[30].render_to(self.image, (319, 51), "PERKS", config.mid)
         
         # Lines around text
         pygame.draw.line(self.image, config.bright, (1, 32), (1, 39), 3)

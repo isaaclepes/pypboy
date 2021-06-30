@@ -7,7 +7,7 @@ import config
 
 class Module(pypboy.SubModule):
 
-    label = "S.P.E.C.I.A.L."
+    label = "SPECIAL"
 
     def __init__(self, *args, **kwargs):
         super(Module, self).__init__(*args, **kwargs)
@@ -25,8 +25,8 @@ class Module(pypboy.SubModule):
             "Intelligence           9", 
             "Agility                4", 
             "Luck                   6"], [self.show_str, self.show_per, self.show_end, self.show_cha, self.show_int, self.show_agi, self.show_luc], 0)
-        self.menu.rect[0] = 0
-        self.menu.rect[1] = 0
+        self.menu.rect[0] = config.menu_x
+        self.menu.rect[1] = config.menu_y
         self.add(self.menu)
 
     def changeStat(self, imageUrl):

@@ -26,7 +26,7 @@ def word_wrap(surf, text, font):
 
 class Module(pypboy.SubModule):
 
-    label = "Boot_text"
+    label = "BOOT_TEXT"
 
     def __init__(self, *args, **kwargs):
         super(Module, self).__init__(*args, **kwargs)
@@ -160,8 +160,8 @@ class Boot(game.Entity):
      
     def handle_resume(self):
         print("Resumed boot_text")
-        self.parent.pypboy.header.headline = "Boot_text"
-        self.parent.pypboy.header.title = [self.title]
+        #self.parent.pypboy.header.headline = "Boot_text"
+        #self.parent.pypboy.header.title = [self.title]
         self.top = 0
         self.rect[1] = self.top
         super(Module, self).handle_resume()

@@ -12,10 +12,10 @@ class Engine(object):
         self.window = pygame.display.set_mode((width, height),pygame.FULLSCREEN)
         self.screen = pygame.display.get_surface()
         pygame.display.set_caption(title)
-        pygame.mouse.set_visible(False)
+        pygame.mouse.set_visible(True)
         
         self.groups = []
-        self.root_children = EntityGroup()
+        self.root_persistent = EntityGroup()
         self.background = pygame.surface.Surface(self.screen.get_size()).convert()
         self.background.fill((0, 0, 0))
 
@@ -29,9 +29,9 @@ class Engine(object):
         else:
             interval = time.time() - self.last_render_time
             self.last_render_time = time.time()
-        self.root_children.clear(self.screen, self.background)
-        self.root_children.render(interval)
-        self.root_children.draw(self.screen)
+        self.root_persistent.clear(self.screen, self.background)
+        self.root_persistent.render(interval)
+        self.root_persistent.draw(self.screen)
         for group in self.groups:
             group.render(interval)
             group.draw(self.screen)
@@ -39,7 +39,7 @@ class Engine(object):
         return interval
 
     def update(self):
-        self.root_children.update()
+        self.root_persistent.update()
         for group in self.groups:
             group.update()
 

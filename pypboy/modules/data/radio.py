@@ -5,7 +5,7 @@ from pypboy.modules.data import entities
 
 class Module(pypboy.SubModule):
 
-    label = "Radio"
+    label = "RADIO"
 
     def __init__(self, *args, **kwargs):
         super(Module, self).__init__(*args, **kwargs)
@@ -32,8 +32,8 @@ class Module(pypboy.SubModule):
             stationCallbacks.append(lambda i=i: self.select_station(i))
 
         self.menu = pypboy.ui.Menu(200, stationLabels, stationCallbacks, 0)
-        self.menu.rect[0] = 0
-        self.menu.rect[1] = 0
+        self.menu.rect[0] = config.menu_x
+        self.menu.rect[1] = config.menu_y
         self.add(self.menu)
 
         self.menu.select(1)
@@ -50,8 +50,8 @@ class Module(pypboy.SubModule):
                 self.active_station.play_random()
 
     def handle_resume(self):
-        self.parent.pypboy.header.headline = "DATA"
-        self.parent.pypboy.header.title = ["Radio"]
+        #self.parent.pypboy.header.headline = "DATA"
+        #self.parent.pypboy.header.title = ["Radio"]
         super(Module, self).handle_resume()
 
     def handle_tap(self):
