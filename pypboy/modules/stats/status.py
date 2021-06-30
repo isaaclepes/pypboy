@@ -36,8 +36,7 @@ class Health(game.Entity):
     def __init__(self):
         super(Health, self).__init__()
         self.image = pygame.Surface((config.WIDTH, config.HEIGHT - config.header_height - config.footer_height))
-        #self.image = pygame.image.load('images/stats/ref_stats.png').convert() #load for alignment reference
-
+        self.image.fill((0, 0, 0))
         
         # Top Text
         config.FreeRobotoB[33].render_to(self.image, (104, 0), "STAT", config.bright)

@@ -24,19 +24,19 @@ class Pypboy(game.core.Engine):
             
         #Initialize modules
         super(Pypboy, self).__init__(*args, **kwargs)
-        self.init_persistent()
+        self.init_children()
         self.init_modules()
         
         self.gpio_actions = {}
         # if config.GPIO_AVAILABLE:
             # self.init_gpio_controls()
 
-    def init_persistent(self):
-        self.background = pygame.image.load('images/background.png').convert()
+    def init_children(self):
+        self.background = pygame.image.load('images/background.png')
         gradient = [(0, 4, 0, 0), (0, 6, 0, 0), (0, 12, 0, 0), (0, 18, 0, 0), (0, 24, 0, 0), (0, 18, 0, 0), (0, 12, 0, 0), (0, 6, 0, 0), (0, 4, 0, 0)]
         scanlines = pypboy.ui.Scanlines()
         #scanlines = pypboy.ui.Scanlines(720, 720, 6, 16, gradient + [(0, 0, 0, 0) for x in range(720)])
-        self.root_persistent.add(scanlines)
+        self.root_children.add(scanlines)
        
 
     def init_modules(self):

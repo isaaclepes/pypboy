@@ -41,7 +41,6 @@ class BaseModule(game.EntityGroup):
         # self.topmenu.position = (config.top_menu_x, config.top_menu_y)
         # self.add(self.topmenu)
 
-
         self.submenu = pypboy.ui.SubMenu()
         self.submenu.menu = []
         for mod in self.submodules:
@@ -66,7 +65,8 @@ class BaseModule(game.EntityGroup):
             self.active.move(x, y)
 
     def switch_submodule(self, module):
-        print("Changing submodules")
+        pygame.display.flip()
+        print("Changing to sub-module", module)
         if hasattr(self, 'active') and self.active:
             self.active.handle_action("pause")
             self.remove(self.active)

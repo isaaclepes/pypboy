@@ -128,8 +128,6 @@ class Menu(game.Entity):
                 #pygame.draw.rect(self.image, (95, 255, 177), selected_rect, 2)
             self.image.blit(text, (config.menu_x + 5, offset))
             offset += text.get_size()[1] + 6
-
-
    
 class Scanlines(game.core.Entity):
 

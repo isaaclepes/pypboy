@@ -10,6 +10,7 @@ class Engine(object):
     def __init__(self, title, width, height, *args, **kwargs):
         super(Engine, self).__init__(*args, **kwargs)
         pygame.init()
+
         if config.FULLSCREEN == True:
             self.window = pygame.display.set_mode((width, height),pygame.FULLSCREEN)
         else:
@@ -19,8 +20,8 @@ class Engine(object):
         pygame.mouse.set_visible(True)
         
         self.groups = []
-        self.root_persistent = EntityGroup()
-        self.background = pygame.surface.Surface(self.screen.get_size()).convert()
+        self.root_children = EntityGroup()
+        self.background = pygame.surface.Surface(self.screen.get_size())
         self.background.fill((0, 0, 0))
 
         self.rescale = False
@@ -33,9 +34,9 @@ class Engine(object):
         else:
             interval = time.time() - self.last_render_time
             self.last_render_time = time.time()
-        self.root_persistent.clear(self.screen, self.background)
-        self.root_persistent.render(interval)
-        self.root_persistent.draw(self.screen)
+        self.root_children.clear(self.screen, self.background)
+        self.root_children.render(interval)
+        self.root_children.draw(self.screen)
         for group in self.groups:
             group.render(interval)
             group.draw(self.screen)
@@ -43,7 +44,7 @@ class Engine(object):
         return interval
 
     def update(self):
-        self.root_persistent.update()
+        self.root_children.update()
         for group in self.groups:
             group.update()
 
@@ -75,7 +76,7 @@ class Entity(pygame.sprite.DirtySprite):
         self.groups = pygame.sprite.LayeredDirty()
         self.layer = layer
         self.dirty = 2
-        self.blendmode = pygame.BLEND_RGBA_MAX 
+        self.blendmode = pygame.BLEND_RGBA_MAX
 
     def render(self, interval=0, *args, **kwargs):
         pass

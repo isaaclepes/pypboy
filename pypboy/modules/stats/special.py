@@ -32,8 +32,8 @@ class Module(pypboy.SubModule):
     def changeStat(self, imageUrl):
         self.stat.image = pygame.image.load(imageUrl).convert()
         self.stat.rect = self.stat.image.get_rect()
-        self.stat.rect[0] = 100
-        self.stat.rect[1] = 0
+        self.stat.rect[0] = 150
+        self.stat.rect[1] = 150
         self.stat.image = self.stat.image.convert()
 
     def show_str(self):
