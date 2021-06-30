@@ -37,7 +37,7 @@ class TopMenu(game.Entity):
 
     def select(self, module):
         self.selected = module
-
+        self.image.fill((0, 0, 0))
         offset = 18
         for m in self.menu:
             padding = 1
@@ -68,7 +68,7 @@ class SubMenu(game.Entity):
 
     def select(self, module):
         self.selected = module
-
+        self.image.fill((0, 0, 0))
         offset = 18
         for m in self.menu:
             padding = 1
@@ -100,6 +100,7 @@ class Menu(game.Entity):
 
     def select(self, item):
         self.selected = item
+        self.image.fill((0, 0, 0))
         self.redraw()
         if len(self.callbacks) > item and self.callbacks[item]:
             self.callbacks[item]()
@@ -117,7 +118,7 @@ class Menu(game.Entity):
                 self.select(self.selected + 1)
 
     def redraw(self):
-        #self.image.fill((0, 0, 0))
+        self.image.fill((0, 0, 0))
         offset = 5
         for i in range(len(self.items)):
             text = config.RobotoB[28].render(" %s " % self.items[i], True, (config.bright), (0, 0, 0))
@@ -127,70 +128,25 @@ class Menu(game.Entity):
                 #pygame.draw.rect(self.image, (95, 255, 177), selected_rect, 2)
             self.image.blit(text, (config.menu_x + 5, offset))
             offset += text.get_size()[1] + 6
-        
-    def handle_tap(self):
-        pass
-        # print("Handle Tap")
-        # x,y = pygame.mouse.get_pos()
-        # offset = 5 + self.rect[1]
-        # print("X: " + str(x) + " Y: " + str(y))
-        # for i in range(len(self.items)):
-            # text = config.RobotoB[14].render(" %s " % self.items[i], True, (0, 255, 0), (0, 0, 0))
-            # menuRect = (config.menu_x, offset - 2, text.get_size()[0] + 10, text.get_size()[1] + 3)
-            # print (menuRect)
-            # if x >= menuRect[0] and x < (menuRect[0] + menuRect[2]) and y >= menuRect[1] and y < (menuRect[1] + menuRect[3]) and i != self.selected:
-                # self.select(i)
-                # return True
-            # offset += text.get_size()[1] + 6
-        # return False
 
 
+   
 class Scanlines(game.core.Entity):
 
-    def __init__(self, width, height, gap, speed, colours, full_push=False):
-        super(Scanlines, self).__init__((width, height))
-        self.width = width
-        self.height = height
-        self.move = gap * len(colours)
-        self.gap = gap
-        self.colours = colours
+    def __init__(self):
+        super(Scanlines, self).__init__((config.WIDTH, config.HEIGHT))
+        self.width = 720
+        self.height = 149
+        self.image = pygame.image.load('images/scanline.png').convert_alpha()
+        self.rectimage = self.image.get_rect()
         self.rect[1] = 0
-        self.top = 0.0
-        self.speed = speed
-        self.full_push = full_push
-        colour = 0
-        area = pygame.Rect(0, self.rect[1] * self.speed, self.width, self.gap)
-        while area.top <= self.height - self.gap:
-            self.image.fill(self.colours[colour], area)
-            area.move_ip(0, (self.gap))
-            colour += 1
-            if colour >= len(self.colours):
-                colour = 0
-
+        self.top = -149
+        self.speed = 100
+        
     def render(self, interval, *args, **kwargs):
         self.top += self.speed * interval
         self.rect[1] = self.top
         self.dirty = 1
-        if self.full_push:
-            if self.top >= self.height:
-                self.top = 0
-        else:
-            if (self.top * self.speed) >= self.move:
-                self.top = 0
+        if self.top >= config.HEIGHT + 149:
+            self.top = -149
         super(Scanlines, self).render(self, *args, **kwargs)
-
-
-# class Overlay(game.Entity):
-    # def __init__(self):
-        # self.image = pygame.image.load('images/overlay.png').convert_alpha()
-        # super(Overlay, self).__init__((config.WIDTH, config.HEIGHT))
-        # self.blit_alpha(self, self.image, (0, 0), 128)
-
-    # def blit_alpha(self, target, source, location, opacity):
-        # x = location[0]
-        # y = location[1]
-        # temp = pygame.Surface((source.get_width(), source.get_height())).convert_alpha()
-        # temp.blit(target, (-x, -y))
-        # temp.blit(source, (0, 0))
-        # temp.set_alpha(opacity)
-        # target.blit(temp, location)

@@ -5,7 +5,7 @@ name = "ZapWizard"
 
 WIDTH = 720
 HEIGHT = 720
-
+FULLSCREEN = False
 
 #Colors
 bright = (0,255,0)
@@ -45,7 +45,7 @@ menu_y = 189
 #MAP_FOCUS = (-118.5723894,34.3917171)#CodeNinjasValencia
 #MAP_FOCUS = (32.7157, 117.1611)
 #MAP_FOCUS = (-92.1943197, 38.5653437)
-MAP_FOCUS = (-98.0878917, 30.1914818) # ZapWizard's Hometown
+MAP_FOCUS = (-98.0878917, 30.1914818) # Zap's Hometown
 
 WORLD_MAP_FOCUS = 0.07 #Needed to handle the 50k node limit from OSM
 

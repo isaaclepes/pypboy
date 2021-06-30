@@ -196,6 +196,7 @@ class MapGrid(game.Entity):
         self.draw_tags()
 
 class RadioStation(game.Entity):
+    
 
     STATES = {
         'stopped': 0,
@@ -207,6 +208,7 @@ class RadioStation(game.Entity):
         super(RadioStation, self).__init__((10, 10), *args, **kwargs)
         self.state = self.STATES['stopped']
         self.files = self.load_files()
+        self.filename = 0
         pygame.mixer.music.set_endevent(config.EVENTS['SONG_END'])
 
     def play_random(self):
@@ -229,7 +231,7 @@ class RadioStation(game.Entity):
                 pygame.mixer.music.unpause()
                 self.state = self.STATES['playing']
             else:
-                self.play_random()
+                self.stop()
         
     def pause(self):
         if config.SOUND_ENABLED:

@@ -42,7 +42,7 @@ class Module(pypboy.SubModule):
         if hasattr(self, 'active_station') and self.active_station:
             self.active_station.stop()
         self.active_station = self.stations[station]
-        self.active_station.play_random() #Play a random station at startup
+        #self.active_station.play_random() #Play a random station at startup
 
     def handle_event(self, event):
         if event.type == config.EVENTS['SONG_END']:

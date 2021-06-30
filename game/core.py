@@ -1,5 +1,6 @@
 import pygame
 import time
+import config
 
 class Engine(object):
 
@@ -9,7 +10,10 @@ class Engine(object):
     def __init__(self, title, width, height, *args, **kwargs):
         super(Engine, self).__init__(*args, **kwargs)
         pygame.init()
-        self.window = pygame.display.set_mode((width, height),pygame.FULLSCREEN)
+        if config.FULLSCREEN == True:
+            self.window = pygame.display.set_mode((width, height),pygame.FULLSCREEN)
+        else:
+            self.window = pygame.display.set_mode((width, height))
         self.screen = pygame.display.get_surface()
         pygame.display.set_caption(title)
         pygame.mouse.set_visible(True)
@@ -71,7 +75,7 @@ class Entity(pygame.sprite.DirtySprite):
         self.groups = pygame.sprite.LayeredDirty()
         self.layer = layer
         self.dirty = 2
-        self.blendmode = pygame.BLEND_RGBA_ADD
+        self.blendmode = pygame.BLEND_RGBA_MAX 
 
     def render(self, interval=0, *args, **kwargs):
         pass

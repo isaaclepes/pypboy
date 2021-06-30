@@ -13,21 +13,20 @@ import copy
 import game.globals as globals
 import mutagen.oggvorbis
 
-
 class Radio(game.Entity):
     def __init__(self):
         super(Radio, self).__init__((globals.WIDTH, globals.HEIGHT))
-        # set up the mixer
         
+        # set up the mixer
         try: 
             pygame.mixer.quit()
         except Exception as e: 
             print(e)
             pass
         
-        freq = 44100	 # audio CD quality
+        freq = 44100    # audio CD quality
         bitsize = -16	# unsigned 16 bit
-        channels = 1	 # 1 is mono, 2 is stereo
+        channels = 1	# 1 is mono, 2 is stereo
         buffer = 2048	# number of samples (experiment to get right sound)
         if config.SOUND_ENABLED:
             pygame.mixer.init(freq, bitsize, channels, buffer)

@@ -12,7 +12,7 @@ class GameState(Enum):
     RADIO = -3
     MAP = -2
     DATA = -1
-    inv = 0
+    INV = 0
     STATS = 1
 
 class BaseModule(game.EntityGroup):
@@ -33,13 +33,13 @@ class BaseModule(game.EntityGroup):
         self.position = (0, config.header_height)
 
 
-        self.topmenu = pypboy.ui.TopMenu()
-        self.topmenu.menu = []
-        for mod in self.modules:
-           self.topmenu.menu.append(mod.label)
-        self.topmenu.selected = self.topmenu.menu[0]
-        self.topmenu.position = (config.top_menu_x, config.top_menu_y)
-        self.add(self.topmenu)
+        # self.topmenu = pypboy.ui.TopMenu()
+        # self.topmenu.menu = []
+        # for mod in self.modules:
+           # self.topmenu.menu.append(mod.label)
+        # self.topmenu.selected = self.topmenu.menu[0]
+        # self.topmenu.position = (config.top_menu_x, config.top_menu_y)
+        # self.add(self.topmenu)
 
 
         self.submenu = pypboy.ui.SubMenu()
