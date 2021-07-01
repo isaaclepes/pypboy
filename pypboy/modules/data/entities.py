@@ -24,7 +24,7 @@ class Map(game.Entity):
         self._map_surface = pygame.Surface((width, width))
         self._render_rect = render_rect
         super(Map, self).__init__((width, width), *args, **kwargs)
-        text = config.RobotoB[14].render(loading_type, True, (95, 255, 177), (0, 0, 0))
+        text = config.RobotoB[14].render(loading_type, True, (config.bright), (0, 0, 0))
         self.image.blit(text, (10, 10))
 
     def fetch_map(self, position, radius, isWorld):
@@ -54,7 +54,7 @@ class Map(game.Entity):
         for way in self._mapper.transpose_ways((self._size / coef, self._size / coef), (self._size / 2, self._size / 2)):
             pygame.draw.lines(
                     self._map_surface,
-                    (85, 251, 167),
+                    (config.mid), # Map line Color
                     False,
                     way,
                     2
@@ -64,7 +64,7 @@ class Map(game.Entity):
                 image = config.AMENITIES[tag[3]]
                 pygame.transform.scale(image, (10, 10))
                 self._map_surface.blit(image, (tag[1], tag[2]))
-                text = config.RobotoB[12].render(tag[0], True, (95, 255, 177), (0, 0, 0))
+                text = config.RobotoB[12].render(tag[0], True, (config.bright), (0, 0, 0))
                 self._map_surface.blit(text, (tag[1] + 17, tag[2] + 4))
             else:
                 image = config.MAP_ICONS['misc']
@@ -101,7 +101,7 @@ class MapSquare(game.Entity):
         for way in self._mapper.transpose_ways((self._size, self._size), (self._size / 2, self._size / 2)):
             pygame.draw.lines(
                     self._map_surface,
-                    (85, 251, 167),
+                    (config.mid),
                     False,
                     way,
                     1
@@ -170,7 +170,7 @@ class MapGrid(game.Entity):
                 pygame.transform.scale(image, (10, 10))
                 self.image.blit(image, (self.tags[name][0], self.tags[name][1]))
             # try:
-                text = config.RobotoB[12].render(name, True, (95, 255, 177), (0, 0, 0))
+                text = config.RobotoB[12].render(name, True, (config.bright), (0, 0, 0))
             # text_width = text.get_size()[0]
             # 	pygame.draw.rect(
             # 		self,

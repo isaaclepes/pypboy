@@ -37,6 +37,8 @@ class Pypboy(game.core.Engine):
         #self.background = pygame.image.load('images/background.png')
         self.topmenu = pypboy.ui.TopMenu()
         self.root_children.add(self.topmenu)
+        self.footer = pypboy.ui.Footer()
+        self.root_children.add(self.footer)
         overlay = pypboy.ui.Overlay()
         self.root_children.add(overlay)
         scanlines = pypboy.ui.Scanlines()

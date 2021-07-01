@@ -16,19 +16,20 @@ class Module(pypboy.SubModule):
         health.rect[1] = config.header_height + 1
         self.add(health)
         #self.menu = pypboy.ui.Menu(100, ["CND", "RAD", "EFF"], [self.show_cnd, self.show_rad, self.show_eff], 0)
-        #self.menu.rect[0] = config.menu_x
-        #self.menu.rect[1] = config.menu_y
-        #self.add(self.menu)
+        # self.menu.rect[0] = config.menu_x
+        # self.menu.rect[1] = config.menu_y
+        # self.add(self.menu)
+       
 
 
-    def show_cnd(self):
-        print("CND")
+    # def show_cnd(self):
+        # print("CND")
 
-    def show_rad(self):
-        print("RAD")
+    # def show_rad(self):
+        # print("RAD")
 
-    def show_eff(self):
-        print("EFF")
+    # def show_eff(self):
+        # print("EFF")
 
 
 class Health(game.Entity):
@@ -37,7 +38,7 @@ class Health(game.Entity):
         super(Health, self).__init__()
         self.image = pygame.Surface((config.WIDTH, config.HEIGHT - config.header_height - config.footer_height))
         self.image.fill((0, 0, 0))
-        
+                
         # Top Text
         # config.FreeRobotoB[33].render_to(self.image, (104, 0), "STAT", config.dark)
         # config.FreeRobotoB[33].render_to(self.image, (221, 0), "INV", config.dark)

@@ -36,11 +36,41 @@ class TopMenu(game.Entity):
                     pygame.draw.line(self.image, (config.bright), (text_pos + text_rect.width + 2, 10), (text_pos + text_rect.width + 12, 10), 3)	#Right Short bar
                     pygame.draw.line(self.image, (config.bright), (text_pos + text_rect.width + 11, 10), (text_pos + text_rect.width + 11, 35), 3)	#Right Vert bar
                 else:
-                    pygame.draw.line(self.image, (config.bright), (text_pos - 10, 35), (text_pos + text_rect.width + 10, 35), 3) # Horizontal Bar
+                    pygame.draw.line(self.image, (config.bright), (text_pos - 10, 35), (text_pos + text_rect.width + 10, 35), 3) # Horizontal Barclass TopMenu(game.Entity):
 
-                #pygame.draw.line(self.image, (config.bright), (5, 15), (config.WIDTH - text_pos, 15), 3) # Horizontal Bar       
+class Footer(game.Entity):
+    def __init__(self, sections=[], bargraph=None):
+        self.sections = []
+        self.bargraph = None
+        super(Footer, self).__init__((config.WIDTH, config.HEIGHT))
+        self.rect[0] = 0
+        self.rect[1] = config.HEIGHT - config.footer_height
+
+    def update(self, *args, **kwargs):
+        super(Footer, self).update(*args, **kwargs)
+
+    def render(self, label=None):
+        self.image.fill((0, 0, 0)) #Clear text
+        spacing = 4 #Set space between sections
+        prev_text_width = 74 # STAT width
+        text_pos = 104 - spacing - prev_text_width #Set first location
+
+        for section in self.sections:
+            text = config.RobotoB[33].render(section, True, (config.bright), (0, 0, 0)) #Setup text
+            text_pos = text_pos + prev_text_width + spacing #Set draw location
+            self.image.blit(text, (text_pos, 0)) #Draw text
+            text_rect = text.get_rect() #Get text dimensions
+            prev_text_width = text_rect.width            
             
-        #self.image.blit(text, (26, 8))
+            if section == self.label:
+                pygame.draw.line(self.image, (config.bright), (0, 35), (text_pos - 10, 35), 3) # Line from left edge of screen
+                pygame.draw.line(self.image, (config.bright), (text_pos + text_rect.width + 10, 35), (config.WIDTH, 35), 3) # Line to the right edge of screen
+                pygame.draw.line(self.image, (config.bright), (text_pos - 11, 10), (text_pos - 11, 35), 3)	#Left Vert bar
+                pygame.draw.line(self.image, (config.bright), (text_pos - 12, 10), (text_pos - 3, 10), 3)	#Left Short bar
+                pygame.draw.line(self.image, (config.bright), (text_pos + text_rect.width + 2, 10), (text_pos + text_rect.width + 12, 10), 3)	#Right Short bar
+                pygame.draw.line(self.image, (config.bright), (text_pos + text_rect.width + 11, 10), (text_pos + text_rect.width + 11, 35), 3)	#Right Vert bar
+            else:
+                pygame.draw.line(self.image, (config.bright), (text_pos - 10, 35), (text_pos + text_rect.width + 10, 35), 3) # Horizontal Bar
 
 
 class SubMenu(game.Entity):

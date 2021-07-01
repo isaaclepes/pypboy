@@ -12,7 +12,7 @@ class Module(pypboy.SubModule):
         self.stations = [
             entities.RadioOff(),
             entities.ClassicalRadio(),
-            entities.DiamondCityRadio()
+            entities.DiamondCityRadio(),
             #entities.EnclaveRadio(),
             #entities.InstituteRadio(),
             #entities.MinutemenRadio(),
@@ -31,7 +31,7 @@ class Module(pypboy.SubModule):
             stationLabels.append(station.label)
             stationCallbacks.append(lambda i=i: self.select_station(i))
 
-        self.menu = pypboy.ui.Menu(200, stationLabels, stationCallbacks, 0)
+        self.menu = pypboy.ui.Menu(350, stationLabels, stationCallbacks, 0)
         self.menu.rect[0] = config.menu_x
         self.menu.rect[1] = config.menu_y
         self.add(self.menu)

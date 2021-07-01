@@ -17,14 +17,23 @@ class Module(pypboy.SubModule):
         self.stat.rect[1] = config.header_height + 1
         self.add(self.stat)
 
-        self.menu = pypboy.ui.Menu(240, [
-            "Strength               4", 
-            "Perception             7", 
-            "Endurance              5", 
-            "Charisma               6", 
-            "Intelligence           9", 
-            "Agility                4", 
-            "Luck                   6"], [self.show_str, self.show_per, self.show_end, self.show_cha, self.show_int, self.show_agi, self.show_luc], 0)
+        self.menu = pypboy.ui.Menu(300, [
+            "Strength", 
+            "Perception", 
+            "Endurance", 
+            "Charisma", 
+            "Intelligence", 
+            "Agility", 
+            "Luck"
+            ],[
+            self.show_str,
+            self.show_per,
+            self.show_end,
+            self.show_cha,
+            self.show_int,
+            self.show_agi,
+            self.show_luc
+            ], 0)
         self.menu.rect[0] = config.menu_x
         self.menu.rect[1] = config.menu_y
         self.add(self.menu)
