@@ -21,13 +21,7 @@ except Exception:
     config.GPIO_AVAILABLE = False
 
 if config.GPIO_AVAILABLE:
-    # Init framebuffer/touchscreen environment variables
-    os.putenv('SDL_VIDEODRIVER', 'fbcon')
-    os.putenv('SDL_FBDEV'      , '/dev/fb1')
-    os.putenv('SDL_MOUSEDRV'   , 'TSLIB')
-    os.putenv('SDL_MOUSEDEV'   , '/dev/input/touchscreen')
-    config.touchScale = 100
-    config.invertPosition = True
+    pass
 
 try:
     pygame.mixer.init(44100, -16, 1, 2048)

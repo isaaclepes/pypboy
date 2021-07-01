@@ -1,27 +1,46 @@
-import game
+import game#
 import config
 import pygame
 import datetime
 
-# class Header(game.Entity):
+class TopMenu(game.Entity):
 
-    # def __init__(self, headline="", title=[]):
-        # self.headline = headline
-        # self.title = []
-        # super(Header, self).__init__((config.WIDTH, config.header_height))
-        # self._date = None
+    def __init__(self, label=None, title=[]):
+        self.label = None
+        self.title = []
+        super(TopMenu, self).__init__((config.WIDTH, config.HEIGHT))
+        self.rect[0] = config.top_menu_x
+        self.rect[1] = config.top_menu_y
 
-    # def update(self, *args, **kwargs):
-        # super(Header, self).update(*args, **kwargs)
+    def update(self, *args, **kwargs):
+        super(TopMenu, self).update(*args, **kwargs)
 
-    # def render(self, *args, **kwargs):
-        # new_date = datetime.datetime.now().strftime("%d.%m.%y.%H:%M:%S") #need to be moved to footer and under the data and maps section
-        # if new_date != self._date:
-            # #self.image.fill((0, 0, 0))
-            # text = config.RobotoB[14].render(self._date, True, (95, 255, 177), (0, 0, 0))
-            # self.image.blit(text, (10, 5))
-            # self._date = new_date
-        # super(Header, self).update(*args, **kwargs)
+    def render(self, label=None):
+        self.image.fill((0, 0, 0)) #Clear text
+        spacing = 40 #Set space between words
+        prev_text_width = 74 # STAT width
+        text_pos = 104 - spacing - prev_text_width #Set first location
+        if self.label:  
+            for section in self.title:
+                text = config.RobotoB[33].render(section, True, (config.bright), (0, 0, 0)) #Setup text
+                text_pos = text_pos + prev_text_width + spacing #Set draw location
+                self.image.blit(text, (text_pos, 0)) #Draw text
+                text_rect = text.get_rect() #Get text dimensions
+                prev_text_width = text_rect.width            
+                
+                if section == self.label:
+                    pygame.draw.line(self.image, (config.bright), (0, 35), (text_pos - 10, 35), 3) # Line from left edge of screen
+                    pygame.draw.line(self.image, (config.bright), (text_pos + text_rect.width + 10, 35), (config.WIDTH, 35), 3) # Line to the right edge of screen
+                    pygame.draw.line(self.image, (config.bright), (text_pos - 11, 10), (text_pos - 11, 35), 3)	#Left Vert bar
+                    pygame.draw.line(self.image, (config.bright), (text_pos - 12, 10), (text_pos - 3, 10), 3)	#Left Short bar
+                    pygame.draw.line(self.image, (config.bright), (text_pos + text_rect.width + 2, 10), (text_pos + text_rect.width + 12, 10), 3)	#Right Short bar
+                    pygame.draw.line(self.image, (config.bright), (text_pos + text_rect.width + 11, 10), (text_pos + text_rect.width + 11, 35), 3)	#Right Vert bar
+                else:
+                    pygame.draw.line(self.image, (config.bright), (text_pos - 10, 35), (text_pos + text_rect.width + 10, 35), 3) # Horizontal Bar
+
+                #pygame.draw.line(self.image, (config.bright), (5, 15), (config.WIDTH - text_pos, 15), 3) # Horizontal Bar       
+            
+        #self.image.blit(text, (26, 8))
 
 
 class SubMenu(game.Entity):
@@ -94,7 +113,7 @@ class Menu(game.Entity):
             if i == self.selected:
                 text = config.RobotoB[28].render(" %s " % self.items[i], True, (0,0,0), (config.bright))
                 #selected_rect = (self.menuXVal, offset - 2, text.get_size()[0] + 10, text.get_size()[1] + 3)
-                #pygame.draw.rect(self.image, (95, 255, 177), selected_rect, 2)
+                #pygame.draw.rect(self.image, (config.bright), selected_rect, 2)
             self.image.blit(text, (config.menu_x + 5, offset))
             offset += text.get_size()[1] + 6
    

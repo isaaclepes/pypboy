@@ -31,8 +31,8 @@ class Module(pypboy.SubModule):
             self.zoomMap(0.003)
 
     def handle_resume(self):
-        #self.parent.pypboy.header.headline = "DATA"
-        #self.parent.pypboy.header.title = [self.title]
+        #self.parent.pypboy.topmenu.headline = "DATA"
+        #self.parent.pypboy.topmenu.title = [self.title]
         super(Module, self).handle_resume()
 
     def handle_tap(self):
@@ -54,6 +54,6 @@ class Module(pypboy.SubModule):
         self.add(self.mapgrid)
         self.mapgrid.rect[0] = 4
         self.mapgrid.rect[1] = 40
-        #self.parent.pypboy.header.headline = "DATA"
-        #self.parent.pypboy.header.title = [self.title]
+        #self.parent.pypboy.topmenu.headline = "DATA"
+        #self.parent.pypboy.topmenu.title = [self.title]
     

@@ -50,8 +50,8 @@ class Module(pypboy.SubModule):
                 self.active_station.play_random()
 
     def handle_resume(self):
-        #self.parent.pypboy.header.headline = "DATA"
-        #self.parent.pypboy.header.title = ["Radio"]
+        #self.parent.pypboy.topmenu.headline = "DATA"
+        #self.parent.pypboy.topmenu.title = ["Radio"]
         super(Module, self).handle_resume()
 
     def handle_tap(self):

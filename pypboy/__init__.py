@@ -103,23 +103,6 @@ class BaseModule(game.EntityGroup):
         if config.SOUND_ENABLED:
             self.module_change_sfx.play()
 
-    def handle_swipe(self, swipe):
-        pass
-        # print("Handle Swipe " + str(swipe))
-        # if swipe == 2:
-            # self.currentSubmodule -= 1
-            # if self.currentSubmodule < 0:
-                # self.currentSubmodule = self.submodules.__len__() - 1
-            # self.switch_submodule(self.currentSubmodule)
-        # elif swipe == 1:
-            # self.currentSubmodule += 1
-            # if self.currentSubmodule >= self.submodules.__len__():
-                # self.currentSubmodule = 0
-            # self.switch_submodule(self.currentSubmodule)
-        # else:
-            # self.active.handle_tap()
-
-
 class SubModule(game.EntityGroup):
 
     def __init__(self, parent, *args, **kwargs):

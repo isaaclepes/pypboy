@@ -1,17 +1,14 @@
 from pypboy import BaseModule
-from pypboy.modules.data import quests
-from pypboy.modules.data import misc
+from pypboy.modules.radio import radio
 import config
-
 
 class Module(BaseModule):
 
-    label = "DATA"
+    label = "RADIO"
 
     def __init__(self, *args, **kwargs):
         self.submodules = [
-            quests.Module(self),
-            misc.Module(self)
+            radio.Module(self),
         ]
         super(Module, self).__init__(*args, **kwargs)
         
@@ -19,4 +16,4 @@ class Module(BaseModule):
         self.pypboy.topmenu.label = self.label
         self.pypboy.topmenu.title = config.MODULE_TEXT
         self.active.handle_action("resume")
-        
+ 

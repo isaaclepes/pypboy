@@ -5,29 +5,23 @@ name = "ZapWizard"
 
 WIDTH = 720
 HEIGHT = 720
-FULLSCREEN = True
+FULLSCREEN = False
 
 #Colors
+black = (0,0,0)
 bright = (0,230,0)
 light = (0,150,0)
 mid = (0,120,0)
 dim = (0,60,0)
 dark = (0,30,0)
 
-touchEnabled = False
-minSwipe = 50
-maxClick = 15
-longPressTime = 200
-touchScale = 1
-invertPosition = False
-
 #Header, Footer heights
 header_height = 50
 footer_height = 50
 
 #Top Menu Position
-top_menu_x = 50
-top_menu_y = 0
+top_menu_x = 0
+top_menu_y = 51
 
 #Sub Menu Position
 sub_menu_x = 73
@@ -56,16 +50,24 @@ EVENTS = {
 }
 
 MODULES = {
-    0: "stats",
-    1: "items",
-    2: "data"
+    0: "STAT",
+    1: "INV",
+    2: "DATA",
+    3: "MAP",
+    4: "RADIO",
+    5: "BOOT"
 }
+
+#MODULE_TEXT = ["RADIO","MAP","DATA","INV","STAT"]
+MODULE_TEXT = ["STAT","INV","DATA","MAP","RADIO"]
 
 ACTIONS = {
     pygame.K_F1: "module_stats",
     pygame.K_F2: "module_items",
     pygame.K_F3: "module_data",
-    pygame.K_F4: "module_boot",
+    pygame.K_F4: "module_map",
+    pygame.K_F5: "module_radio",
+    pygame.K_F6: "module_boot",
     pygame.K_1:	"knob_1",
     pygame.K_2: "knob_2",
     pygame.K_3: "knob_3",

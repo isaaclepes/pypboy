@@ -3,12 +3,11 @@ from pypboy.modules.stats import status
 from pypboy.modules.stats import special
 from pypboy.modules.stats import skills
 from pypboy.modules.stats import perks
-
+import config
 
 class Module(BaseModule):
 
-    label = "STATS"
-    GPIO_LED_ID = 30 #GPIO 22 #19
+    label = "STAT"
 
     def __init__(self, *args, **kwargs):
         self.submodules = [
@@ -19,6 +18,6 @@ class Module(BaseModule):
         super(Module, self).__init__(*args, **kwargs)
         
     def handle_resume(self):
-        #self.pypboy.header.headline = self.label
-        #self.pypboy.header.title = ["STAT"]
+        self.pypboy.topmenu.label = self.label
+        self.pypboy.topmenu.title = config.MODULE_TEXT
         self.active.handle_action("resume")

@@ -1,17 +1,16 @@
 from pypboy import BaseModule
-from pypboy.modules.data import quests
-from pypboy.modules.data import misc
+from pypboy.modules.map import local_map
+from pypboy.modules.map import world_map
 import config
-
 
 class Module(BaseModule):
 
-    label = "DATA"
+    label = "MAP"
 
     def __init__(self, *args, **kwargs):
         self.submodules = [
-            quests.Module(self),
-            misc.Module(self)
+            local_map.Module(self),
+            world_map.Module(self)
         ]
         super(Module, self).__init__(*args, **kwargs)
         
@@ -19,4 +18,4 @@ class Module(BaseModule):
         self.pypboy.topmenu.label = self.label
         self.pypboy.topmenu.title = config.MODULE_TEXT
         self.active.handle_action("resume")
-        
+ 

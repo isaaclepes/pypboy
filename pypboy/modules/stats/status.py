@@ -39,11 +39,11 @@ class Health(game.Entity):
         self.image.fill((0, 0, 0))
         
         # Top Text
-        config.FreeRobotoB[33].render_to(self.image, (104, 0), "STAT", config.bright)
-        config.FreeRobotoB[33].render_to(self.image, (221, 0), "INV", config.bright)
-        config.FreeRobotoB[33].render_to(self.image, (311, 0), "DATA", config.bright)
-        config.FreeRobotoB[33].render_to(self.image, (422, 0), "MAP", config.bright)
-        config.FreeRobotoB[33].render_to(self.image, (527, 0), "RADIO", config.bright)
+        # config.FreeRobotoB[33].render_to(self.image, (104, 0), "STAT", config.dark)
+        # config.FreeRobotoB[33].render_to(self.image, (221, 0), "INV", config.dark)
+        # config.FreeRobotoB[33].render_to(self.image, (311, 0), "DATA", config.dark)
+        # config.FreeRobotoB[33].render_to(self.image, (422, 0), "MAP", config.dark)
+        # config.FreeRobotoB[33].render_to(self.image, (527, 0), "RADIO", config.dark)
         
         # Sub Text
         #config.FreeRobotoR[30].render_to(self.image, (93, 51), "STATUS", config.bright)
@@ -51,14 +51,14 @@ class Health(game.Entity):
         #config.FreeRobotoR[30].render_to(self.image, (319, 51), "PERKS", config.mid)
         
         # Lines around text
-        pygame.draw.line(self.image, config.bright, (1, 32), (1, 39), 3)
-        pygame.draw.line(self.image, config.bright, (0, 30), (92, 30), 3)
-        pygame.draw.line(self.image, config.bright, (91, 7), (91, 28), 3)
-        pygame.draw.line(self.image, config.bright, (90, 5), (101, 5), 3)
-        pygame.draw.line(self.image, config.bright, (177, 5), (188, 5), 3)
-        pygame.draw.line(self.image, config.bright, (187, 7), (187, 28), 3)
-        pygame.draw.line(self.image, config.bright, (186, 30), (719, 30), 3)
-        pygame.draw.line(self.image, config.bright, (718, 32), (718, 39), 3)
+        # pygame.draw.line(self.image, config.dark, (1, 32), (1, 39), 3)
+        # pygame.draw.line(self.image, config.dark, (0, 30), (92, 30), 3)
+        # pygame.draw.line(self.image, config.dark, (91, 7), (91, 28), 3)
+        # pygame.draw.line(self.image, config.dark, (90, 5), (101, 5), 3)
+        # pygame.draw.line(self.image, config.dark, (177, 5), (188, 5), 3)
+        # pygame.draw.line(self.image, config.dark, (187, 7), (187, 28), 3)
+        # pygame.draw.line(self.image, config.dark, (186, 30), (719, 30), 3)
+        # pygame.draw.line(self.image, config.dark, (718, 32), (718, 39), 3)
         
         # Health Bars
         pygame.draw.line(self.image, config.bright, (344, 112), (379, 112), 9)

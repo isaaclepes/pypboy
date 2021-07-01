@@ -8,6 +8,8 @@ from pypboy.modules import data
 from pypboy.modules import items
 from pypboy.modules import stats
 from pypboy.modules import boot
+from pypboy.modules import map
+from pypboy.modules import radio
 
 if config.GPIO_AVAILABLE:
     import RPi.GPIO as GPIO
@@ -33,16 +35,17 @@ class Pypboy(game.core.Engine):
 
     def init_children(self):
         #self.background = pygame.image.load('images/background.png')
+        self.topmenu = pypboy.ui.TopMenu()
+        self.root_children.add(self.topmenu)
         overlay = pypboy.ui.Overlay()
         self.root_children.add(overlay)
-        gradient = [(0, 4, 0, 0), (0, 6, 0, 0), (0, 12, 0, 0), (0, 18, 0, 0), (0, 24, 0, 0), (0, 18, 0, 0), (0, 12, 0, 0), (0, 6, 0, 0), (0, 4, 0, 0)]
         scanlines = pypboy.ui.Scanlines()
-        #scanlines = pypboy.ui.Scanlines(720, 720, 6, 16, gradient + [(0, 0, 0, 0) for x in range(720)])
         self.root_children.add(scanlines)
-       
 
     def init_modules(self):
         self.modules = {
+            "radio": radio.Module(self),
+            "map": map.Module(self),
             "data": data.Module(self),
             "items": items.Module(self),
             "stats": stats.Module(self),

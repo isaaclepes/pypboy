@@ -22,6 +22,6 @@ class Module(pypboy.SubModule):
         mapgrid.rect[1] = 40
 
     def handle_resume(self):
-        #self.parent.pypboy.header.headline = "DATA"
-        #self.parent.pypboy.header.title = [self.title]
+        #self.parent.pypboy.topmenu.headline = "DATA"
+        #self.parent.pypboy.topmenu.title = [self.title]
         super(Module, self).handle_resume()

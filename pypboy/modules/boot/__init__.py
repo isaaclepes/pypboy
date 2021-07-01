@@ -18,7 +18,7 @@ class Module(BaseModule):
         super(Module, self).__init__(*args, **kwargs)
         
     def handle_resume(self):
-        #self.pypboy.header.headline = self.label
-        #self.pypboy.header.title = ["AP  75/99","HP  159/314", "LVL 31"]
+        #self.pypboy.topmenu.headline = self.label
+        #self.pypboy.topmenu.title = ["AP  75/99","HP  159/314", "LVL 31"]
         self.active.handle_action("resume")
  
