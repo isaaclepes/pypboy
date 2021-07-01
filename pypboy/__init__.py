@@ -17,8 +17,6 @@ class GameState(Enum):
 
 class BaseModule(game.EntityGroup):
 
-    modules = []
-    currentModule = 0
     submodules = []
     currentSubmodule = 0
 
@@ -31,15 +29,6 @@ class BaseModule(game.EntityGroup):
 
         self.pypboy = boy
         self.position = (0, config.header_height)
-
-
-        # self.topmenu = pypboy.ui.TopMenu()
-        # self.topmenu.menu = []
-        # for mod in self.modules:
-           # self.topmenu.menu.append(mod.label)
-        # self.topmenu.selected = self.topmenu.menu[0]
-        # self.topmenu.position = (config.top_menu_x, config.top_menu_y)
-        # self.add(self.topmenu)
 
         self.submenu = pypboy.ui.SubMenu()
         self.submenu.menu = []

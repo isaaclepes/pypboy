@@ -24,37 +24,6 @@ import datetime
         # super(Header, self).update(*args, **kwargs)
 
 
-class TopMenu(game.Entity):
-
-    def __init__(self):
-        self.menu = []
-        super(TopMenu, self).__init__((config.WIDTH, 128))
-        self.rect[0] = config.top_menu_x
-        self.rect[1] = config.top_menu_y
-        
-    def update(self, *args, **kwargs):
-        super(TopMenu, self).update(*args, **kwargs)
-
-    def select(self, module):
-        self.selected = module
-        self.image.fill((0, 0, 0))
-        offset = 18
-        for m in self.menu:
-            padding = 1
-            text_width = 0
-            while text_width < 54:
-                spaces = " ".join([" " for x in range(padding)])
-                text = config.RobotoB[30].render("%s%s%s" % (spaces, m, spaces), True, (config.mid), (0, 0, 0))
-                text_width = text.get_size()[0]
-                padding += 1
-            #print(m+" : "+str(text.get_size()))
-            if m == self.selected:
-                text = config.RobotoB[30].render("%s%s%s" % (spaces, m, spaces), True, (config.bright), (0, 0, 0))
-            self.image.blit(text, (offset, 0))
-
-            offset = offset + text_width
-
-
 class SubMenu(game.Entity):
 
     def __init__(self):
@@ -134,17 +103,26 @@ class Scanlines(game.core.Entity):
     def __init__(self):
         super(Scanlines, self).__init__((config.WIDTH, config.HEIGHT))
         self.width = 720
-        self.height = 149
+        self.height = 1600
         self.image = pygame.image.load('images/scanline.png').convert_alpha()
         self.rectimage = self.image.get_rect()
         self.rect[1] = 0
-        self.top = -149
+        self.top = -870
         self.speed = 100
         
     def render(self, interval, *args, **kwargs):
         self.top += self.speed * interval
         self.rect[1] = self.top
         self.dirty = 1
-        if self.top >= config.HEIGHT + 149:
-            self.top = -149
+        if self.top >= 0:
+            self.top = -870
         super(Scanlines, self).render(self, *args, **kwargs)
+
+        
+class Overlay(game.Entity):
+    def __init__(self):
+        super(Overlay, self).__init__()
+        self.image = pygame.image.load('images/overlay.png').convert_alpha()
+        #self.image.set_colorkey((0,0,0))
+        self.image.set_alpha(128)
+        self.rect = self.image.get_rect()

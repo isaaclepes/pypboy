@@ -17,7 +17,7 @@ class Engine(object):
             self.window = pygame.display.set_mode((width, height))
         self.screen = pygame.display.get_surface()
         pygame.display.set_caption(title)
-        pygame.mouse.set_visible(True)
+        pygame.mouse.set_visible(False)
         
         self.groups = []
         self.root_children = EntityGroup()
@@ -76,7 +76,7 @@ class Entity(pygame.sprite.DirtySprite):
         self.groups = pygame.sprite.LayeredDirty()
         self.layer = layer
         self.dirty = 2
-        self.blendmode = pygame.BLEND_RGBA_MAX
+        self.blendmode = pygame.BLEND_RGBA_ADD
 
     def render(self, interval=0, *args, **kwargs):
         pass

@@ -5,14 +5,14 @@ name = "ZapWizard"
 
 WIDTH = 720
 HEIGHT = 720
-FULLSCREEN = False
+FULLSCREEN = True
 
 #Colors
-bright = (0,255,0)
-light = (0,172,0)
-mid = (0,128,0)
-dim = (0,64,0)
-dark = (0,32,0)
+bright = (0,230,0)
+light = (0,150,0)
+mid = (0,120,0)
+dim = (0,60,0)
+dark = (0,30,0)
 
 touchEnabled = False
 minSwipe = 50
