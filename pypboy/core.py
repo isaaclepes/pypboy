@@ -39,10 +39,13 @@ class Pypboy(game.core.Engine):
         self.root_children.add(self.topmenu)
         self.footer = pypboy.ui.Footer()
         self.root_children.add(self.footer)
+
         overlay = pypboy.ui.Overlay()
         self.root_children.add(overlay)
         scanlines = pypboy.ui.Scanlines()
         self.root_children.add(scanlines)
+        
+        
 
     def init_modules(self):
         self.modules = {

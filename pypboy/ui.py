@@ -10,12 +10,10 @@ class TopMenu(game.Entity):
         self.title = []
         super(TopMenu, self).__init__((config.WIDTH, config.HEIGHT))
         self.rect[0] = config.top_menu_x
-        self.rect[1] = config.top_menu_y
+        self.rect[1] = config.top_menu_y      
 
-    def update(self, *args, **kwargs):
-        super(TopMenu, self).update(*args, **kwargs)
-
-    def render(self, label=None):
+    def update(self):
+        #super(TopMenu, self).update(*args, **kwargs)
         self.image.fill((0, 0, 0)) #Clear text
         spacing = 40 #Set space between words
         prev_text_width = 74 # STAT width
@@ -80,6 +78,7 @@ class SubMenu(game.Entity):
         super(SubMenu, self).__init__((config.WIDTH, 128))
         self.rect[0] = config.sub_menu_x
         self.rect[1] = config.sub_menu_y
+        self.hidden = False
 
     def update(self, *args, **kwargs):
         super(SubMenu, self).update(*args, **kwargs)
@@ -87,21 +86,22 @@ class SubMenu(game.Entity):
     def select(self, module):
         self.selected = module
         self.image.fill((0, 0, 0))
-        offset = 18
-        for m in self.menu:
-            padding = 1
-            text_width = 0
-            while text_width < 54:
-                spaces = " ".join([" " for x in range(padding)])
-                text = config.RobotoR[30].render("%s%s%s" % (spaces, m, spaces), True, (config.mid), (0, 0, 0))
-                text_width = text.get_size()[0]
-                padding += 1
-            #print(m+" : "+str(text.get_size()))
-            if m == self.selected:
-                text = config.RobotoR[30].render("%s%s%s" % (spaces, m, spaces), True, (config.bright), (0, 0, 0))
-            self.image.blit(text, (offset, 0))
+        if self.hidden == False:
+            offset = 18
+            for m in self.menu:
+                padding = 1
+                text_width = 0
+                while text_width < 54:
+                    spaces = " ".join([" " for x in range(padding)])
+                    text = config.RobotoR[30].render("%s%s%s" % (spaces, m, spaces), True, (config.mid), (0, 0, 0))
+                    text_width = text.get_size()[0]
+                    padding += 1
+                #print(m+" : "+str(text.get_size()))
+                if m == self.selected:
+                    text = config.RobotoR[30].render("%s%s%s" % (spaces, m, spaces), True, (config.bright), (0, 0, 0))
+                self.image.blit(text, (offset, 0))
 
-            offset = offset + text_width
+                offset = offset + text_width
 
 
 class Menu(game.Entity):

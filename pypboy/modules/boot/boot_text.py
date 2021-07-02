@@ -4,6 +4,7 @@ import game
 import config
 import pypboy.ui
 
+
 def word_wrap(surf, text, font):
     font.origin = True
     words = text.split(' ')
@@ -35,13 +36,12 @@ class Module(pypboy.SubModule):
         boot.rect[1] = config.header_height + 1
         self.add(boot)
         
-
 class Boot(game.Entity):
 
     def __init__(self):
         super(Boot, self).__init__()
         
-        self.image = pygame.Surface((config.WIDTH, config.HEIGHT - config.header_height - config.footer_height))
+        self.image = pygame.surface.Surface((config.WIDTH, config.HEIGHT * 3))
         self.rect[1] = 0
         self.top = 0
 
@@ -152,6 +152,9 @@ class Boot(game.Entity):
         )
         
         word_wrap(self.image, boot_text, config.FreeTechMono[17])
+
+    # def update(self, *args, **kwargs):
+        # super(Boot, self).update(self, *args, **kwargs)
         
     def render(self, *args, **kwargs):
         self.top -= 5
@@ -159,9 +162,7 @@ class Boot(game.Entity):
         super(Boot, self).render(self, *args, **kwargs)
      
     def handle_resume(self):
-        print("Resumed boot_text")
+        print("I need help getting this damn part working")
         #self.parent.pypboy.header.headline = "Boot_text"
         #self.parent.pypboy.header.title = [self.title]
         self.top = 0
-        self.rect[1] = self.top
-        super(Module, self).handle_resume()
