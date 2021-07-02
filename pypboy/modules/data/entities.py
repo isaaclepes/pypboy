@@ -203,6 +203,8 @@ class RadioStation(game.Entity):
         'playing': 1,
         'paused': 2
     }
+    
+    volume = config.volume
 
     def __init__(self, *args, **kwargs):
         super(RadioStation, self).__init__((10, 10), *args, **kwargs)
@@ -217,6 +219,7 @@ class RadioStation(game.Entity):
         if config.SOUND_ENABLED:
             if hasattr(self, 'last_filename') and self.last_filename:
                 pygame.mixer.music.load(self.last_filename)
+                pygame.mixer.music.set_volume(self.volume)
                 now = time.time()
                 curpos = self.last_playpos + (now - self.last_playtime)
             f = choice(self.files)
@@ -224,6 +227,18 @@ class RadioStation(game.Entity):
             pygame.mixer.music.load(f)
             pygame.mixer.music.play(0, start_pos)
             self.state = self.STATES['playing']
+    
+    def volume_up(self):   
+        if config.SOUND_ENABLED:
+            #print ("volume up")
+            self.volume = self.volume + 0.05 
+            pygame.mixer.music.set_volume(self.volume)
+    
+    def volume_down(self):   
+        if config.SOUND_ENABLED:
+            #print ("volume down")
+            self.volume = self.volume - 0.05 
+            pygame.mixer.music.set_volume(self.volume)        
         
     def play(self):
         if config.SOUND_ENABLED:

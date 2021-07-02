@@ -39,7 +39,6 @@ class Pypboy(game.core.Engine):
         self.root_children.add(self.topmenu)
         self.footer = pypboy.ui.Footer()
         self.root_children.add(self.footer)
-
         overlay = pypboy.ui.Overlay()
         self.root_children.add(overlay)
         scanlines = pypboy.ui.Scanlines()
@@ -97,11 +96,17 @@ class Pypboy(game.core.Engine):
         else:
             if hasattr(self, 'active'):
                 self.active.handle_action(action)
+                
 
     def handle_event(self, event):
+        
         if event.type == pygame.KEYDOWN: #Some key has been pressed
             if (event.key == pygame.K_ESCAPE): #ESC
                 self.running = False
+            elif (event.key == pygame.K_PAGEUP): # Volume up
+                config.radio.handle_event(event)
+            elif (event.key == pygame.K_PAGEDOWN): # Volume down
+                config.radio.handle_event(event)
             else:
                 if event.key in config.ACTIONS: #Check action based on key in config
                     self.handle_action(config.ACTIONS[event.key])
@@ -111,6 +116,7 @@ class Pypboy(game.core.Engine):
             if config.SOUND_ENABLED:
                 if hasattr(config, 'radio'):
                     config.radio.handle_event(event)
+
         else:
             if hasattr(self, 'active'):
                 self.active.handle_event(event)

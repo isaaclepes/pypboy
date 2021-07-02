@@ -1,5 +1,22 @@
 # encoding=utf-8
 
+
+
+
+
+
+
+
+
+
+#THIS CODE DOESN"T SEEM TO BE ACTIVE
+
+
+
+
+
+
+
 import game
 import os
 import pygame
@@ -37,6 +54,7 @@ class Radio(game.Entity):
         self.loaded = False
         self.spectrum = None 
         self.filename = ""
+        self.volume = config.volume
     
     def play_rnd(self):
         if config.SOUND_ENABLED:
@@ -46,8 +64,18 @@ class Radio(game.Entity):
             pygame.mixer.music.load(file)
             self.spectrum = LogSpectrum(file,force_mono=True) 
             pygame.mixer.music.play()
+            pygame.mixer.music.set_volume(self.volume)
             self.loaded = True
             self.paused = True
+            
+    def handle_action(self, action, value=0):
+        print (
+        if action == "volume_up":
+            self.volume = self.volume + 0.1 
+            pygame.mixer.music.set_volume(self.volume)
+        if action == "volume_down":
+            self.volume = self.volume - 0.1 
+            pygame.mixer.music.set_volume(self.volume)
         
     def play(self):
         if self.loaded and config.SOUND_ENABLED:

@@ -1,5 +1,6 @@
 import pypboy
 import config
+import pygame
 
 from pypboy.modules.data import entities
 
@@ -36,27 +37,25 @@ class Module(pypboy.SubModule):
         self.menu.rect[1] = config.menu_y
         self.add(self.menu)
 
-        self.menu.select(1)
+        self.menu.select(config.station)
 
     def select_station(self, station):
         if hasattr(self, 'active_station') and self.active_station:
             self.active_station.stop()
         self.active_station = self.stations[station]
-        #self.active_station.play_random() #Play a random station at startup
+        if self.active_station != 0: #Allow position 0 to be off
+            self.active_station.play_random() #Play a random station upon selection
 
     def handle_event(self, event):
         if event.type == config.EVENTS['SONG_END']:
             if hasattr(self, 'active_station') and self.active_station:
                 self.active_station.play_random()
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_PAGEUP:
+                self.active_station.volume_up()
+            elif event.key == pygame.K_PAGEDOWN:
+                self.active_station.volume_down()
 
-    def handle_resume(self):
-        #self.parent.pypboy.topmenu.headline = "DATA"
-        #self.parent.pypboy.topmenu.title = ["Radio"]
-        super(Module, self).handle_resume()
 
-    def handle_tap(self):
-        if self.menu.handle_tap() == False:
-            if self.active_station.state == 1:
-                self.active_station.pause()
-            else:
-                self.active_station.play()
+                
+ 

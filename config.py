@@ -31,6 +31,10 @@ sub_menu_y = 93
 menu_x = 33
 menu_y = 189
 
+#Default music selection
+station = 0 # No station = 0 
+volume = 0.5 # Set default volume
+
 # OUTPUT_WIDTH = 320
 # OUTPUT_HEIGHT = 240
 
@@ -78,7 +82,7 @@ ACTIONS = {
     pygame.K_PLUS: "zoom_in",
     pygame.K_MINUS: "zoom_out",
     pygame.K_KP_PLUS: "zoom_in",
-    pygame.K_KP_MINUS: "zoom_out"
+    pygame.K_KP_MINUS: "zoom_out",
 }
 
 # Using GPIO.BCM as mode
