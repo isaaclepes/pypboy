@@ -3,11 +3,13 @@ import pygame
 import game
 import config
 import pypboy.ui
+import os
 
 
 class Module(pypboy.SubModule):
 
     label = "STATUS"
+    images = []
 
     def __init__(self, *args, **kwargs):
         super(Module, self).__init__(*args, **kwargs)
@@ -15,12 +17,11 @@ class Module(pypboy.SubModule):
         health.rect[0] = 0
         health.rect[1] = config.header_height + 1
         self.add(health)
+
         #self.menu = pypboy.ui.Menu(100, ["CND", "RAD", "EFF"], [self.show_cnd, self.show_rad, self.show_eff], 0)
         # self.menu.rect[0] = config.menu_x
         # self.menu.rect[1] = config.menu_y
         # self.add(self.menu)
-       
-
 
     # def show_cnd(self):
         # print("CND")
@@ -32,35 +33,41 @@ class Module(pypboy.SubModule):
         # print("EFF")
 
 
+
 class Health(game.Entity):
 
     def __init__(self):
         super(Health, self).__init__()
         self.image = pygame.Surface((config.WIDTH, config.HEIGHT - config.header_height - config.footer_height))
         self.image.fill((0, 0, 0))
-                
-        # Top Text
-        # config.FreeRobotoB[33].render_to(self.image, (104, 0), "STAT", config.dark)
-        # config.FreeRobotoB[33].render_to(self.image, (221, 0), "INV", config.dark)
-        # config.FreeRobotoB[33].render_to(self.image, (311, 0), "DATA", config.dark)
-        # config.FreeRobotoB[33].render_to(self.image, (422, 0), "MAP", config.dark)
-        # config.FreeRobotoB[33].render_to(self.image, (527, 0), "RADIO", config.dark)
+        #self.animation = pygame.surface.Surface((128, 240))
+        #self.animation.fill((0, 0, 0))
+        #self.image.blit((self.animation),(297,138))
+
+        self.clock = pygame.time.Clock()
+        self.animation_time = 0.1
+        self.current_time = 0
+        self.steps = list(range(4)) + list(range(4, 0, -1))
+        self.index = 0                
+        self.images = []
+        path = "./images/stats/legs1"
+        for f in os.listdir(path):
+            if f.endswith(".png"):
+                image = pygame.image.load(path + "/" + f).convert_alpha()
+                self.images.append(image)
+        self.head = pygame.image.load("images/stats/head1/1.png").convert_alpha()
         
-        # Sub Text
-        #config.FreeRobotoR[30].render_to(self.image, (93, 51), "STATUS", config.bright)
-        #config.FreeRobotoR[30].render_to(self.image, (203, 51), "SPECIAL", config.mid)
-        #config.FreeRobotoR[30].render_to(self.image, (319, 51), "PERKS", config.mid)
-        
-        # Lines around text
-        # pygame.draw.line(self.image, config.dark, (1, 32), (1, 39), 3)
-        # pygame.draw.line(self.image, config.dark, (0, 30), (92, 30), 3)
-        # pygame.draw.line(self.image, config.dark, (91, 7), (91, 28), 3)
-        # pygame.draw.line(self.image, config.dark, (90, 5), (101, 5), 3)
-        # pygame.draw.line(self.image, config.dark, (177, 5), (188, 5), 3)
-        # pygame.draw.line(self.image, config.dark, (187, 7), (187, 28), 3)
-        # pygame.draw.line(self.image, config.dark, (186, 30), (719, 30), 3)
-        # pygame.draw.line(self.image, config.dark, (718, 32), (718, 39), 3)
-        
+    def update(self):
+        if self.current_time >= self.animation_time:
+            self.current_time = 0
+            if self.index >= len(self.images):
+                self.index = 0
+            self.file = self.images[self.index]
+            self.image.fill((0,0,0))
+            self.image.blit((self.file),(297 + self.steps[self.index] // 2,209 + self.steps[self.index]))
+            self.image.blit((self.head),(325 + self.steps[self.index] // 2,141 + self.steps[self.index]))
+            self.index += 1
+           
         # Health Bars
         pygame.draw.line(self.image, config.bright, (344, 112), (379, 112), 9)
         pygame.draw.line(self.image, config.bright, (465, 214), (500, 214), 9)
@@ -105,7 +112,6 @@ class Health(game.Entity):
 
         #User name
         config.FreeRobotoB[24].render_to(self.image, (301, 528), config.name, config.bright)
-        
-        # Vault Boy
-        self.image.blit(pygame.image.load('images/stats/head_1.png').convert_alpha(),(328,139))
-        self.image.blit(pygame.image.load('images/stats/body_1.png').convert_alpha(),(298,210))
+
+    def render(self, clock):
+        self.current_time += self.clock.tick(30)

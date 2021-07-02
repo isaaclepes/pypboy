@@ -252,9 +252,9 @@ class RadioStation(game.Entity):
         for f in os.listdir(self.directory):
             if f.endswith(".mp3") or f.endswith(".ogg") or f.endswith(".wav"):
                 files.append(self.directory + f)
-        print(files)
+        #print(files)
         return files
-
+        
     def __le__(self, other):
         if type(other) is not RadioStation:
             return 0
