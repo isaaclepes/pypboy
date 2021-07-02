@@ -31,10 +31,16 @@ class Module(pypboy.SubModule):
 
     def __init__(self, *args, **kwargs):
         super(Module, self).__init__(*args, **kwargs)
-        boot = Boot()
-        boot.rect[0] = 0
-        boot.rect[1] = config.header_height + 1
-        self.add(boot)
+        self.boot = Boot()
+        self.boot.rect[0] = 0
+        self.boot.rect[1] = config.header_height + 1
+        self.add(self.boot)
+        
+    def handle_resume(self):
+        self.boot.top = 0
+        super(Module, self).handle_resume()
+
+
         
 class Boot(game.Entity):
 

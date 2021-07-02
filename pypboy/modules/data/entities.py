@@ -337,3 +337,9 @@ class F3Radio(RadioStation):
         self.label = 'F3 Radio'
         self.directory = 'sounds/radio/F3/'
         super(F3Radio, self).__init__(self, *args, **kwargs)
+        
+class ConelradCD(RadioStation):
+    def __init__(self, *args, **kwargs):
+        self.label = 'Conelrad Civil Defense'
+        self.directory = 'sounds/radio/ConelradCD/'
+        super(ConelradCD, self).__init__(self, *args, **kwargs)
