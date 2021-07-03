@@ -218,9 +218,11 @@ PERKS = [
 pygame.font.init()
 RobotoB = {}
 RobotoR = {}
+TechMono = {}
 for x in range(10, 34):
     RobotoB[x] = pygame.font.Font('fonts/RobotoCondensed-Bold.ttf', x)    
-    RobotoR[x] = pygame.font.Font('fonts/RobotoCondensed-Regular.ttf', x)    
+    RobotoR[x] = pygame.font.Font('fonts/RobotoCondensed-Regular.ttf', x)   
+    TechMono[x] = pygame.font.Font('fonts/TechMono.ttf', x) 
 
 pygame.freetype.init()
 FreeRobotoB = {}

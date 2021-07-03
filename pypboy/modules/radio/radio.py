@@ -14,7 +14,7 @@ class Module(pypboy.SubModule):
             entities.RadioOff(),
             entities.ClassicalRadio(),
             entities.DiamondCityRadio(),
-            entities.ConelradCD(),
+            #entities.ConelradCD(),
             #entities.EnclaveRadio(),
             #entities.InstituteRadio(),
             #entities.MinutemenRadio(),

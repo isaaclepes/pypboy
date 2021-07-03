@@ -24,10 +24,9 @@ def word_wrap(surf, text, font):
         x += bounds.width + space.width
     return x, y
 
-
 class Module(pypboy.SubModule):
 
-    label = "BOOT_TEXT"
+    label = ""
 
     def __init__(self, *args, **kwargs):
         super(Module, self).__init__(*args, **kwargs)
