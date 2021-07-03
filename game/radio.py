@@ -258,4 +258,4 @@ if __name__ == "__main__":
             play_pygame(files[randint(0,len(files)-1)])
     except Exception:
         _, err, _ = sys.exc_info()
-        print(traceback.format_exc())
+        #print(traceback.format_exc())

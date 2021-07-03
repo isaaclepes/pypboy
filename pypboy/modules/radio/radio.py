@@ -1,6 +1,9 @@
 import pypboy
 import config
 import pygame
+import os
+import imp
+import glob
 
 from pypboy.modules.data import entities
 
@@ -10,27 +13,29 @@ class Module(pypboy.SubModule):
 
     def __init__(self, *args, **kwargs):
         super(Module, self).__init__(*args, **kwargs)
-        self.stations = [
-            entities.RadioOff(),
-            entities.ClassicalRadio(),
-            entities.DiamondCityRadio(),
-            #entities.ConelradCD(),
-            #entities.EnclaveRadio(),
-            #entities.InstituteRadio(),
-            #entities.MinutemenRadio(),
-            #entities.Vault101Radio(),
-            #entities.ViolinRadio(),
-            #entities.F3Radio()
-        ]
+        
+        self.stations = []
+        self.audiofolders = 'sounds/radio/'
+        self.list_of_stations = []
+        self.station_info = []
+        self.list_folders()
+        stationLabels = []
+        stationCallbacks = []
+
+        for self.station in self.list_of_stations:
+            #Make station classes
+            stationLabels.append(self.station[2])
+            self.stations.append(entities.RadioClass(self.station[1],self.station[0]+"/"),)
+             
         for station in self.stations:
             self.add(station)
         self.active_station = None
         config.radio = self
 
-        stationLabels = []
-        stationCallbacks = []
+        #stationLabels = []
+        #stationCallbacks = []
         for i, station in enumerate(self.stations):
-            stationLabels.append(station.label)
+            #stationLabels.append(station.label)
             stationCallbacks.append(lambda i=i: self.select_station(i))
 
         self.menu = pypboy.ui.Menu(350, stationLabels, stationCallbacks, 0)
@@ -58,5 +63,25 @@ class Module(pypboy.SubModule):
                 self.active_station.volume_down()
 
 
-                
+    def list_folders(self):  
+        
+        #Get list of folders
+        folders = []
+        for f in os.listdir(self.audiofolders):
+            if not f.endswith("/"):
+                folders.append(self.audiofolders + f)
+
+        #Get station_name from station.py
+        for folder in folders:
+            folder_name = os.path.basename(folder) #Get the folder name without the full path
+            if len(glob.glob(folder+"/*.mp3")) + len(glob.glob(folder+"/*.ogg")) + len(glob.glob(folder+"/*.wav")) == 0:
+                print ("No audio files in:", folder)
+                continue 
+            try:
+                station = imp.load_source("station.py", os.path.join(folder,"station.py"))
+                station_name = station.station_name
+            except:
+                station_name = folder_name
+            
+            self.list_of_stations.append([folder,folder_name,station_name])
  

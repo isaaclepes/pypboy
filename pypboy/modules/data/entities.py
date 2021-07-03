@@ -8,6 +8,7 @@ import time
 from random import choice
 
 
+
 class Map(game.Entity):
 
     _mapper = None
@@ -196,7 +197,6 @@ class MapGrid(game.Entity):
         self.draw_tags()
 
 class RadioStation(game.Entity):
-    
 
     STATES = {
         'stopped': 0,
@@ -211,7 +211,7 @@ class RadioStation(game.Entity):
         self.state = self.STATES['stopped']
         self.files = self.load_files()
         self.filename = 0
-        pygame.mixer.music.set_endevent(config.EVENTS['SONG_END'])
+        pygame.mixer.music.set_endevent(config.EVENTS['SONG_END'])        
 
     def play_random(self):
         start_pos = 0
@@ -283,63 +283,71 @@ class RadioStation(game.Entity):
             return self.label >= other.label
 
 
-class RadioOff(RadioStation):
-    def __init__(self, *args, **kwargs):
-        self.label = 'Radio Off'
-        self.directory = 'sounds/radio/RadioOff/'
-        super(RadioOff, self).__init__(self, *args, **kwargs)
 
-class ClassicalRadio(RadioStation):
-    def __init__(self, *args, **kwargs):
-        self.label = 'Classical Radio'
-        self.directory = 'sounds/radio/Classical/'
-        super(ClassicalRadio, self).__init__(self, *args, **kwargs)
+class RadioClass(RadioStation):
+    def __init__(self, station_name, folder_name, *args, **kwargs):
+        self.label = station_name
+        self.directory = folder_name
+        super(RadioClass, self).__init__(self, *args, **kwargs)
 
-class DiamondCityRadio(RadioStation):
-    def __init__(self, *args, **kwargs):
-        self.label = 'Diamond City Radio'
-        self.directory = 'sounds/radio/DCR/'
-        super(DiamondCityRadio, self).__init__(self, *args, **kwargs)
 
-class EnclaveRadio(RadioStation):
-    def __init__(self, *args, **kwargs):
-        self.label = 'Enclave Radio'
-        self.directory = 'sounds/radio/Enclave/'
-        super(EnclaveRadio, self).__init__(self, *args, **kwargs)
+# class RadioOff(RadioStation):
+#     def __init__(self, *args, **kwargs):
+#         self.label = 'Radio Off'
+#         self.directory = 'sounds/radio/RadioOff/'
+#         super(RadioOff, self).__init__(self, *args, **kwargs)
 
-class InstituteRadio(RadioStation):
-    def __init__(self, *args, **kwargs):
-        self.label = 'Institute Radio'
-        self.directory = 'sounds/radio/Institute/'
-        super(InstituteRadio, self).__init__(self, *args, **kwargs)
+# class ClassicalRadio(RadioStation):
+#     def __init__(self, *args, **kwargs):
+#         self.label = 'Classical Radio'
+#         self.directory = 'sounds/radio/Classical/'
+#         super(ClassicalRadio, self).__init__(self, *args, **kwargs)
 
-class MinutemenRadio(RadioStation):
-    def __init__(self, *args, **kwargs):
-        self.label = 'Minutemen Radio'
-        self.directory = 'sounds/radio/Minutemen/'
-        super(MinutemenRadio, self).__init__(self, *args, **kwargs)
+# class DiamondCityRadio(RadioStation):
+#     def __init__(self, *args, **kwargs):
+#         self.label = 'Diamond City Radio'
+#         self.directory = 'sounds/radio/DCR/'
+#         super(DiamondCityRadio, self).__init__(self, *args, **kwargs)
 
-class Vault101Radio(RadioStation):
-    def __init__(self, *args, **kwargs):
-        self.label = 'Vault 101 Radio'
-        self.directory = 'sounds/radio/V101/'
-        super(Vault101Radio, self).__init__(self, *args, **kwargs)
+# class EnclaveRadio(RadioStation):
+#     def __init__(self, *args, **kwargs):
+#         self.label = 'Enclave Radio'
+#         self.directory = 'sounds/radio/Enclave/'
+#         super(EnclaveRadio, self).__init__(self, *args, **kwargs)
 
-class ViolinRadio(RadioStation):
-    def __init__(self, *args, **kwargs):
-        self.label = 'Violin Radio'
-        self.directory = 'sounds/radio/Violin/'
-        super(ViolinRadio, self).__init__(self, *args, **kwargs)
+# class InstituteRadio(RadioStation):
+#     def __init__(self, *args, **kwargs):
+#         self.label = 'Institute Radio'
+#         self.directory = 'sounds/radio/Institute/'
+#         super(InstituteRadio, self).__init__(self, *args, **kwargs)
 
-class F3Radio(RadioStation):
-    def __init__(self, *args, **kwargs):
+# class MinutemenRadio(RadioStation):
+#     def __init__(self, *args, **kwargs):
+#         self.label = 'Minutemen Radio'
+#         self.directory = 'sounds/radio/Minutemen/'
+#         super(MinutemenRadio, self).__init__(self, *args, **kwargs)
+
+# class Vault101Radio(RadioStation):
+#     def __init__(self, *args, **kwargs):
+#         self.label = 'Vault 101 Radio'
+#         self.directory = 'sounds/radio/V101/'
+#         super(Vault101Radio, self).__init__(self, *args, **kwargs)
+
+# class ViolinRadio(RadioStation):
+#     def __init__(self, *args, **kwargs):
+#         self.label = 'Violin Radio'
+#         self.directory = 'sounds/radio/Violin/'
+#         super(ViolinRadio, self).__init__(self, *args, **kwargs)
+
+# class F3Radio(RadioStation):
+#     def __init__(self, *args, **kwargs):
         
-        self.label = 'F3 Radio'
-        self.directory = 'sounds/radio/F3/'
-        super(F3Radio, self).__init__(self, *args, **kwargs)
+#         self.label = 'F3 Radio'
+#         self.directory = 'sounds/radio/F3/'
+#         super(F3Radio, self).__init__(self, *args, **kwargs)
         
-class ConelradCD(RadioStation):
-    def __init__(self, *args, **kwargs):
-        self.label = 'Conelrad Civil Defense'
-        self.directory = 'sounds/radio/ConelradCD/'
-        super(ConelradCD, self).__init__(self, *args, **kwargs)
+# class ConelradCD(RadioStation):
+#     def __init__(self, *args, **kwargs):
+#         self.label = 'Conelrad Civil Defense'
+#         self.directory = 'sounds/radio/ConelradCD/'
+#         super(ConelradCD, self).__init__(self, *args, **kwargs)

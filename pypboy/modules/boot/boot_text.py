@@ -164,10 +164,13 @@ class Boot(game.Entity):
     def render(self, *args, **kwargs):
         self.top -= 5
         self.rect[1] = self.top
+
+        if self.top <= -720 * 3:
+            self.top = 0
+            #TODO: Need code to switch screens
+        
         super(Boot, self).render(self, *args, **kwargs)
+
      
     def handle_resume(self):
-        print("I need help getting this damn part working")
-        #self.parent.pypboy.header.headline = "Boot_text"
-        #self.parent.pypboy.header.title = [self.title]
         self.top = 0
