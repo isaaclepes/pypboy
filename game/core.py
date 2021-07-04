@@ -1,6 +1,6 @@
 import pygame
 import time
-import config
+import settings
 
 class Engine(object):
 
@@ -11,7 +11,7 @@ class Engine(object):
         super(Engine, self).__init__(*args, **kwargs)
         pygame.init()
 
-        if config.FULLSCREEN == True:
+        if settings.FULLSCREEN == True:
             self.window = pygame.display.set_mode((width, height),pygame.FULLSCREEN)
         else:
             self.window = pygame.display.set_mode((width, height))

@@ -1,7 +1,8 @@
 import pygame
-import config
+import settings
 import game
 import pypboy.ui
+import settings
 from math import atan2, pi, degrees
 
 from pypboy.modules import data
@@ -11,7 +12,7 @@ from pypboy.modules import boot
 from pypboy.modules import map
 from pypboy.modules import radio
 
-if config.GPIO_AVAILABLE:
+if settings.GPIO_AVAILABLE:
     import RPi.GPIO as GPIO
 
 
@@ -21,8 +22,8 @@ class Pypboy(game.core.Engine):
 
     def __init__(self, *args, **kwargs):
         # Support rescaling
-        if hasattr(config, 'OUTPUT_WIDTH') and hasattr(config, 'OUTPUT_HEIGHT'):
-            self.rescale = False
+        # if hasattr(settings, 'OUTPUT_WIDTH') and hasattr(settings, 'OUTPUT_HEIGHT'):
+        #     self.rescale = False
             
         #Initialize modules
         super(Pypboy, self).__init__(*args, **kwargs)
@@ -30,11 +31,12 @@ class Pypboy(game.core.Engine):
         self.init_modules()
         
         self.gpio_actions = {}
-        # if config.GPIO_AVAILABLE:
+        # if settings.GPIO_AVAILABLE:
             # self.init_gpio_controls()
 
     def init_children(self):
         #self.background = pygame.image.load('images/background.png')
+        #self.background = pygame.image.load('images/Special_Reference.png')
         self.topmenu = pypboy.ui.TopMenu()
         self.root_children.add(self.topmenu)
         self.footer = pypboy.ui.Footer()
@@ -58,10 +60,10 @@ class Pypboy(game.core.Engine):
         self.switch_module("stats")
 
     def init_gpio_controls(self):
-        for pin in config.GPIO_ACTIONS.keys():
-            print("Initialing pin %s as action '%s'" % (pin, config.GPIO_ACTIONS[pin]))
+        for pin in settings.gpio_actions.keys():
+            print("Initialing pin %s as action '%s'" % (pin, settings.gpio_actions[pin]))
             GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-            self.gpio_actions[pin] = config.GPIO_ACTIONS[pin]
+            self.gpio_actions[pin] = settings.gpio_actions[pin]
 
     def check_gpio_input(self):
         for pin in self.gpio_actions.keys():
@@ -104,18 +106,18 @@ class Pypboy(game.core.Engine):
             if (event.key == pygame.K_ESCAPE): #ESC
                 self.running = False
             elif (event.key == pygame.K_PAGEUP): # Volume up
-                config.radio.handle_event(event)
+                settings.radio.handle_event(event)
             elif (event.key == pygame.K_PAGEDOWN): # Volume down
-                config.radio.handle_event(event)
+                settings.radio.handle_event(event)
             else:
-                if event.key in config.ACTIONS: #Check action based on key in config
-                    self.handle_action(config.ACTIONS[event.key])
+                if event.key in settings.ACTIONS: #Check action based on key in settings
+                    self.handle_action(settings.ACTIONS[event.key])
         elif event.type == pygame.QUIT:
             self.running = False
-        elif event.type == config.EVENTS['SONG_END']:
-            if config.SOUND_ENABLED:
-                if hasattr(config, 'radio'):
-                    config.radio.handle_event(event)
+        elif event.type == settings.EVENTS['SONG_END']:
+            if settings.SOUND_ENABLED:
+                if hasattr(settings, 'radio'):
+                    settings.radio.handle_event(event)
 
         else:
             if hasattr(self, 'active'):

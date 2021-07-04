@@ -2,7 +2,7 @@ from game.core import Entity
 import pypboy
 import pygame
 import game
-import config
+import settings
 
 
 class Module(pypboy.SubModule):
@@ -12,70 +12,7 @@ class Module(pypboy.SubModule):
     def __init__(self, *args, **kwargs):
         super(Module, self).__init__(*args, **kwargs)
 
-        self.stat = Stat('images/special_strength.png')
-        self.stat.rect[0] = 0
-        self.stat.rect[1] = config.header_height + 1
-        self.add(self.stat)
-
-        self.menu = pypboy.ui.Menu(300, [
-            "Strength", 
-            "Perception", 
-            "Endurance", 
-            "Charisma", 
-            "Intelligence", 
-            "Agility", 
-            "Luck"
-            ],[
-            self.show_str,
-            self.show_per,
-            self.show_end,
-            self.show_cha,
-            self.show_int,
-            self.show_agi,
-            self.show_luc
-            ], 0)
-        self.menu.rect[0] = config.menu_x
-        self.menu.rect[1] = config.menu_y
+        self.menu = pypboy.ui.Menu(settings.SPECIAL)
+        self.menu.rect[0] = settings.menu_x
+        self.menu.rect[1] = settings.menu_y
         self.add(self.menu)
-
-    def changeStat(self, imageUrl):
-        self.stat.image = pygame.image.load(imageUrl).convert()
-        self.stat.rect = self.stat.image.get_rect()
-        self.stat.rect[0] = 150
-        self.stat.rect[1] = 150
-        self.stat.image = self.stat.image.convert()
-
-    def show_str(self):
-        self.changeStat('images/special_strength.png')
-        print("Strength")
-
-    def show_per(self):
-        self.changeStat('images/special_perception.png')
-        print("Perception")
-
-    def show_end(self):
-        self.changeStat('images/special_endurance.png')
-        print("Endurance")
-
-    def show_cha(self):
-        self.changeStat('images/special_charisma.png')
-        print("Charisma")
-
-    def show_int(self):
-        self.changeStat('images/special_intelligence.png')
-        print("Intelligence")
-
-    def show_agi(self):
-        self.changeStat('images/special_agility.png')
-        print("Agility")
-
-    def show_luc(self):
-        self.changeStat('images/special_luck.png')
-        print("Luck")
-
-class Stat(game.Entity):
-    def __init__(self, imageUrl):
-        super(Stat, self).__init__()
-        self.image = pygame.image.load(imageUrl).convert()
-        self.rect = self.image.get_rect()
-        self.image = self.image.convert()

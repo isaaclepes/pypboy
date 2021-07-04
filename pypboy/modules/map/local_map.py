@@ -1,6 +1,6 @@
 import pygame
 import pypboy
-import config
+import settings
 
 from pypboy.modules.data import entities
 
@@ -12,15 +12,15 @@ class Module(pypboy.SubModule):
 
     def __init__(self, *args, **kwargs):
         super(Module, self).__init__(*args, **kwargs)
-        self.mapgrid = entities.Map(config.WIDTH, pygame.Rect(0, (config.WIDTH - config.HEIGHT) / 2, config.WIDTH - 8, config.HEIGHT - self.map_top_edge))
-        if(config.LOAD_CACHED_MAP):
+        self.mapgrid = entities.Map(settings.WIDTH, pygame.Rect(0, (settings.WIDTH - settings.HEIGHT) / 2, settings.WIDTH - 8, settings.HEIGHT - self.map_top_edge))
+        if(settings.LOAD_CACHED_MAP):
             print("Loading cached map")
-            self.mapgrid = entities.Map(config.WIDTH, pygame.Rect(0, (config.WIDTH - config.HEIGHT) / 2, config.WIDTH - 8, config.HEIGHT - self.map_top_edge), "Loading cached map")
-            self.mapgrid.load_map(config.MAP_FOCUS, self.zoom, False)
+            self.mapgrid = entities.Map(settings.WIDTH, pygame.Rect(0, (settings.WIDTH - settings.HEIGHT) / 2, settings.WIDTH - 8, settings.HEIGHT - self.map_top_edge), "Loading cached map")
+            self.mapgrid.load_map(settings.MAP_FOCUS, self.zoom, False)
         else:
             print("Loading map from the internet")
-            self.mapgrid = entities.Map(config.WIDTH, pygame.Rect(0, (config.WIDTH - config.HEIGHT) / 2, config.WIDTH - 8, config.HEIGHT - self.map_top_edge), "Loading map from the internet")
-            self.mapgrid.fetch_map(config.MAP_FOCUS, self.zoom, False)
+            self.mapgrid = entities.Map(settings.WIDTH, pygame.Rect(0, (settings.WIDTH - settings.HEIGHT) / 2, settings.WIDTH - 8, settings.HEIGHT - self.map_top_edge), "Loading map from the internet")
+            self.mapgrid.fetch_map(settings.MAP_FOCUS, self.zoom, False)
         self.add(self.mapgrid)
         self.mapgrid.rect[0] = 0
         self.mapgrid.rect[1] = self.map_top_edge
@@ -38,19 +38,19 @@ class Module(pypboy.SubModule):
 
     # def handle_tap(self):
         # x,y = pygame.mouse.get_pos()
-        # if x < (config.WIDTH / 2):
+        # if x < (settings.WIDTH / 2):
             # self.zoomMap(-0.003)
-        # if x > (config.WIDTH / 2):
+        # if x > (settings.WIDTH / 2):
             # self.zoomMap(0.003)
 
     def zoomMap(self, zoomFactor):
         self.zoom = self.zoom + zoomFactor
-        if config.LOAD_CACHED_MAP:
+        if settings.LOAD_CACHED_MAP:
             print("Loading cached map")
-            self.mapgrid.load_map(config.MAP_FOCUS, self.zoom, False)
+            self.mapgrid.load_map(settings.MAP_FOCUS, self.zoom, False)
         else:
             print("Loading map from the internet")
-            self.mapgrid.fetch_map(config.MAP_FOCUS, self.zoom, False)
+            self.mapgrid.fetch_map(settings.MAP_FOCUS, self.zoom, False)
         
         self.add(self.mapgrid)
         self.mapgrid.rect[0] = 0

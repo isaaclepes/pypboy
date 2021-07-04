@@ -1,7 +1,7 @@
 import pypboy
 import pygame
 import game
-import config
+import settings
 
 
 class Module(pypboy.SubModule):

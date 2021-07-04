@@ -1,7 +1,7 @@
 import pypboy
 import pygame
 import game
-import config
+import settings
 import pypboy.ui
 import os
 
@@ -15,12 +15,12 @@ class Module(pypboy.SubModule):
         super(Module, self).__init__(*args, **kwargs)
         thumbs = Thumbs()
         thumbs.rect[0] = 0
-        thumbs.rect[1] = config.header_height + 1
+        thumbs.rect[1] = 51
         self.add(thumbs)
 
-        #self.menu = pypboy.ui.Menu(100, ["CND", "RAD", "EFF"], [self.show_cnd, self.show_rad, self.show_eff], 0)
-        # self.menu.rect[0] = config.menu_x
-        # self.menu.rect[1] = config.menu_y
+        #self.menu = pypboy.ui.Menu([["CND", "RAD", "EFF"], [self.show_cnd, self.show_rad, self.show_eff]], 0)
+        # self.menu.rect[0] = settings.menu_x
+        # self.menu.rect[1] = settings.menu_y
         # self.add(self.menu)
 
     # def show_cnd(self):
@@ -38,7 +38,7 @@ class Thumbs(game.Entity):
 
     def __init__(self):
         super(Thumbs, self).__init__()
-        self.image = pygame.Surface((config.WIDTH, config.HEIGHT))
+        self.image = pygame.Surface((settings.WIDTH, settings.HEIGHT))
         self.image.fill((0, 0, 0))
 
         self.clock = pygame.time.Clock()
@@ -71,7 +71,7 @@ class Thumbs(game.Entity):
                 self.brightness_index = 0
             self.color = (0, self.brightness[self.brightness_index], 0)
 
-            text = config.FreeRobotoB[20].render_to(self.image, (300, 450), "INITITATING...", self.color)
+            text = settings.FreeRobotoB[20].render_to(self.image, (300, 450), "INITITATING...", self.color)
 
         #User name
         

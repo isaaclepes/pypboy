@@ -1,9 +1,8 @@
 import pypboy
 import pygame
 import game
-import config
+import settings
 import pypboy.ui
-
 
 def word_wrap(surf, text, font):
     font.origin = True
@@ -20,9 +19,10 @@ def word_wrap(surf, text, font):
         #    raise ValueError("word too wide for the surface")
         #if y + bounds.height - bounds.y >= height:
         #    raise ValueError("text to long for the surface")
-        font.render_to(surf, (x, y), None, config.bright,None,1)
+        font.render_to(surf, (x, y), None, settings.bright,None,1)
         x += bounds.width + space.width
     return x, y
+
 
 class Module(pypboy.SubModule):
 
@@ -32,7 +32,7 @@ class Module(pypboy.SubModule):
         super(Module, self).__init__(*args, **kwargs)
         self.boot = Boot()
         self.boot.rect[0] = 0
-        self.boot.rect[1] = config.header_height + 1
+        self.boot.rect[1] = 51
         self.add(self.boot)
         
     def handle_resume(self):
@@ -46,7 +46,7 @@ class Boot(game.Entity):
     def __init__(self):
         super(Boot, self).__init__()
         
-        self.image = pygame.surface.Surface((config.WIDTH, config.HEIGHT * 3))
+        self.image = pygame.surface.Surface((settings.WIDTH, settings.HEIGHT * 3))
         self.rect[1] = 0
         self.top = 0
 
@@ -156,7 +156,7 @@ class Boot(game.Entity):
             "0x00000000000000000 start memory discovery0 0x0000A4 0x00000000000000000 END"
         )
         
-        word_wrap(self.image, boot_text, config.FreeTechMono[17])
+        word_wrap(self.image, boot_text, settings.FreeTechMono[17])
 
     # def update(self, *args, **kwargs):
         # super(Boot, self).update(self, *args, **kwargs)

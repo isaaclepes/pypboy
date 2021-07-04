@@ -1,7 +1,7 @@
 from pypboy import BaseModule
 from pypboy.modules.data import quests
 from pypboy.modules.data import misc
-import config
+import settings
 
 
 class Module(BaseModule):
@@ -17,6 +17,6 @@ class Module(BaseModule):
         
     def handle_resume(self):
         self.pypboy.topmenu.label = self.label
-        self.pypboy.topmenu.title = config.MODULE_TEXT
+        self.pypboy.topmenu.title = settings.MODULE_TEXT
         self.active.handle_action("resume")
         

@@ -1,7 +1,7 @@
 import pypboy
 import pygame
 import game
-import config
+import settings
 import pypboy.ui
 
 
@@ -31,7 +31,7 @@ class Pipos(game.Entity):
     def __init__(self):
         super(Pipos, self).__init__()
         
-        self.image = pygame.surface.Surface((config.WIDTH, config.HEIGHT))
+        self.image = pygame.surface.Surface((settings.WIDTH, settings.HEIGHT))
         self.rect[1] = 0
         self.top = 0
         
@@ -84,36 +84,36 @@ class Pipos(game.Entity):
 
             #This code is ugly but works
             if self.text == "▯": # Look for a special character to make starting blink
-                text_to_blit = config.TechMono[26].render(self.text, True, (config.bright), (0,0,0))
+                text_to_blit = settings.TechMono[26].render(self.text, True, (settings.bright), (0,0,0))
                 self.image.blit(text_to_blit, (0,0))
                 self.line += 1 # Go to next line
             elif self.text == "~": # Look for a special character to make starting blink
-                text_to_blit = config.TechMono[26].render(" ", True, (config.bright), (0,0,0))
+                text_to_blit = settings.TechMono[26].render(" ", True, (settings.bright), (0,0,0))
                 self.image.blit(text_to_blit, (0,0))
                 self.line += 1 # Go to next line
             elif self.text == "/": # Look for a special character to make starting blink
-                text_to_blit = config.TechMono[26].render(" ", True, (config.bright), (0,0,0))
+                text_to_blit = settings.TechMono[26].render(" ", True, (settings.bright), (0,0,0))
                 self.image.blit(text_to_blit, (0,0))
                 self.char = 0
                 self.line += 1 # Go to next line
             elif self.text == "^": # Look for a special character to make starting blink
-                text_to_blit = config.TechMono[26].render(" ", True, (config.bright), (0,0,0))
+                text_to_blit = settings.TechMono[26].render(" ", True, (settings.bright), (0,0,0))
                 self.image.blit(text_to_blit, (337,241))
                 self.line += 1 # Go to next line
             elif self.text == "@": # Look for a special character to make starting blink
-                text_to_blit = config.TechMono[26].render("▯", True, (config.bright), (0,0,0))
+                text_to_blit = settings.TechMono[26].render("▯", True, (settings.bright), (0,0,0))
                 self.image.blit(text_to_blit, (337,241))
                 self.line += 1 # Go to next line
             elif self.char >= len(self.text): #Check if at the end of the line
                 self.char = 0 #Reset to first character
                 self.line += 1 # Go to next line
-                text_to_blit = config.TechMono[26].render(self.text, True, (config.bright), (0,0,0))
+                text_to_blit = settings.TechMono[26].render(self.text, True, (settings.bright), (0,0,0))
                 self.image.blit(text_to_blit, (0,self.y))
                 self.y += 24
                 #self.text = self.text[:-1] #Strip the box character before moving on
             else:
                 self.text = self.text[0:self.char] + "▯"  #Just get the characters up to now
-                text_to_blit = config.TechMono[26].render(self.text, True, (config.bright), (0,0,0))
+                text_to_blit = settings.TechMono[26].render(self.text, True, (settings.bright), (0,0,0))
                 self.image.blit(text_to_blit, (0,self.y))
 
             self.char += 1

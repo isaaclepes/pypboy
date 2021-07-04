@@ -1,7 +1,7 @@
 import pypboy
 import pygame
 import game
-import config
+import settings
 
 
 class Module(pypboy.SubModule):
@@ -11,8 +11,8 @@ class Module(pypboy.SubModule):
     def __init__(self, *args, **kwargs):
         super(Module, self).__init__(*args, **kwargs)
 
-        self.menu = pypboy.ui.Menu(350, config.WEAPONS, [], 0)
-        self.menu.rect[0] = config.menu_x
-        self.menu.rect[1] = config.menu_y
+        self.menu = pypboy.ui.Menu(settings.WEAPONS)
+        self.menu.rect[0] = settings.menu_x
+        self.menu.rect[1] = settings.menu_y
         
         self.add(self.menu)

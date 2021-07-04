@@ -1,6 +1,6 @@
 import pygame
 import pypboy
-import config
+import settings
 
 from pypboy.modules.data import entities
 
@@ -12,12 +12,12 @@ class Module(pypboy.SubModule):
 
     def __init__(self, *args, **kwargs):
         super(Module, self).__init__(*args, **kwargs)
-        if config.LOAD_CACHED_MAP:
-            mapgrid = entities.Map(480, pygame.Rect(0, 0, config.WIDTH - 8, config.HEIGHT - self.map_top_edge), "Loading cached map")
-            mapgrid.load_map(config.MAP_FOCUS, config.WORLD_MAP_FOCUS, True)
+        if settings.LOAD_CACHED_MAP:
+            mapgrid = entities.Map(480, pygame.Rect(0, 0, settings.WIDTH - 8, settings.HEIGHT - self.map_top_edge), "Loading cached map")
+            mapgrid.load_map(settings.MAP_FOCUS, settings.WORLD_MAP_FOCUS, True)
         else:
-            mapgrid = entities.Map(480, pygame.Rect(0, 0, config.WIDTH - 8, config.HEIGHT - self.map_top_edge), "Fetching cached map")
-            mapgrid.fetch_map(config.MAP_FOCUS, config.WORLD_MAP_FOCUS, True)
+            mapgrid = entities.Map(480, pygame.Rect(0, 0, settings.WIDTH - 8, settings.HEIGHT - self.map_top_edge), "Fetching cached map")
+            mapgrid.fetch_map(settings.MAP_FOCUS, settings.WORLD_MAP_FOCUS, True)
         self.add(mapgrid)
         mapgrid.rect[0] = 4
         mapgrid.rect[1] = 40

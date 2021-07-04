@@ -1,6 +1,6 @@
 import os
 import game
-import config
+import settings
 import pygame
 import threading
 import pypboy.data
@@ -25,7 +25,7 @@ class Map(game.Entity):
         self._map_surface = pygame.Surface((width, width))
         self._render_rect = render_rect
         super(Map, self).__init__((width, width), *args, **kwargs)
-        text = config.RobotoB[14].render(loading_type, True, (config.bright), (0, 0, 0))
+        text = settings.RobotoB[14].render(loading_type, True, (settings.bright), (0, 0, 0))
         self.image.blit(text, (10, 10))
 
     def fetch_map(self, position, radius, isWorld):
@@ -55,20 +55,20 @@ class Map(game.Entity):
         for way in self._mapper.transpose_ways((self._size / coef, self._size / coef), (self._size / 2, self._size / 2)):
             pygame.draw.lines(
                     self._map_surface,
-                    (config.mid), # Map line Color
+                    (settings.mid), # Map line Color
                     False,
                     way,
                     2
             )
         for tag in self._mapper.transpose_tags((self._size / coef, self._size / coef), (self._size / 2, self._size / 2)):
-            if tag[3] in config.AMENITIES:
-                image = config.AMENITIES[tag[3]]
+            if tag[3] in settings.AMENITIES:
+                image = settings.AMENITIES[tag[3]]
                 pygame.transform.scale(image, (10, 10))
                 self._map_surface.blit(image, (tag[1], tag[2]))
-                text = config.RobotoB[12].render(tag[0], True, (config.bright), (0, 0, 0))
+                text = settings.RobotoB[12].render(tag[0], True, (settings.bright), (0, 0, 0))
                 self._map_surface.blit(text, (tag[1] + 17, tag[2] + 4))
             else:
-                image = config.MAP_ICONS['misc']
+                image = settings.MAP_ICONS['misc']
 
         self.image.blit(self._map_surface, (0, 0), area=self._render_rect)
 
@@ -102,7 +102,7 @@ class MapSquare(game.Entity):
         for way in self._mapper.transpose_ways((self._size, self._size), (self._size / 2, self._size / 2)):
             pygame.draw.lines(
                     self._map_surface,
-                    (config.mid),
+                    (settings.mid),
                     False,
                     way,
                     1
@@ -163,15 +163,15 @@ class MapGrid(game.Entity):
             self.tags.update(square.tags)
         self._tag_surface.fill((0, 0, 0))
         for name in self.tags:
-            if self.tags[name][2] in config.AMENITIES:
-                image = config.AMENITIES[self.tags[name][2]]
+            if self.tags[name][2] in settings.AMENITIES:
+                image = settings.AMENITIES[self.tags[name][2]]
             #else:
             #	print "Unknown amenity: %s" % self.tags[name][2]
-            #	image = config.MAP_ICONS['misc']
+            #	image = settings.MAP_ICONS['misc']
                 pygame.transform.scale(image, (10, 10))
                 self.image.blit(image, (self.tags[name][0], self.tags[name][1]))
             # try:
-                text = config.RobotoB[12].render(name, True, (config.bright), (0, 0, 0))
+                text = settings.RobotoB[12].render(name, True, (settings.bright), (0, 0, 0))
             # text_width = text.get_size()[0]
             # 	pygame.draw.rect(
             # 		self,
@@ -203,23 +203,21 @@ class RadioStation(game.Entity):
         'playing': 1,
         'paused': 2
     }
-    
-    volume = config.volume
-
+   
     def __init__(self, *args, **kwargs):
         super(RadioStation, self).__init__((10, 10), *args, **kwargs)
         self.state = self.STATES['stopped']
         self.files = self.load_files()
         self.filename = 0
-        pygame.mixer.music.set_endevent(config.EVENTS['SONG_END'])        
-
+        pygame.mixer.music.set_endevent(settings.EVENTS['SONG_END'])        
+        
     def play_random(self):
         start_pos = 0
         f = False
-        if config.SOUND_ENABLED:
+        if settings.SOUND_ENABLED:
             if hasattr(self, 'last_filename') and self.last_filename:
                 pygame.mixer.music.load(self.last_filename)
-                pygame.mixer.music.set_volume(self.volume)
+                pygame.mixer.music.set_volume(settings.VOLUME)
                 now = time.time()
                 curpos = self.last_playpos + (now - self.last_playtime)
             f = choice(self.files)
@@ -229,19 +227,20 @@ class RadioStation(game.Entity):
             self.state = self.STATES['playing']
     
     def volume_up(self):   
-        if config.SOUND_ENABLED:
+        if settings.SOUND_ENABLED:
             #print ("volume up")
-            self.volume = self.volume + 0.05 
-            pygame.mixer.music.set_volume(self.volume)
-    
+            settings.VOLUME = settings.VOLUME + 0.05 
+            pygame.mixer.music.set_volume(settings.VOLUME)
+   
+ 
     def volume_down(self):   
-        if config.SOUND_ENABLED:
+        if settings.SOUND_ENABLED:
             #print ("volume down")
-            self.volume = self.volume - 0.05 
-            pygame.mixer.music.set_volume(self.volume)        
-        
+            settings.VOLUME = settings.VOLUME - 0.05 
+            pygame.mixer.music.set_volume(settings.VOLUME)
+    
     def play(self):
-        if config.SOUND_ENABLED:
+        if settings.SOUND_ENABLED:
             if self.state == self.STATES['paused']:
                 pygame.mixer.music.unpause()
                 self.state = self.STATES['playing']
@@ -249,12 +248,12 @@ class RadioStation(game.Entity):
                 self.stop()
         
     def pause(self):
-        if config.SOUND_ENABLED:
+        if settings.SOUND_ENABLED:
             self.state = self.STATES['paused']
             pygame.mixer.music.pause()
         
     def stop(self):
-        if config.SOUND_ENABLED:
+        if settings.SOUND_ENABLED:
             self.state = self.STATES['stopped']
             if self.filename:
                 self.last_filename = self.filename

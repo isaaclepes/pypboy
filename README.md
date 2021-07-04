@@ -9,9 +9,9 @@ Most of the graphics are hard coded for my 720x720 display to make positioning e
 ======
 
 Supports caching and offline loading of maps.
-* In config.py set 'LOAD_CACHED_MAP = False'
+* In settings.py set 'LOAD_CACHED_MAP = False'
 * Run the application once
-* In config.py set 'LOAD_CACHED_MAP = True'
+* In settings.py set 'LOAD_CACHED_MAP = True'
 * Pypboy will now load the cached map on starting
 
 ## Autors

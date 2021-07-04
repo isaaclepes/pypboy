@@ -3,7 +3,7 @@ from pypboy.modules.stats import status
 from pypboy.modules.stats import special
 from pypboy.modules.stats import skills
 from pypboy.modules.stats import perks
-import config
+import settings
 
 class Module(BaseModule):
 
@@ -19,5 +19,5 @@ class Module(BaseModule):
         
     def handle_resume(self):
         self.pypboy.topmenu.label = self.label
-        self.pypboy.topmenu.title = config.MODULE_TEXT
+        self.pypboy.topmenu.title = settings.MODULE_TEXT
         self.active.handle_action("resume")

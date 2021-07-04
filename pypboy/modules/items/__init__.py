@@ -4,7 +4,7 @@ from pypboy.modules.items import apparel
 from pypboy.modules.items import aid
 from pypboy.modules.items import misc
 from pypboy.modules.items import ammo
-import config
+import settings
 
 class Module(BaseModule):
 
@@ -22,5 +22,5 @@ class Module(BaseModule):
         
     def handle_resume(self):
         self.pypboy.topmenu.label = self.label
-        self.pypboy.topmenu.title = config.MODULE_TEXT
+        self.pypboy.topmenu.title = settings.MODULE_TEXT
         self.active.handle_action("resume")

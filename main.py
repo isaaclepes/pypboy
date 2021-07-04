@@ -3,8 +3,11 @@
 import pygame
 import optparse
 import os, sys
-import config
+import settings
 import platform
+import settings
+import atexit
+
 
 #Enable use of cached map via "-c True" command
 parser = optparse.OptionParser(usage='python %prog -c True\nor:\npython %prog -c True', version="0.0.1", prog=sys.argv[0])
@@ -14,25 +17,24 @@ options, args = parser.parse_args()
 try:
     import RPi.GPIO as GPIO
     # GPIO.setmode(GPIO.BCM)
-    config.GPIO_AVAILABLE = True
+    settings.GPIO_AVAILABLE = True
 except Exception:
     _, err, _ = sys.exc_info()
     print("GPIO UNAVAILABLE (%s)" % err)
-    config.GPIO_AVAILABLE = False
+    settings.GPIO_AVAILABLE = False
 
-if config.GPIO_AVAILABLE:
+if settings.GPIO_AVAILABLE:
     pass
 
 try:
     pygame.mixer.init(44100, -16, 1, 2048)
-    config.SOUND_ENABLED = True
+    settings.SOUND_ENABLED = True
 except Exception as e:
-    config.SOUND_ENABLED = False
-
+    settings.SOUND_ENABLED = False
+    
 from pypboy.core import Pypboy
 
-
 if __name__ == "__main__":
-    boy = Pypboy('Pip-Boy 3000 MK IV', config.WIDTH, config.HEIGHT)
+    boy = Pypboy('Pip-Boy 3000 MK IV', settings.WIDTH, settings.HEIGHT)
     print("RUN")
     boy.run()
