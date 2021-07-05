@@ -4,7 +4,13 @@ pypboy
 Notes from ZapWizard:
 This is a work in progress of the code for my Functional Pip-Boy 3000 MK IV.
 I branched off from the Fallout 3 style Pip-Boy 3000 code.
-Most of the graphics are hard coded for my 720x720 display to make positioning exact.
+The graphics are positioned a 720x720 display.
+
+======
+
+Adding radio stations is now as easy as making a folder in sounds/radio with MP3, OGG or WAV files.
+Make a file name Station.py, with station_name = "Your name here" to set the menu text. The folder name used if the file is missing.
+Add a number to the beginning of the folder name to set the menu position.
 
 ======
 
@@ -15,6 +21,8 @@ Supports caching and offline loading of maps.
 * Pypboy will now load the cached map on starting
 
 ## Autors
+* Majore overhaul by ZapWizard for the Functional Pip-Boy 3000 MK IV GUI
+
 * Fixes and Updates by kingpinzs
 
 * Fixes and Updates by amolloy
@@ -25,7 +33,7 @@ Supports caching and offline loading of maps.
 
 * Originally by grieve work original<br>
 
-* Updates by ZapWizard for Pip-Boy 3000 MK IV GUI
+
 
 ## License
 MIT
