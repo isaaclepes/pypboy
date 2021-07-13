@@ -1,5 +1,7 @@
 import pygame
 import time
+
+from pygame.constants import HWSURFACE
 import settings
 
 class Engine(object):
@@ -9,44 +11,45 @@ class Engine(object):
 
     def __init__(self, title, width, height, *args, **kwargs):
         super(Engine, self).__init__(*args, **kwargs)
+        
         pygame.init()
-
-        if settings.FULLSCREEN == True:
-            self.window = pygame.display.set_mode((width, height),pygame.FULLSCREEN)
+        
+        if settings.FULLSCREEN == True or settings.PI == True:
+            self.window = pygame.display.set_mode((width, height),pygame.FULLSCREEN | pygame.DOUBLEBUF | pygame.HWSURFACE | pygame.NOFRAME)
         else:
-            self.window = pygame.display.set_mode((width, height))
+            self.window = pygame.display.set_mode((width, height), pygame.DOUBLEBUF | pygame.HWSURFACE)
         self.screen = pygame.display.get_surface()
         pygame.display.set_caption(title)
         pygame.mouse.set_visible(False)
         
         self.groups = []
-        self.root_children = EntityGroup()
+        self.root_persitant = EntityGroup()
         self.background = pygame.surface.Surface(self.screen.get_size())
         self.background.fill((0, 0, 0))
 
         self.rescale = False
         self.last_render_time = 0
 
-    def render(self):
-        if self.last_render_time == 0:
-            self.last_render_time = time.time()
-            return
-        else:
-            interval = time.time() - self.last_render_time
-            self.last_render_time = time.time()
-        self.root_children.clear(self.screen, self.background)
-        self.root_children.render(interval)
-        self.root_children.draw(self.screen)
-        for group in self.groups:
-            group.render(interval)
-            group.draw(self.screen)
-        pygame.display.flip()
-        return interval
+        self.frame_rate_target = 32
+        self.prev_time = 0
 
-    def update(self):
-        self.root_children.update()
-        for group in self.groups:
-            group.update()
+
+    def render(self):
+        
+        self.current_time= time.time()
+        self.delta_time = self.current_time - self.prev_time
+
+        if self.delta_time >= 1/self.frame_rate_target:
+            self.prev_time = self.current_time
+
+            self.root_persitant.clear(self.screen, self.background) #Remove background from render queue?
+            self.root_persitant.render()
+            self.root_persitant.draw(self.screen)
+            for group in self.groups:
+                group.render()
+                group.draw(self.screen)
+            
+            pygame.display.flip()
 
     def add(self, group):
         if group not in self.groups:
@@ -58,9 +61,9 @@ class Engine(object):
 
 
 class EntityGroup(pygame.sprite.LayeredDirty):
-    def render(self, interval):
+    def render(self):
         for entity in self:
-            entity.render(interval)
+            entity.render()
 
     def move(self, x, y):
         for child in self:
@@ -78,11 +81,11 @@ class Entity(pygame.sprite.DirtySprite):
         self.dirty = 2
         self.blendmode = pygame.BLEND_RGBA_ADD
 
-    def render(self, interval=0, *args, **kwargs):
+    def render(self, *args, **kwargs):
         pass
 
-    def update(self, *args, **kwargs):
-        pass
+    # def update(self, *args, **kwargs):
+    #     pass
 
     def __le__(self, other):
         if type(self) == type(other):

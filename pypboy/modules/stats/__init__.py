@@ -1,7 +1,6 @@
 from pypboy import BaseModule
 from pypboy.modules.stats import status
 from pypboy.modules.stats import special
-from pypboy.modules.stats import skills
 from pypboy.modules.stats import perks
 import settings
 
@@ -13,7 +12,7 @@ class Module(BaseModule):
         self.submodules = [
             status.Module(self),
             special.Module(self),
-            perks.Module(self)
+            perks.Module(self),
         ]
         super(Module, self).__init__(*args, **kwargs)
         

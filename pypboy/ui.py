@@ -1,7 +1,6 @@
 import game#
 import pygame
 import settings
-import datetime
 
 def word_wrap(surf, text, font):
     font.origin = True
@@ -26,87 +25,112 @@ class TopMenu(game.Entity):
 
     def __init__(self, label=None, title=[]):
         self.label = None
+        self.prev_label = 0
         self.title = []
-        super(TopMenu, self).__init__((settings.WIDTH, settings.HEIGHT))
+        super(TopMenu, self).__init__((settings.WIDTH, 40))
         self.rect[0] = 0
         self.rect[1] = 51
 
-    def update(self):
-        #super(TopMenu, self).update(*args, **kwargs)
-        self.image.fill((0, 0, 0)) #Clear text
+
+    def render(self):
+        # super(TopMenu, self).render(*args, **kwargs)
         spacing = 40 #Set space between words
         prev_text_width = 74 # STAT width
         text_pos = 104 - spacing - prev_text_width #Set first location
-        if self.label:  
-            for section in self.title:
-                text = settings.RobotoB[33].render(section, True, (settings.bright), (0, 0, 0)) #Setup text
-                text_pos = text_pos + prev_text_width + spacing #Set draw location
-                self.image.blit(text, (text_pos, 0)) #Draw text
-                text_rect = text.get_rect() #Get text dimensions
-                prev_text_width = text_rect.width            
+        if self.label:
+            if self.label != self.prev_label:
+                self.image.fill((0, 0, 0)) #Clear text
+                if self.label != "hidden":
+                    for section in self.title:
+                        text = settings.RobotoB[33].render(section, True, (settings.bright), (0, 0, 0)) #Setup text
+                        text_pos = text_pos + prev_text_width + spacing #Set draw location
+                        self.image.blit(text, (text_pos, 0)) #Draw text
+                        text_rect = text.get_rect() #Get text dimensions
+                        prev_text_width = text_rect.width            
+                        
+                        if section == self.label:
+                            pygame.draw.line(self.image, (settings.bright), (0, 35), (text_pos - 10, 35), 3) # Line from left edge of screen
+                            pygame.draw.line(self.image, (settings.bright), (text_pos + text_rect.width + 10, 35), (settings.WIDTH, 35), 3) # Line to the right edge of screen
+                            pygame.draw.line(self.image, (settings.bright), (text_pos - 11, 10), (text_pos - 11, 35), 3)	#Left Vert bar
+                            pygame.draw.line(self.image, (settings.bright), (text_pos - 12, 10), (text_pos - 3, 10), 3)	#Left Short bar
+                            pygame.draw.line(self.image, (settings.bright), (text_pos + text_rect.width + 2, 10), (text_pos + text_rect.width + 12, 10), 3)	#Right Short bar
+                            pygame.draw.line(self.image, (settings.bright), (text_pos + text_rect.width + 11, 10), (text_pos + text_rect.width + 11, 35), 3)	#Right Vert bar
+                        else:
+                            pygame.draw.line(self.image, (settings.bright), (text_pos - 10, 35), (text_pos + text_rect.width + 10, 35), 3) # Horizontal Barclass TopMenu(game.Entity):
+            self.prev_label = self.label
+
+        if settings.glitch == True:
+            if settings.glitch_next == 1 or settings.glitch_next == 3 or settings.glitch_next == 5:
+                self.rect[1] = -149
+            elif settings.glitch_next == 2 or settings.glitch_next == 4 or settings.glitch_next == 6:
+                self.rect[1] = 251
+            elif settings.glitch_next >= 7:
+                self.rect[1] = 51
                 
-                if section == self.label:
-                    pygame.draw.line(self.image, (settings.bright), (0, 35), (text_pos - 10, 35), 3) # Line from left edge of screen
-                    pygame.draw.line(self.image, (settings.bright), (text_pos + text_rect.width + 10, 35), (settings.WIDTH, 35), 3) # Line to the right edge of screen
-                    pygame.draw.line(self.image, (settings.bright), (text_pos - 11, 10), (text_pos - 11, 35), 3)	#Left Vert bar
-                    pygame.draw.line(self.image, (settings.bright), (text_pos - 12, 10), (text_pos - 3, 10), 3)	#Left Short bar
-                    pygame.draw.line(self.image, (settings.bright), (text_pos + text_rect.width + 2, 10), (text_pos + text_rect.width + 12, 10), 3)	#Right Short bar
-                    pygame.draw.line(self.image, (settings.bright), (text_pos + text_rect.width + 11, 10), (text_pos + text_rect.width + 11, 35), 3)	#Right Vert bar
-                else:
-                    pygame.draw.line(self.image, (settings.bright), (text_pos - 10, 35), (text_pos + text_rect.width + 10, 35), 3) # Horizontal Barclass TopMenu(game.Entity):
 
 class Footer(game.Entity):
     def __init__(self, sections=[], bargraph=None):
+        super(Footer, self).__init__((settings.WIDTH, 50))
         self.sections = []
         self.bargraph = None
-        super(Footer, self).__init__((settings.WIDTH, settings.HEIGHT))
         self.rect[0] = 0
         self.rect[1] = settings.HEIGHT - 50
-
-    def update(self, *args, **kwargs):
-        super(Footer, self).update(*args, **kwargs)
+        self.image.fill((0, 0, 0)) #Clear text
+        
 
     def render(self, label=None):
-        self.image.fill((0, 0, 0)) #Clear text
-        spacing = 4 #Set space between sections
-        prev_text_width = 74 # STAT width
-        text_pos = 104 - spacing - prev_text_width #Set first location
+        pass
+        # #self.image.fill((0, 0, 0)) #Clear text
+        # spacing = 4 #Set space between sections
+        # prev_text_width = 74 # STAT width
+        # text_pos = 104 - spacing - prev_text_width #Set first location
 
-        for section in self.sections:
-            text = settings.RobotoB[33].render(section, True, (settings.bright), (0, 0, 0)) #Setup text
-            text_pos = text_pos + prev_text_width + spacing #Set draw location
-            self.image.blit(text, (text_pos, 0)) #Draw text
-            text_rect = text.get_rect() #Get text dimensions
-            prev_text_width = text_rect.width            
+        # for section in self.sections:
+        #     text = settings.RobotoB[33].render(section, True, (settings.bright), (0, 0, 0)) #Setup text
+        #     text_pos = text_pos + prev_text_width + spacing #Set draw location
+        #     self.image.blit(text, (text_pos, 0)) #Draw text
+        #     text_rect = text.get_rect() #Get text dimensions
+        #     prev_text_width = text_rect.width            
             
-            if section == self.label:
-                pygame.draw.line(self.image, (settings.bright), (0, 35), (text_pos - 10, 35), 3) # Line from left edge of screen
-                pygame.draw.line(self.image, (settings.bright), (text_pos + text_rect.width + 10, 35), (settings.WIDTH, 35), 3) # Line to the right edge of screen
-                pygame.draw.line(self.image, (settings.bright), (text_pos - 11, 10), (text_pos - 11, 35), 3)	#Left Vert bar
-                pygame.draw.line(self.image, (settings.bright), (text_pos - 12, 10), (text_pos - 3, 10), 3)	#Left Short bar
-                pygame.draw.line(self.image, (settings.bright), (text_pos + text_rect.width + 2, 10), (text_pos + text_rect.width + 12, 10), 3)	#Right Short bar
-                pygame.draw.line(self.image, (settings.bright), (text_pos + text_rect.width + 11, 10), (text_pos + text_rect.width + 11, 35), 3)	#Right Vert bar
-            else:
-                pygame.draw.line(self.image, (settings.bright), (text_pos - 10, 35), (text_pos + text_rect.width + 10, 35), 3) # Horizontal Bar
+        #     if section == self.label:
+        #         pygame.draw.line(self.image, (settings.bright), (0, 35), (text_pos - 10, 35), 3) # Line from left edge of screen
+        #         pygame.draw.line(self.image, (settings.bright), (text_pos + text_rect.width + 10, 35), (settings.WIDTH, 35), 3) # Line to the right edge of screen
+        #         pygame.draw.line(self.image, (settings.bright), (text_pos - 11, 10), (text_pos - 11, 35), 3)	#Left Vert bar
+        #         pygame.draw.line(self.image, (settings.bright), (text_pos - 12, 10), (text_pos - 3, 10), 3)	#Left Short bar
+        #         pygame.draw.line(self.image, (settings.bright), (text_pos + text_rect.width + 2, 10), (text_pos + text_rect.width + 12, 10), 3)	#Right Short bar
+        #         pygame.draw.line(self.image, (settings.bright), (text_pos + text_rect.width + 11, 10), (text_pos + text_rect.width + 11, 35), 3)	#Right Vert bar
+        #     else:
+        #         pygame.draw.line(self.image, (settings.bright), (text_pos - 10, 35), (text_pos + text_rect.width + 10, 35), 3) # Horizontal Bar
 
 
 class SubMenu(game.Entity):
 
     def __init__(self):
+        super(SubMenu, self).__init__((settings.WIDTH, 36))
         self.menu = []
-        super(SubMenu, self).__init__((settings.WIDTH, 128))
         self.rect[0] = 73
         self.rect[1] = 93
         self.hidden = False
+        self.prev_time = 0
+        
+    def render(self):
+        if settings.glitch == True:
+            if settings.glitch_next == 1 or settings.glitch_next == 3 or settings.glitch_next == 5:
+                self.rect[1] = -107
+            elif settings.glitch_next == 2 or settings.glitch_next == 4 or settings.glitch_next == 6:
+                self.rect[1] = 293
 
-    def update(self, *args, **kwargs):
-        super(SubMenu, self).update(*args, **kwargs)
+            elif settings.glitch_next >= 7:
+                self.rect[1] = 93
+    # def update(self, *args, **kwargs):
+    #     super(SubMenu, self).update(*args, **kwargs)
 
     def select(self, module):
         self.selected = module
+
         self.image.fill((0, 0, 0))
-        if self.hidden == False:
-            offset = 18
+        self.textoffset = 18
+        if module != "hidden":
             for m in self.menu:
                 padding = 1
                 text_width = 0
@@ -118,9 +142,8 @@ class SubMenu(game.Entity):
                 #print(m+" : "+str(text.get_size()))
                 if m == self.selected:
                     text = settings.RobotoR[30].render("%s%s%s" % (spaces, m, spaces), True, (settings.bright), (0, 0, 0))
-                self.image.blit(text, (offset, 0))
-
-                offset = offset + text_width
+                self.image.blit(text, (self.textoffset, 0))
+                self.textoffset = self.textoffset + text_width
 
 
 #Menu_array Structure: [["Menu item",Quantity,"Image (or folder for animation")","Description text","Stat Text","Stat Number"],],
@@ -241,19 +264,16 @@ class Scanlines(game.core.Entity):
         self.top = -870
         self.speed = 100
         
-    def render(self, interval, *args, **kwargs):
-        self.top += self.speed * interval
-        self.rect[1] = self.top
-        self.dirty = 1
-        if self.top >= 0:
-            self.top = -870
+    def render(self, *args, **kwargs):
+        # if interval:
+        #     self.top += self.speed * interval
+        #     self.rect[1] = self.top
+        #     self.dirty = 2
+        #     if self.top >= 0:
+        #         self.top = -870
         super(Scanlines, self).render(self, *args, **kwargs)
-
         
 class Overlay(game.Entity):
     def __init__(self):
         super(Overlay, self).__init__()
         self.image = pygame.image.load('images/overlay.png').convert_alpha()
-        #self.image.set_colorkey((0,0,0))
-        self.image.set_alpha(128)
-        self.rect = self.image.get_rect()

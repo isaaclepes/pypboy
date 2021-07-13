@@ -39,24 +39,21 @@ class Module(pypboy.SubModule):
             stationLabels.append(station.label)
             stationCallbacks.append(lambda i=i: self.select_station(i))
 
-
         #print ("station labels = ",stationLabels)
         #print ("station callbacks = ",stationCallbacks)
-        self.menu = pypboy.ui.Menu(station_menu, stationCallbacks, 0)
+        self.menu = pypboy.ui.Menu(station_menu, stationCallbacks, settings.STATION)
         self.menu.rect[0] = settings.menu_x
         self.menu.rect[1] = settings.menu_y
         self.add(self.menu)
-
         self.menu.select(settings.STATION)
 
     def select_station(self, station):
-        
         if hasattr(self, 'active_station') and self.active_station:
             self.active_station.stop()
         self.active_station = self.stations[station]
-        if station != 0: #Allow position 0 to be off
-            settings.STATION = station
-            self.active_station.play_random() #Play a random station upon selection
+
+        settings.STATION = station
+        self.active_station.play_random() #Play a random station upon selection
 
     def handle_event(self, event):
         if event.type == settings.EVENTS['SONG_END']:
@@ -73,7 +70,7 @@ class Module(pypboy.SubModule):
         
         #Get list of folders
         folders = []
-        for f in os.listdir(self.audiofolders):
+        for f in  sorted(os.listdir(self.audiofolders)):
             if not f.endswith("/"):
                 folders.append(self.audiofolders + f)
 

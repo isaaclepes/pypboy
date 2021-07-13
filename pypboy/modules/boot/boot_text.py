@@ -3,6 +3,8 @@ import pygame
 import game
 import settings
 import pypboy.ui
+import pypboy.core
+import time
 
 def word_wrap(surf, text, font):
     font.origin = True
@@ -15,10 +17,6 @@ def word_wrap(surf, text, font):
         bounds = font.get_rect(word)
         if x + bounds.width + bounds.x >= width:
             x, y = 0, y + line_spacing
-        #if x + bounds.width + bounds.x >= width:
-        #    raise ValueError("word too wide for the surface")
-        #if y + bounds.height - bounds.y >= height:
-        #    raise ValueError("text to long for the surface")
         font.render_to(surf, (x, y), None, settings.bright,None,1)
         x += bounds.width + space.width
     return x, y
@@ -26,7 +24,7 @@ def word_wrap(surf, text, font):
 
 class Module(pypboy.SubModule):
 
-    label = ""
+    label = "hidden"
 
     def __init__(self, *args, **kwargs):
         super(Module, self).__init__(*args, **kwargs)
@@ -46,7 +44,7 @@ class Boot(game.Entity):
     def __init__(self):
         super(Boot, self).__init__()
         
-        self.image = pygame.surface.Surface((settings.WIDTH, settings.HEIGHT * 3))
+        self.image = pygame.surface.Surface((settings.WIDTH, 1880))
         self.rect[1] = 0
         self.top = 0
 
@@ -156,21 +154,30 @@ class Boot(game.Entity):
             "0x00000000000000000 start memory discovery0 0x0000A4 0x00000000000000000 END"
         )
         
+        self.prev_time = 0
+        self.animation_time = 0.005
+   
         word_wrap(self.image, boot_text, settings.FreeTechMono[17])
-
-    # def update(self, *args, **kwargs):
-        # super(Boot, self).update(self, *args, **kwargs)
         
     def render(self, *args, **kwargs):
-        self.top -= 5
-        self.rect[1] = self.top
+        self.current_time = time.time()
+        if self.prev_time == 0:
+            self.prev_time = self.current_time
+        self.delta_time = self.current_time - self.prev_time
+        self.prev_time = self.current_time
 
-        if self.top <= -720 * 3:
-            self.top = 0
-            #TODO: Need code to switch screens
+        if self.delta_time >= self.animation_time:
         
+            if settings.PI == True:
+                self.top -= int(20*int(round(1/self.delta_time))/50)    
+            else:
+                self.top -= int(20*int(round(1/self.delta_time))/100)
+            self.rect[1] = round(self.top)
+
+            if self.top <= -1880:
+                self.top = 0
+                pygame.event.post(pygame.event.Event(pygame.KEYDOWN,key=pygame.K_2))
         super(Boot, self).render(self, *args, **kwargs)
 
-     
     def handle_resume(self):
         self.top = 0

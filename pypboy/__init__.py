@@ -55,7 +55,7 @@ class BaseModule(game.EntityGroup):
             self.active.move(x, y)
 
     def switch_submodule(self, module):
-        pygame.display.flip()
+        #pygame.display.flip()
         #print("Changing to sub-module", module)
         if hasattr(self, 'active') and self.active:
             self.active.handle_action("pause")
@@ -69,9 +69,9 @@ class BaseModule(game.EntityGroup):
         else:
             print("No submodule at %d" % module)
 
-    def render(self, interval): 
-        self.active.render(interval)
-        super(BaseModule, self).render(interval)
+    def render(self): 
+        self.active.render()
+        super(BaseModule, self).render()
 
     def handle_action(self, action, value=0):
         if action.startswith("knob_"):

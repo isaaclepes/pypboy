@@ -2,12 +2,8 @@
 
 import pygame
 import optparse
-import os, sys
+import sys
 import settings
-import platform
-import settings
-import atexit
-
 
 #Enable use of cached map via "-c True" command
 parser = optparse.OptionParser(usage='python %prog -c True\nor:\npython %prog -c True', version="0.0.1", prog=sys.argv[0])

@@ -27,26 +27,25 @@ class Pypboy(game.core.Engine):
             
         #Initialize modules
         super(Pypboy, self).__init__(*args, **kwargs)
-        self.init_children()
+        self.init_persitant()
         self.init_modules()
         
         self.gpio_actions = {}
         # if settings.GPIO_AVAILABLE:
             # self.init_gpio_controls()
 
-    def init_children(self):
+    def init_persitant(self):
         #self.background = pygame.image.load('images/background.png')
         #self.background = pygame.image.load('images/Special_Reference.png')
-        self.topmenu = pypboy.ui.TopMenu()
-        self.root_children.add(self.topmenu)
-        self.footer = pypboy.ui.Footer()
-        self.root_children.add(self.footer)
         overlay = pypboy.ui.Overlay()
-        self.root_children.add(overlay)
-        scanlines = pypboy.ui.Scanlines()
-        self.root_children.add(scanlines)
+        self.root_persitant.add(overlay)
+        self.topmenu = pypboy.ui.TopMenu()
+        self.root_persitant.add(self.topmenu)
+        #self.footer = pypboy.ui.Footer()
         
-        
+        #self.root_persitant.add(self.footer)
+        #scanlines = pypboy.ui.Scanlines()
+        #self.root_persitant.add(scanlines)
 
     def init_modules(self):
         self.modules = {
@@ -57,7 +56,7 @@ class Pypboy(game.core.Engine):
             "stats": stats.Module(self),
             "boot": boot.Module(self)
         }
-        self.switch_module("stats")
+        self.switch_module("boot")
 
     def init_gpio_controls(self):
         for pin in settings.gpio_actions.keys():
@@ -70,15 +69,10 @@ class Pypboy(game.core.Engine):
             if GPIO.input(pin) == False:
                 self.handle_action(self.gpio_actions[pin])
 
-    def update(self):
-        if hasattr(self, 'active'):
-            self.active.update()
-        super(Pypboy, self).update()
-
     def render(self):
-        interval = super(Pypboy, self).render()
+        super(Pypboy, self).render()
         if hasattr(self, 'active'):
-            self.active.render(interval)
+            self.active.render()
 
     def switch_module(self, module):
         if module in self.modules:
@@ -97,8 +91,7 @@ class Pypboy(game.core.Engine):
             self.switch_module(action[7:])
         else:
             if hasattr(self, 'active'):
-                self.active.handle_action(action)
-                
+                self.active.handle_action(action)   
 
     def handle_event(self, event):
         
@@ -118,7 +111,6 @@ class Pypboy(game.core.Engine):
             if settings.SOUND_ENABLED:
                 if hasattr(settings, 'radio'):
                     settings.radio.handle_event(event)
-
         else:
             if hasattr(self, 'active'):
                 self.active.handle_event(event)
@@ -133,9 +125,9 @@ class Pypboy(game.core.Engine):
             self.check_gpio_input()
             for event in pygame.event.get():
                 self.handle_event(event)
-            self.update()
+            # self.update()
             self.render()
-            pygame.time.wait(1)
+            #pygame.time.wait(1)
 
         try:
             pygame.mixer.quit()

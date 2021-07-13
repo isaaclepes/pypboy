@@ -2,6 +2,7 @@ import pygame
 import pygame.freetype
 import atexit
 import saved
+import os 
 
 #Custom
 name = "ZapWizard"
@@ -11,8 +12,8 @@ WIDTH = 720
 HEIGHT = 720
 FULLSCREEN = False
 
-OUTPUT_WIDTH = 320
-OUTPUT_HEIGHT = 240
+#OUTPUT_WIDTH = 720
+#OUTPUT_HEIGHT = 720
 
 #Menu Position
 menu_x = 20
@@ -214,6 +215,12 @@ PERKS = [
     ["Science"],
 ]
 
+PI = False
+if os.name == "posix":
+    PI = True
+else:
+    PI - False
+
 pygame.font.init()
 RobotoB = {}
 RobotoR = {}
@@ -251,3 +258,8 @@ def save_settings():
     print ("exiting", VOLUME, STATION)
     
 atexit.register(save_settings)
+
+#Glitch the screen up/down
+glitch = False
+glitch_time = 0.1
+glitch_next = 0

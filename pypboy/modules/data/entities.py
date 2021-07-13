@@ -44,8 +44,8 @@ class Map(game.Entity):
         self._mapper.load_map_coordinates(position, radius, isWorld)
         self.redraw_map()
 
-    def update(self, *args, **kwargs):
-        super(Map, self).update(*args, **kwargs)
+    # def update(self, *args, **kwargs):
+    #     super(Map, self).update(*args, **kwargs)
 
     def move_map(self, x, y):
         self._render_rect.move_ip(x, y)
@@ -263,7 +263,7 @@ class RadioStation(game.Entity):
 
     def load_files(self):
         files = []
-        for f in os.listdir(self.directory):
+        for f in sorted(os.listdir(self.directory)):
             if f.endswith(".mp3") or f.endswith(".ogg") or f.endswith(".wav"):
                 files.append(self.directory + f)
         #print(files)
