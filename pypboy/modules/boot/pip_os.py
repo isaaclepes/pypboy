@@ -24,9 +24,24 @@ class Module(pypboy.SubModule):
         self.pipos.char = 0
         self.pipos.y = 0
         self.add(self.pipos)
+        if settings.SOUND_ENABLED:
+            self.sound = pygame.mixer.Sound('sounds/pipboy/BootSequence/UI_PipBoy_BootSequence_B.wav')
+            self.sound.set_volume(settings.VOLUME)
+
+    def handle_pause(self):
+        self.sound.stop()
+        super(Module, self).handle_pause()
         
     def handle_resume(self):
-        self.pipos.handle_resume()
+        self.pipos.top = 0
+        self.pipos.line = 0
+        self.pipos.char = 0
+        self.pipos.y = 0
+        self.pipos.rect[1] = 0
+        self.pipos.image.fill((0,0,0))
+        if settings.SOUND_ENABLED:
+            self.sound.play()
+            self.playing = True       
         super(Module, self).handle_resume()
         
 class Pipos(game.Entity):
@@ -42,7 +57,9 @@ class Pipos(game.Entity):
         self.animation_time = 0.02
 
         self.text_array = [
-                    "▯","▯","▯","~","~","~","~","~","▯","▯","▯","~","~","~","~","~","▯","▯","▯","~","~","~","~","~","▯","▯","▯","~","~","~","~","/",
+                    "▯","▯","▯","~","~","~","~","~",
+                    "▯","▯","▯","~","~","~","~","~",
+                    "▯","▯","▯","~","~","~","~","~",
                     "*************** PIP-05 (R) V7 .1.0.8 ************** ",
                     " ",
                     " ",
@@ -63,9 +80,6 @@ class Pipos(game.Entity):
                     "@","@","@","@","@","@","@","@","@","@","@","@",
                     "^","^","^","^","^","^","^","^","^","^","^","^",
                     "@","@","@","@","@","@","@","@","@","@","@","@",
-                    "^","^","^","^","^","^","^","^","^","^","^","^",
-                    "@","@","@","@","@","@","@","@","@","@","@","@",
-                    "^","^","^","^","^","^","^","^","^","^","^","^",
                     ]
         self.line = 0
         self.char = 0
@@ -139,11 +153,3 @@ class Pipos(game.Entity):
                     text_to_blit = settings.TechMono[26].render(self.text, True, (settings.bright), (0,0,0))
                     self.image.blit(text_to_blit, (0,self.y))
             self.char += 1
-     
-    def handle_resume(self):
-        self.top = 0
-        self.line = 0
-        self.char = 0
-        self.y = 0
-        self.rect[1] = 0
-        self.image.fill((0,0,0))

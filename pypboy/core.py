@@ -37,15 +37,14 @@ class Pypboy(game.core.Engine):
     def init_persitant(self):
         #self.background = pygame.image.load('images/background.png')
         #self.background = pygame.image.load('images/Special_Reference.png')
-        overlay = pypboy.ui.Overlay()
-        self.root_persitant.add(overlay)
         self.topmenu = pypboy.ui.TopMenu()
         self.root_persitant.add(self.topmenu)
         #self.footer = pypboy.ui.Footer()
-        
         #self.root_persitant.add(self.footer)
-        #scanlines = pypboy.ui.Scanlines()
-        #self.root_persitant.add(scanlines)
+        overlay = pypboy.ui.Overlay()
+        self.root_persitant.add(overlay)
+        scanlines = pypboy.ui.Scanlines()
+        self.root_persitant.add(scanlines)
 
     def init_modules(self):
         self.modules = {
@@ -56,7 +55,7 @@ class Pypboy(game.core.Engine):
             "stats": stats.Module(self),
             "boot": boot.Module(self)
         }
-        self.switch_module("boot")
+        self.switch_module("stats")
 
     def init_gpio_controls(self):
         for pin in settings.gpio_actions.keys():

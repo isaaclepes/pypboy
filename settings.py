@@ -16,8 +16,8 @@ FULLSCREEN = False
 #OUTPUT_HEIGHT = 720
 
 #Menu Position
-menu_x = 20
-menu_y = 200
+menu_x = 10
+menu_y = 160
 
 #COLORS
 black = (0,0,0)
@@ -145,21 +145,22 @@ INVENTORY_OLD = [
 #Menu Structure: ["Menu item",Quantity,"Image (or folder for animation")","Decription text","Stat Text","Stat Number"],
 
 SPECIAL = [
-    ["Strength",4,"images/stats/special/strength/1.png","Strength is a measure of your raw physical power. It affects how much you can carry, and the damage of all melee attacks."],
-    ["Perception",8,"images/stats/special/perception/1.png","Perception is your enviromental awareness and 'sixth sense', and affects weapon accuracy in V.A.T.S."],
-    ["Endurance",3,"images/stats/special/endurance/1.png","Endurance is a meausre of your overall physical fitness. It affecst your total Health and the Action Point drain from sprinting."],
-    ["Charisma",5,"images/stats/special/charisma/1.png","Charisma is your ability to charm and convince others. It affects your success to persuade in dialogue and prices when you barter."],
-    ["Intelligence",6,"images/stats/special/Intelligence/1.png",'Intelligence is a measure of your overall metal acuity, and affects the number of Experience Points earned'],
-    ["Agility",3,"images/stats/special/agility/1.png","Agility is a measure of your overall fitnesse and reflexes. It affects the number of Action Points in V.A.T.S. and your abilty to sneak"],
-    ["Luck",3,"images/stats/special/luck/1.png","Luck is a measure of your generla good fortune, and affects the recharge rate of Critital Hits"],
+    ["Strength",4,"images/stats/special/strength","Strength is a measure of your raw physical power. It affects how much you can carry, and the damage of all melee attacks."],
+    ["Perception",8,"images/stats/special/perception","Perception is your envirom ental awareness and 'sixth sense', and affects weapon accuracy in V.A.T.S."],
+    ["Endurance",3,"images/stats/special/endurance","Endurance is a measure of your overall physical fitness. It affecst your total Health and the Action Point drain from sprinting."],
+    ["Charisma",5,"images/stats/special/charisma","Charisma is your ability to charm and convince others. It affects your success to persuade in dialogue and prices when you barter."],
+    ["Intelligence",6,"images/stats/special/intelligence",'Intelligence is a measure of your overall metal acuity, and affects the number of Experience Points earned'],
+    ["Agility",3,"images/stats/special/agility","Agility is a measure of your overall fitnesse and reflexes. It affects the number of Action Points in V.A.T.S. and your abilty to sneak"],
+    ["Luck",3,"images/stats/special/luck","Luck is a measure of your generla good fortune, and affects the recharge rate of Critital Hits"],
 ]
 
 WEAPONS = [
-    ["10mm Pistol"],
-    ["Combat Knife"],
-    ["Fragmentation Grenade",2],
-    ["Laser Pistol"],
-    ["Plasma Mine",3],
+    ["10mm Pistol","1","images/inventory/10mmpistol","10mm Pistol stats"],
+    ["Bottle Cap Mine","1","images/inventory/bottlecapmine","Detonation and donation all inside one ready to use package!"],
+    ["Combat Knife","1","images/inventory/combatknife","The combat knife will cut you"],
+    ["Fragmentation Grenade",2,"images/inventory/grenadefrag","Fragmentation grenade goes boom"],
+    ["Laser Rifle",1,"images/inventory/laserrifle","Pew Pew"],
+    ["Plasma Mine",3,"images/inventory/plasmamine","Boom and goo"],
 ]
 
 ARMOR = [
@@ -169,9 +170,9 @@ ARMOR = [
 ]
 
 AID = [
-    ["Purified Water",3],
-    ["Rad Away",2],
-    ["Stim Pack",2],
+    ["Stim Pak",3,"images/inventory/stimpak","Stim Paks restore your health"],
+    ["Purified Water",3,"images/inventory/purified_water","Purified Water"],
+    ["Rad Away",2,"images/inventory/radaway","Rad Away lowers radiation"],
 ]
 
 MISC = [

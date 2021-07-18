@@ -2,7 +2,6 @@ from pypboy import BaseModule
 from pypboy.modules.boot import boot_text
 from pypboy.modules.boot import pip_os
 from pypboy.modules.boot import thumbs
-#from pypboy.modules.boot import glitch
 
 class Module(BaseModule):
 
@@ -13,7 +12,6 @@ class Module(BaseModule):
             boot_text.Module(self),
             pip_os.Module(self),
             thumbs.Module(self),
-            #glitch.Module(self)
         ]
         super(Module, self).__init__(*args, **kwargs)
         

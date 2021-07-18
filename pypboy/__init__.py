@@ -47,7 +47,7 @@ class BaseModule(game.EntityGroup):
         self.switch_submodule(0)
         
         if settings.SOUND_ENABLED:
-            self.module_change_sfx = pygame.mixer.Sound('sounds/module_change.ogg')
+            self.module_change_sfx = pygame.mixer.Sound('sounds/pipboy/UI_Pipboy_OK.wav')
 
     def move(self, x, y):
         super(BaseModule, self).move(x, y)
@@ -109,6 +109,7 @@ class SubModule(game.EntityGroup):
     def __init__(self, parent, *args, **kwargs):
         super(SubModule, self).__init__()
         self.parent = parent
+        self.paused = True
 
         self.action_handlers = {
             "pause": self.handle_pause,
@@ -116,7 +117,8 @@ class SubModule(game.EntityGroup):
         }
 
         if settings.SOUND_ENABLED:
-            self.submodule_change_sfx = pygame.mixer.Sound('sounds/submodule_change.ogg')
+            self.submodule_change_sfx = pygame.mixer.Sound('sounds/pipboy/UI_Pipboy_OK.wav')
+            self.submodule_change_sfx.set_volume(settings.VOLUME)
 
     def handle_action(self, action, value=0):
         if action.startswith("dial_"):
@@ -129,9 +131,11 @@ class SubModule(game.EntityGroup):
         pass
 
     def handle_pause(self):
-        self.paused = True
+        if self.paused == False:
+            self.paused = True
 
     def handle_resume(self):
-        self.paused = False
-        if settings.SOUND_ENABLED:
-            self.submodule_change_sfx.play()
+        if self.paused == True:
+            self.paused = False
+            if settings.SOUND_ENABLED:
+                self.submodule_change_sfx.play()

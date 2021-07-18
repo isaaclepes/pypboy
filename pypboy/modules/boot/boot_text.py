@@ -12,7 +12,7 @@ def word_wrap(surf, text, font):
     width, height = surf.get_size()
     line_spacing = font.get_sized_height()
     x, y = 0, line_spacing
-    space = font.get_rect(' ')
+    space = font.get_rect('-')
     for word in words:
         bounds = font.get_rect(word)
         if x + bounds.width + bounds.x >= width:
@@ -32,18 +32,28 @@ class Module(pypboy.SubModule):
         self.boot.rect[0] = 0
         self.boot.rect[1] = 51
         self.add(self.boot)
-        
-    def handle_resume(self):
-        self.boot.top = 0
-        super(Module, self).handle_resume()
+        if settings.SOUND_ENABLED:
+            self.sound = pygame.mixer.Sound('sounds/pipboy/BootSequence/UI_PipBoy_BootSequence_A.wav')
+            self.sound.set_volume(settings.VOLUME)
 
+    def handle_pause(self):
+        self.sound.stop()
+        super(Module, self).handle_pause()
+        # return super().handle_pause()
+
+    def handle_resume(self):
+        if self.paused == False:
+            self.boot.top = 0
+            if settings.SOUND_ENABLED:
+                self.sound.play()
+                self.playing = True         
+        super(Module, self).handle_resume()
 
         
 class Boot(game.Entity):
 
     def __init__(self):
         super(Boot, self).__init__()
-        
         self.image = pygame.surface.Surface((settings.WIDTH, 1880))
         self.rect[1] = 0
         self.top = 0
@@ -155,9 +165,10 @@ class Boot(game.Entity):
         )
         
         self.prev_time = 0
-        self.animation_time = 0.005
+        self.animation_time = 0.007
    
         word_wrap(self.image, boot_text, settings.FreeTechMono[17])
+
         
     def render(self, *args, **kwargs):
         self.current_time = time.time()
@@ -171,13 +182,10 @@ class Boot(game.Entity):
             if settings.PI == True:
                 self.top -= int(20*int(round(1/self.delta_time))/50)    
             else:
-                self.top -= int(20*int(round(1/self.delta_time))/100)
+                self.top -= int(20*int(round(1/self.delta_time))/150)
             self.rect[1] = round(self.top)
 
             if self.top <= -1880:
                 self.top = 0
                 pygame.event.post(pygame.event.Event(pygame.KEYDOWN,key=pygame.K_2))
         super(Boot, self).render(self, *args, **kwargs)
-
-    def handle_resume(self):
-        self.top = 0

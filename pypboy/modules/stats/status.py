@@ -59,9 +59,8 @@ class Module(pypboy.SubModule):
                     self.health.rect[1] = 131
                     self.animation.rect[1] = 190
                     self.prev_time = self.current_time
-                elif settings.glitch_next == 7:
+                elif settings.glitch_next >= 7:
                     settings.glitch_next = 0
-                elif settings.glitch_next >= 8:
                     settings.glitch = False
                 settings.glitch_next += 1
 
@@ -103,7 +102,7 @@ class Animation(game.Entity):
         # self.prev_fps_time = time.time()
         
         if self.delta_time >= self.animation_time:
-            self.prev_time = time.time()
+            self.prev_time = self.current_time
   
             self.image.fill((0,0,0))
 
