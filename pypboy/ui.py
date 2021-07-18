@@ -4,6 +4,9 @@ import settings
 import time
 import os
 import imp
+import cairosvg
+import io
+#from reportlab.graphics import renderPDF, renderPM
 
 def word_wrap(surf, text, font):
     text = str(text)
@@ -24,6 +27,17 @@ def word_wrap(surf, text, font):
         font.render_to(surf, (x, y), word, settings.bright,None,1)
         x += bounds.width
     return x, y
+
+def load_svg(filename, width, height):
+    drawing = cairosvg.svg2png(url = filename)
+    byte_io = io.BytesIO(drawing)
+    image = pygame.image.load(byte_io)
+    size = image.get_size()
+    scale = min(width / size[0], height / size[1])
+    if size[1] != height:
+        image = pygame.transform.smoothscale(image, (round(size[0] * scale), round(size[1] * scale)))
+    image.fill((0,230,0), None, pygame.BLEND_RGBA_MULT)
+    return image
 
 class TopMenu(game.Entity):
 
@@ -295,6 +309,11 @@ class Menu(game.Entity):
                         if filename.endswith(".png"):
                             filename = self.image_url + "/" + filename
                             self.images.append(pygame.image.load(filename).convert_alpha())
+                            self.frameorder = []
+                            #print(filename)
+                        if filename.endswith(".svg"):
+                            svg_surface = load_svg(self.image_url + "/" + filename,self.imagebox.get_width(),self.imagebox.get_height())
+                            self.images.append(svg_surface)
                             self.frameorder = []
                             #print(filename)
                         if filename  == "frameorder.py":

@@ -146,12 +146,12 @@ INVENTORY_OLD = [
 
 SPECIAL = [
     ["Strength",4,"images/stats/special/strength","Strength is a measure of your raw physical power. It affects how much you can carry, and the damage of all melee attacks."],
-    ["Perception",8,"images/stats/special/perception","Perception is your envirom ental awareness and 'sixth sense', and affects weapon accuracy in V.A.T.S."],
+    ["Perception",8,"images/stats/special/perception","Perception is your enviromental awareness and 'sixth sense', and affects weapon accuracy in V.A.T.S."],
     ["Endurance",3,"images/stats/special/endurance","Endurance is a measure of your overall physical fitness. It affecst your total Health and the Action Point drain from sprinting."],
     ["Charisma",5,"images/stats/special/charisma","Charisma is your ability to charm and convince others. It affects your success to persuade in dialogue and prices when you barter."],
     ["Intelligence",6,"images/stats/special/intelligence",'Intelligence is a measure of your overall metal acuity, and affects the number of Experience Points earned'],
     ["Agility",3,"images/stats/special/agility","Agility is a measure of your overall fitnesse and reflexes. It affects the number of Action Points in V.A.T.S. and your abilty to sneak"],
-    ["Luck",3,"images/stats/special/luck","Luck is a measure of your generla good fortune, and affects the recharge rate of Critital Hits"],
+    ["Luck",3,"images/stats/special/luck","Luck is a measure of your general good fortune, and affects the recharge rate of Critital Hits"],
 ]
 
 WEAPONS = [

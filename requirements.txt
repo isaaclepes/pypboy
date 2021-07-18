@@ -4,3 +4,4 @@ xmltodict
 numpy
 confuse
 pynput
+cairosvg
