@@ -206,14 +206,20 @@ SKILLS = [
 ]
 
 PERKS = [
-    ["Action Boy"],
-    ["Animal Friend"],
-    ["Awareness"],
-    ["Gunslinger"],
-    ["Hacker"],
-    ["Mysterious Stranger"],
-    ["Rifleman"],
-    ["Science"],
+    ["0, Action Boy"],
+    ["1, Animal Friend"],
+    ["2, Awareness"],
+    ["3, Gunslinger"],
+    ["4, Hacker"],
+    ["5, Mysterious Stranger"],
+    ["6, Rifleman"],
+    ["7, Science"],
+    ["8, Sniper"],
+    ["9, Concentrated Fire"],
+    ["10, Rad Resistant"],
+    ["11, Attack Dog"],
+    ["12, Wasteland Whisperer"],
+    ["13, Gun Nut"],
 ]
 
 PI = False

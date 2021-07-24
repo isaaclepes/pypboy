@@ -15,6 +15,3 @@ class Module(BaseModule):
     def handle_resume(self):
         self.pypboy.topmenu.label = self.label
         self.pypboy.topmenu.title = settings.MODULE_TEXT
-        # self.active.handle_action("resume")
-        # self.active.handle_action("volume_up")
-        # self.active.handle_action("volume_down")

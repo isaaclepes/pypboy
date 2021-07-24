@@ -6,7 +6,7 @@ import os
 import imp
 import cairosvg
 import io
-#from reportlab.graphics import renderPDF, renderPM
+from collections import deque
 
 def word_wrap(surf, text, font):
     text = str(text)
@@ -205,53 +205,22 @@ class Menu(game.Entity):
 
     def __init__(self, menu_array=[], callbacks=[], selected=0):
         super(Menu, self).__init__((settings.WIDTH-settings.menu_x, 450))
-        self.items = [] #List of items to display
-        self.number = [] #Numbers to put next to those items
-        self.image_list = [] # Path to image or folder for animation
-        self.description = []
-        self.stat_text = []
-        self.stat_number = []
-        self.images = []
-        self.frameorder = []
-        
+        self.source_array = menu_array
+
         self.prev_time = 0
         self.prev_fps_time = 0
         self.clock = pygame.time.Clock()
         self.animation_time = 0.2
         self.index = 0
+        self.top_of_menu = 0
+        self.max_items = 10
+        self.menu_array = self.source_array[self.top_of_menu:self.max_items] # List the array for display
+        print("menu menu=",self.menu_array)
+        self.prev_selection = 0
 
         self.descriptionbox = pygame.Surface((360,300))
         self.imagebox = pygame.Surface((240,240))
 
-        for i in range(len(menu_array)):
-            try:
-                self.items.append(menu_array[i][0])
-            except:
-                continue
-            try:
-                self.number.append(menu_array[i][1])
-            except:
-                continue
-            try:
-                self.image_list.append(menu_array[i][2])
-            except:
-                continue
-            try:    
-                self.description.append(menu_array[i][3])
-            except:
-                continue
-            try:
-                self.stat_text.append(menu_array[i][4])
-            except:
-                continue
-            try:    
-                self.stat_number.append(menu_array[i][5])
-            except:
-                continue
-            #print ("Item to append =",menu_array[i][0])
-        #print("self.number = ", self.number)
-        #print("self.image_url = ", self.image_url)
-        #print("self.description = ", self.description)
         try:
             self.callbacks = callbacks
             #print("self.callbacks = ", self.callbacks)
@@ -273,34 +242,59 @@ class Menu(game.Entity):
 
     def handle_action(self, action):
         if action == "dial_up":
-            if self.selected > 0:
+            print("Dial up")
+            if self.selected <= 0:
+                print ("At the top of the list")
+
+                if len(self.source_array) > len(self.menu_array):
+                    self.menu_array = self.source_array[self.top_of_menu:(self.top_of_menu + self.max_items)] # List the array for display
+                    self.redraw()
+                    if self.top_of_menu != 0:
+                        self.top_of_menu -= 1
+                        if settings.SOUND_ENABLED:
+                            self.dial_move_sfx.play()
+
+            elif self.selected > 0:
                 if settings.SOUND_ENABLED:
                     self.dial_move_sfx.play()
                 self.select(self.selected - 1)
+
         if action == "dial_down":
-            if self.selected < len(self.items) - 1:
+            print("Dial down")
+            if self.selected < len(self.menu_array) - 1:
                 if settings.SOUND_ENABLED:
                     self.dial_move_sfx.play()
                 self.select(self.selected + 1)
 
+            elif self.selected >= len(self.menu_array) - 1:
+                print("End of list")
+                if len(self.source_array) > len(self.menu_array):
+                    if self.top_of_menu <= len(self.source_array) - self.max_items:
+                        self.menu_array = self.source_array[self.top_of_menu:(self.top_of_menu + self.max_items)] # List the array for display
+                        self.redraw()
+                        self.top_of_menu += 1
+                        if settings.SOUND_ENABLED:
+                            self.dial_move_sfx.play()
+
     def redraw(self):
         self.image.fill((0, 0, 0))
         offset = 5
-        for i in range(len(self.items)):
+        for i in range(len(self.menu_array)):
+
             if i == self.selected:
-                text = settings.RobotoB[30].render(" %s " % self.items[i], True, (0,0,0), (settings.bright))
+                #print("Selected Index = ", i)
+                text = settings.RobotoB[30].render(" %s " % self.menu_array[i][0], True, (0,0,0), (settings.bright))
                 try:
-                    number = settings.RobotoB[30].render(" %s " % self.number[i], True, (0,0,0), (settings.bright))
+                    number = settings.RobotoB[30].render(" %s " % self.menu_array[i][1], True, (0,0,0), (settings.bright))
                 except:
                     number = ""
-                
+
                 selected_rect = (0, offset, settings.menu_x+300, text.get_size()[1])
                 pygame.draw.rect(self.image, (settings.bright), selected_rect)
-                
 
                 self.images = []
                 try: #Try loading a image if there is one
-                    self.image_url = self.image_list[i]
+                    self.image_url = self.menu_array[i][2]
                 except:
                     self.image_url = ""
 
@@ -322,32 +316,32 @@ class Menu(game.Entity):
                             file = imp.load_source("frameorder.py", os.path.join(self.image_url,"frameorder.py"))
                             self.frameorder = file.frameorder
                             self.frame = 0
-                         
+
                 else:
                     if self.image_url:
                         self.frameorder = []
                         self.imagebox.fill((0,0,0))
-                        self.graphic = pygame.image.load(self.image_url).convert_alpha()               
+                        self.graphic = pygame.image.load(self.image_url).convert_alpha()
                         self.image.blit(self.graphic, (400,0))
-                    
+
                 try:
-                    description = self.description[i]
+                    description = self.menu_array[i][3]
                 except:
                     description = ""
 
                 if description:
                     self.descriptionbox.fill((0,0,0))
                     #  description = settings.RobotoB[24].render(self.description[i], True, (settings.bright), (0, 0, 0))
-                    word_wrap(self.descriptionbox, self.description[i], settings.FreeRobotoR[20])
+                    word_wrap(self.descriptionbox, description, settings.FreeRobotoR[20])
                     self.image.blit(self.descriptionbox, (350,240))
-                
+
             else:
-                text = settings.RobotoB[30].render(" %s " % self.items[i], True, (settings.bright), (0, 0, 0))
+                text = settings.RobotoB[30].render(" %s " % self.menu_array[i][0], True, (settings.bright), (0, 0, 0))
                 try:
-                    number = settings.RobotoB[30].render(" %s " % self.number[i], True, (settings.bright), (0, 0, 0))
+                    number = settings.RobotoB[30].render(" %s " % self.menu_array[i][1], True, (settings.bright), (0, 0, 0))
                 except:
                     number = None
-            
+
             self.image.blit(text, (settings.menu_x, offset))
 
             if number:
