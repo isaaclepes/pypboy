@@ -55,7 +55,7 @@ class Pypboy(game.core.Engine):
             "stats": stats.Module(self),
             "boot": boot.Module(self)
         }
-        self.switch_module("stats")
+        self.switch_module("boot") # Set the start screen
 
     def init_gpio_controls(self):
         for pin in settings.gpio_actions.keys():
@@ -95,21 +95,30 @@ class Pypboy(game.core.Engine):
     def handle_event(self, event):
         
         if event.type == pygame.KEYDOWN: #Some key has been pressed
-            if (event.key == pygame.K_ESCAPE): #ESC
+            if event.key == pygame.K_ESCAPE: #ESC
                 self.running = False
-            elif (event.key == pygame.K_PAGEUP): # Volume up
+            elif event.key == pygame.K_PAGEUP: # Volume up
                 settings.radio.handle_event(event)
-            elif (event.key == pygame.K_PAGEDOWN): # Volume down
+            elif event.key == pygame.K_PAGEDOWN: # Volume down
+                settings.radio.handle_event(event)
+            elif event.key == pygame.K_END:  # Next Song
+                settings.radio.handle_event(event)
+            elif event.key == pygame.K_HOME:  # Prev Song
                 settings.radio.handle_event(event)
             else:
                 if event.key in settings.ACTIONS: #Check action based on key in settings
                     self.handle_action(settings.ACTIONS[event.key])
         elif event.type == pygame.QUIT:
             self.running = False
+
         elif event.type == settings.EVENTS['SONG_END']:
             if settings.SOUND_ENABLED:
                 if hasattr(settings, 'radio'):
                     settings.radio.handle_event(event)
+
+
+
+
         else:
             if hasattr(self, 'active'):
                 self.active.handle_event(event)

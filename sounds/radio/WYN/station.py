@@ -1,1 +1,0 @@
-station_name = "Wynabego Warrior"

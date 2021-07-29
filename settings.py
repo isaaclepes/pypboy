@@ -17,7 +17,11 @@ FULLSCREEN = False
 
 #Menu Position
 menu_x = 10
-menu_y = 160
+menu_y = 140
+
+#Description box Position
+description_box_x = 350
+description_box_y = 240
 
 #COLORS
 black = (0,0,0)
@@ -142,31 +146,32 @@ INVENTORY_OLD = [
 "Pulse Grenade (2)"
 ]
 
-#Menu Structure: ["Menu item",Quantity,"Image (or folder for animation")","Decription text","Stat Text","Stat Number"],
+#Menu Structure: ["Menu item",Quantity,"Image (or folder for animation")","Description text",[["stats_text_1","stats_number_1"],["stats_text_2","stats_number_2"]]],
 
 SPECIAL = [
     ["Strength",4,"images/stats/special/strength","Strength is a measure of your raw physical power. It affects how much you can carry, and the damage of all melee attacks."],
-    ["Perception",8,"images/stats/special/perception","Perception is your enviromental awareness and 'sixth sense', and affects weapon accuracy in V.A.T.S."],
-    ["Endurance",3,"images/stats/special/endurance","Endurance is a measure of your overall physical fitness. It affecst your total Health and the Action Point drain from sprinting."],
+    ["Perception",8,"images/stats/special/perception","Perception is your environmental awareness and 'sixth sense', and affects weapon accuracy in V.A.T.S."],
+    ["Endurance",3,"images/stats/special/endurance","Endurance is a measure of your overall physical fitness. It affect your total Health and the Action Point drain from sprinting."],
     ["Charisma",5,"images/stats/special/charisma","Charisma is your ability to charm and convince others. It affects your success to persuade in dialogue and prices when you barter."],
     ["Intelligence",6,"images/stats/special/intelligence",'Intelligence is a measure of your overall metal acuity, and affects the number of Experience Points earned'],
-    ["Agility",3,"images/stats/special/agility","Agility is a measure of your overall fitnesse and reflexes. It affects the number of Action Points in V.A.T.S. and your abilty to sneak"],
-    ["Luck",3,"images/stats/special/luck","Luck is a measure of your general good fortune, and affects the recharge rate of Critital Hits"],
+    ["Agility",3,"images/stats/special/agility","Agility is a measure of your overall fitnesse and reflexes. It affects the number of Action Points in V.A.T.S. and your ability to sneak"],
+    ["Luck",3,"images/stats/special/luck","Luck is a measure of your general good fortune, and affects the recharge rate of Critical Hits"],
 ]
 
 WEAPONS = [
-    ["10mm Pistol","1","images/inventory/10mmpistol","10mm Pistol stats"],
-    ["Bottle Cap Mine","1","images/inventory/bottlecapmine","Detonation and donation all inside one ready to use package!"],
-    ["Combat Knife","1","images/inventory/combatknife","The combat knife will cut you"],
-    ["Fragmentation Grenade",2,"images/inventory/grenadefrag","Fragmentation grenade goes boom"],
-    ["Laser Rifle",1,"images/inventory/laserrifle","Pew Pew"],
-    ["Plasma Mine",3,"images/inventory/plasmamine","Boom and goo"],
+    ["10mm Pistol","1","images/inventory/10mmpistol","",[["Damage",18],["10mm",57,],["Fire Rate",46],["Range",83],["Accuracy",60],["Weight",3.5],["Value",50]]],
+    ["Bottle Cap Mine","1","images/inventory/bottlecapmine","",[["Damage",301],["Fire Rate",0],["Range",93],["Accuracy",0],["Weight",0.5],["Value",75]]],
+    ["Combat Knife","1","images/inventory/combatknife","",[["Damage",10],["Speed","FAST"],["Weight",1],["Value",25]]],
+    ["Fragmentation Grenade",2,"images/inventory/grenadefrag","",[["Damage",151],["Fire Rate",0],["Range",93],["Accuracy",0],["Weight",0.5],["Value",50]]],
+    ["Laser Musket",1,"images/inventory/lasermusket","",[["Damage",30],["Cell",30],["Fire Rate",6],["Range",107],["Accuracy",70],["Weight",12.6],["Value",61]]],
+    ["Laser Rifle",1,"images/inventory/laserrifle","",[["Damage",30],["Cell",30],["Fire Rate",6],["Range",107],["Accuracy",70],["Weight",12.6],["Value",61]]],
+    ["Plasma Mine",3,"images/inventory/plasmamine","",[["Damage",150],["Fire Rate",0],["Range",93],["Accuracy",0],["Weight",0.5],["Value",100]]],
 ]
 
 ARMOR = [
-    ["Eyeglasses"],
-    ["Vault 111 Jumpsuit"],
-    ["Wedding Ring"],
+    ["Eyeglasses",1,"images/inventory/eyeglasses","",[["PER",1],["Weight",0.1],["Value",7]]],
+    ["Vault 111 Jumpsuit",1,"images/inventory/vault_11_jumpsuit","",[["DMG Resist",5],["Weight",1],["Value",20]]],
+    ["Wedding Ring",1,"images/inventory/wedding_ring","",[["Weight",0],["Value",250]]],
 ]
 
 AID = [
@@ -176,10 +181,10 @@ AID = [
 ]
 
 MISC = [
-    ["Pencil"],
+    ["Pencil",3],
     ["Pre-War Money",250],
-    ["Super Glue"],
-    ["Toy Mini-Nuke"],
+    ["Super Glue",2],
+    ["Toy Mini-Nuke",1],
 ]
 
 AMMO = [
@@ -206,20 +211,20 @@ SKILLS = [
 ]
 
 PERKS = [
-    ["0, Action Boy"],
-    ["1, Animal Friend"],
-    ["2, Awareness"],
-    ["3, Gunslinger"],
-    ["4, Hacker"],
-    ["5, Mysterious Stranger"],
-    ["6, Rifleman"],
-    ["7, Science"],
-    ["8, Sniper"],
-    ["9, Concentrated Fire"],
-    ["10, Rad Resistant"],
-    ["11, Attack Dog"],
-    ["12, Wasteland Whisperer"],
-    ["13, Gun Nut"],
+    ["Action Boy"],
+    ["Animal Friend"],
+    ["Awareness"],
+    ["Gunslinger"],
+    ["Hacker"],
+    ["Mysterious Stranger"],
+    ["Rifleman"],
+    ["Science"],
+    ["Sniper"],
+    ["Concentrated Fire"],
+    ["Rad Resistant"],
+    ["Attack Dog"],
+    ["Wasteland Whisperer"],
+    ["Gun Nut"],
 ]
 
 PI = False

@@ -1,0 +1,2 @@
+station_name = "Radio Freedom"
+ordered = False

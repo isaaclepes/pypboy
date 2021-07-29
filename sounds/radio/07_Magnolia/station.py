@@ -1,0 +1,2 @@
+station_name = "Magnolia Radio"
+ordered = False
