@@ -244,7 +244,7 @@ class Menu(game.Entity):
 
     def handle_action(self, action):
         if action == "dial_up":
-            print("Dial up")
+            # print("Dial up")
             if self.selected > 0:
                 if settings.SOUND_ENABLED:
                     self.dial_move_sfx.play()
@@ -252,7 +252,7 @@ class Menu(game.Entity):
                 self.select(self.selected)
 
         if action == "dial_down":
-            print("Dial down")
+            # print("Dial down")
             if self.selected < len(self.source_array) - 1:
                 self.selected += 1
                 if settings.SOUND_ENABLED:

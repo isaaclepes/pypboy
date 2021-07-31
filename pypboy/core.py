@@ -55,7 +55,7 @@ class Pypboy(game.core.Engine):
             "stats": stats.Module(self),
             "boot": boot.Module(self)
         }
-        self.switch_module("boot") # Set the start screen
+        self.switch_module("radio") # Set the start screen
 
     def init_gpio_controls(self):
         for pin in settings.gpio_actions.keys():
@@ -104,6 +104,8 @@ class Pypboy(game.core.Engine):
             elif event.key == pygame.K_END:  # Next Song
                 settings.radio.handle_event(event)
             elif event.key == pygame.K_HOME:  # Prev Song
+                settings.radio.handle_event(event)
+            elif event.key == pygame.K_DELETE:
                 settings.radio.handle_event(event)
             else:
                 if event.key in settings.ACTIONS: #Check action based on key in settings

@@ -49,20 +49,23 @@ class Module(pypboy.SubModule):
 
     def select_station(self, station):
         if hasattr(self, 'active_station') and self.active_station:
-            self.active_station.stop()
+            self.active_station.new_selection = True
+            # self.active_station.stop()
         self.active_station = self.stations[station]
-
         settings.STATION = station
-        self.new_selection = True
-        self.active_station.play_song(self.new_selection)
+        self.active_station.play_song()
 
     def handle_event(self, event):
         if event.type == settings.EVENTS['SONG_END']:
             if hasattr(self, 'active_station') and self.active_station:
-                if not self.new_selection:
-                    self.active_station.song_index += 1
+                if self.active_station.new_selection:
+                    self.active_station.new_selection = False
+                else:
+                    self.active_station.files.rotate(-1)
+                    self.active_station.song_lengths.rotate(-1)
                     self.active_station.play_song()
-                self.new_selection = False
+                    self.active_station.new_selection = False
+                    print("Song ended, Playing next song")
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_PAGEUP:
                 if hasattr(self, 'active_station') and self.active_station:
@@ -76,8 +79,12 @@ class Module(pypboy.SubModule):
             elif event.key == pygame.K_HOME:
                 if hasattr(self, 'active_station') and self.active_station:
                     self.active_station.prev_song()
+            elif event.key == pygame.K_DELETE:
+                if hasattr(self, 'active_station') and self.active_station:
+                    self.active_station.start_time = self.active_station.start_time - 10000
+                    print("altering start time",self.active_station.start_time)
 
-    def list_folders(self):  
+    def list_folders(self):
         
         #Get list of folders
         folders = []

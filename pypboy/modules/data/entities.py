@@ -11,6 +11,7 @@ import time
 import random
 from mutagen.mp3 import MP3
 import imp
+from collections import deque
 
 class Map(game.Entity):
 
@@ -213,45 +214,74 @@ class RadioStation(game.Entity):
 
         self.total_length = 0
         self.song_lengths = []
-        self.station_length = []
+        self.station_length = 0
         self.song_lengths = []
         self.filename = 0
         self.files = self.load_files()
-        self.song_index = 0
-        start_time = time.time()
+        self.start_pos = 0
+        self.new_selection = True
+        self.last_filename = None
+
         pygame.mixer.music.set_endevent(settings.EVENTS['SONG_END'])
 
-    def play_song(self, new_selection=False):
-        start_pos = 0
+    def play_song(self):
+        self.start_pos = 0
         if settings.SOUND_ENABLED:
-            # if hasattr(self, 'last_filename') and self.last_filename:
-            #     pygame.mixer.music.load(self.last_filename)
-            #     pygame.mixer.music.set_volume(settings.VOLUME)
-            #     now = time.time()
-            #     curpos = self.last_playpos + (now - self.last_playtime)
+            if self.files[0].endswith("Silence.mp3"):
+                print("Radio off")
+                self.stop()
+            else:
+                if hasattr(self, 'last_filename') and self.last_filename: #Support resuming
+                    self.start_pos = self.last_playpos + (time.time() - self.last_playtime)
+                    print ("Resuming song:", self.last_filename)
 
-            if self.files:
-                if self.station_ordered:
-                    if self.song_index >= len(self.files):
-                        # print ("len(self.files) =",len(self.files),"song_index = ",self.song_index)
-                        self.song_index = 0
-                else:
-                    self.song_index = random.randint(0, len(self.files) - 1)
-                    if new_selection:
+                if self.files:
+                    if self.new_selection: # If changed stations manually
+                        song_length = self.song_lengths[0]  # length of the current song
+                        self.start_pos = time.time() - self.start_time
+                        # print("time based start_pos =", self.start_pos)
+
+                        if self.start_pos > song_length:
+                            i = 0
+                            lengths = list(self.song_lengths)
+                            if self.start_pos > self.station_length:
+                                print("start_pos longer than station length",self.start_pos,self.station_length)
+                                self.start_time = time.time()
+                                self.start_pos = 0
+                            else:
+                                while sum(lengths[0:i]) <= self.start_pos: #Find where in the station list we should be base on current time
+                                    i += 1
+                                    self.files.rotate(-1)
+                                    self.song_lengths.rotate(-1)
+
+                                i -= 1 #compensate for overshoot
+                                self.files.rotate(1)
+                                self.song_lengths.rotate(1)
+
+                                self.sum_of_song_lengths = sum(lengths[0:i])
+                                self.start_pos = self.start_pos - self.sum_of_song_lengths
+                                self.start_time = time.time() - self.start_pos
+                                print("Jumping to song index: :", i, "New Song Length =", lengths[i], "start_pos =",self.start_pos,"self.sum_of_song_lengths",self.sum_of_song_lengths)
+
                         self.new_selection = False
-                        start_pos = random.uniform(0,self.song_lengths[self.song_index])
+                        # print("-----------")
+                        # print("New Selection")
+                        # print("start_pos =", self.start_pos)
+                        # print("Song length =",song_length)
+                        # print("-----------")
 
-                self.filename = self.files[self.song_index]
+                        # print ("Song to jump into is:: ",self.song_index,  "song time = ",song_time,"Song length =",self.song_lengths[self.song_index], "time_since_reset = ",time_since_reset, "start_pos = ",start_pos)
 
-                if self.filename.endswith("Silence.mp3"):
-                    print("Radio off")
-                else:
+                    else:
+                        print("Same station, new song")
+                        self.start_pos = 0
+
+                    self.filename = self.files[0]
+
                     pygame.mixer.music.load(self.filename)
-                    pygame.mixer.music.play(0, start_pos)
-
-                    print("Song =", self.filename, "length =",self.song_lengths[self.song_index], "start_pos =",start_pos, "Ordered = ",self.station_ordered)
-
+                    pygame.mixer.music.play(0, self.start_pos)
                     self.state = self.STATES['playing']
+                    print("Playing =", self.filename, "length =",str(round(self.song_lengths[0],2)), "start_pos =",str(round(self.start_pos,2)))
 
     
     def volume_up(self):   
@@ -273,11 +303,13 @@ class RadioStation(game.Entity):
                 self.state = self.STATES['playing']
             else:
                 self.play_song()
+            print("Music resumed")
         
     def pause(self):
         if settings.SOUND_ENABLED:
             self.state = self.STATES['paused']
             pygame.mixer.music.pause()
+            print("Music paused")
         
     def stop(self):
         if settings.SOUND_ENABLED:
@@ -287,35 +319,34 @@ class RadioStation(game.Entity):
                 self.last_playpos = pygame.mixer.music.get_pos()
                 self.last_playtime = time.time()
             pygame.mixer.music.stop()
+            print("Music stopped")
 
     def next_song(self):
         if settings.SOUND_ENABLED:
             print ("Next song")
-            self.song_index += 1
-            if self.song_index >= len(self.files):
-                self.song_index = 0
+            self.files.rotate(-1)
+            self.song_lengths.rotate(-1)
+            self.start_time = time.time()
             self.play_song()
 
     def prev_song(self):
         if settings.SOUND_ENABLED:
             print("Prev song")
-            self.song_index -= 1
-            if self.song_index < 0:
-                self.song_index = len(self.files) - 1
+            self.files.rotate(1)
+            self.song_lengths.rotate(1)
+            self.start_time = time.time()
             self.play_song()
 
     def load_files(self):
-        files = []
+        files = deque([])
         self.total_length = 0
-        self.song_lengths = []
-        self.station_length = []
+        self.song_lengths =  deque([])
 
         for f in sorted(os.listdir(self.directory)):
             if f.endswith(".mp3"):
                 files.append(self.directory + f)
                 self.song_lengths.append(MP3(self.directory + f).info.length)
-
-        self.station_length.append(sum(self.song_lengths))
+        self.station_length = sum(self.song_lengths)
 
         try:
             station = imp.load_source("station.py", os.path.join(self.directory, "station.py"))
@@ -324,6 +355,14 @@ class RadioStation(game.Entity):
 
         except:
             self.station_ordered = False
+
+        self.start_time = time.time()
+
+        if not self.station_ordered:
+            seed = random.random()
+            random.Random(seed).shuffle(files)
+            random.Random(seed).shuffle(self.song_lengths)
+
 
         return files
         
