@@ -2,7 +2,5 @@ pygame
 requests
 xmltodict
 numpy
-confuse
-pynput
 cairosvg
 mutagen

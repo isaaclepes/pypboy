@@ -81,8 +81,6 @@ class Animation(game.Entity):
         self.prev_time = 0
         self.prev_fps_time = 0
 
-        self.clock = pygame.time.Clock()
-
         path = "./images/stats/legs1"
         for f in  sorted(os.listdir(path)):
             if f.endswith(".png"):

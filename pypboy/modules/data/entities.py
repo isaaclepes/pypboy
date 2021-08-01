@@ -1,7 +1,5 @@
 import os
-
 import mutagen
-
 import game
 import settings
 import pygame
@@ -221,13 +219,16 @@ class RadioStation(game.Entity):
         self.start_pos = 0
         self.new_selection = True
         self.last_filename = None
-
+ 
         pygame.mixer.music.set_endevent(settings.EVENTS['SONG_END'])
+
 
     def play_song(self):
         self.start_pos = 0
         if settings.SOUND_ENABLED:
             if self.files[0].endswith("Silence.mp3"):
+                settings.AMPLITUDE = []
+                settings.SONG = None
                 print("Radio off")
                 self.stop()
             else:
@@ -264,12 +265,6 @@ class RadioStation(game.Entity):
                                 print("Jumping to song index: :", i, "New Song Length =", lengths[i], "start_pos =",self.start_pos,"self.sum_of_song_lengths",self.sum_of_song_lengths)
 
                         self.new_selection = False
-                        # print("-----------")
-                        # print("New Selection")
-                        # print("start_pos =", self.start_pos)
-                        # print("Song length =",song_length)
-                        # print("-----------")
-
                         # print ("Song to jump into is:: ",self.song_index,  "song time = ",song_time,"Song length =",self.song_lengths[self.song_index], "time_since_reset = ",time_since_reset, "start_pos = ",start_pos)
 
                     else:
@@ -277,6 +272,39 @@ class RadioStation(game.Entity):
                         self.start_pos = 0
 
                     self.filename = self.files[0]
+
+
+                    #Code to support visualizser:
+
+                    sound_file = pygame.mixer.Sound(self.filename) #Load the sound file
+                    width = 250
+                    height = 250
+
+                    song_length = self.song_lengths[0]  # Song length in seconds
+
+                    settings.frame_rate = 48000
+                    frame_skip = int(48000/75)
+                    amplitude = pygame.sndarray.array(sound_file)
+                    amplitude = amplitude[:, 0] + amplitude[:, 1]
+
+                    # frame_skip = int((len(amplitude)/song_length)/90)
+
+                    # print(len(amplitude))
+                    # print(song_length)
+                    # print(frame_skip)
+
+                    amplitude = amplitude[::frame_skip]
+                    # frequency = list(abs(fft.fft(amplitude)))
+
+                    # scale the amplitude to 1/4th of the frame height and translate it to height/2(central line)
+                    max_amplitude = max(amplitude)
+                    for i in range(len(amplitude)):
+                        amplitude[i] = float(amplitude[i]) / max_amplitude * int(height / 2.5) + height / 2
+
+                    settings.SONG = self.filename
+                    settings.AMPLITUDE = [int(height / 2)] * width + list(amplitude)
+                    settings.START_POS = self.start_pos
+                    settings.SONG_LENGTH = self.song_lengths[0]
 
                     pygame.mixer.music.load(self.filename)
                     pygame.mixer.music.play(0, self.start_pos)
@@ -309,6 +337,7 @@ class RadioStation(game.Entity):
         if settings.SOUND_ENABLED:
             self.state = self.STATES['paused']
             pygame.mixer.music.pause()
+            settings.ACTIVE_SONG = None
             print("Music paused")
         
     def stop(self):
@@ -318,6 +347,7 @@ class RadioStation(game.Entity):
                 self.last_filename = self.filename
                 self.last_playpos = pygame.mixer.music.get_pos()
                 self.last_playtime = time.time()
+            settings.ACTIVE_SONG = None
             pygame.mixer.music.stop()
             print("Music stopped")
 
@@ -337,14 +367,20 @@ class RadioStation(game.Entity):
             self.start_time = time.time()
             self.play_song()
 
+    def randomize_station(self):
+        seed = random.random()
+        random.Random(seed).shuffle(self.files)
+        random.Random(seed).shuffle(self.song_lengths)
+        print("Randomized song order")
+
     def load_files(self):
-        files = deque([])
+        self.files = deque([])
         self.total_length = 0
         self.song_lengths =  deque([])
 
         for f in sorted(os.listdir(self.directory)):
             if f.endswith(".mp3"):
-                files.append(self.directory + f)
+                self.files.append(self.directory + f)
                 self.song_lengths.append(MP3(self.directory + f).info.length)
         self.station_length = sum(self.song_lengths)
 
@@ -360,11 +396,11 @@ class RadioStation(game.Entity):
 
         if not self.station_ordered:
             seed = random.random()
-            random.Random(seed).shuffle(files)
+            random.Random(seed).shuffle(self.files)
             random.Random(seed).shuffle(self.song_lengths)
 
 
-        return files
+        return self.files
         
     def __le__(self, other):
         if type(other) is not RadioStation:
