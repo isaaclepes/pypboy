@@ -1,2 +1,0 @@
-station_name = "Repconn Radio"
-ordered = True

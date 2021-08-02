@@ -1,2 +1,0 @@
-station_name = "Wynabego Warrior"
-ordered = False

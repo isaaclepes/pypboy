@@ -1,2 +1,0 @@
-station_name = "Diamond City Radio"
-ordered = False

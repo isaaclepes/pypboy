@@ -3,7 +3,18 @@
 .pydevproject
 .settings
 lib
-# *.mp3
-# *.ogg
 *.mp3
-*.ogg
+sounds/radio/03_DCR/desktop.ini
+sounds/radio/03_DCR/**
+sounds/radio/05_Institute/**
+sounds/radio/06_Minutemen/**
+sounds/radio/07_Magnolia/**
+sounds/radio/08_CadillacJack/**
+sounds/radio/09_HCB/**
+sounds/radio/10_RCR/**
+sounds/radio/11_RedEye/**
+sounds/radio/12_RRF/**
+sounds/radio/13_TCL/**
+sounds/radio/14_TCM/**
+sounds/radio/15_V101/**
+sounds/radio/16_WYN/**

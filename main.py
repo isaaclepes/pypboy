@@ -27,7 +27,7 @@ try:
     settings.SOUND_ENABLED = True
 except Exception as e:
     settings.SOUND_ENABLED = False
-    
+
 from pypboy.core import Pypboy
 
 if __name__ == "__main__":

@@ -266,7 +266,6 @@ except:
 def save_settings():
     file = open("saved.py","w")
     file.write("SAVED_VOLUME = " + str(VOLUME) + "\n" + "SAVED_STATION = " + str(STATION))
-    
     print ("exiting", VOLUME, STATION)
     
 atexit.register(save_settings)
@@ -275,3 +274,11 @@ atexit.register(save_settings)
 glitch = False
 glitch_time = 0.1
 glitch_next = 0
+
+# Force caching waveforms
+# This can take a very long time on a Raspberry Pi or fail completely if the song is too long.
+# I recommend running on a PC first.
+force_caching = True
+
+# Generate waveforms at song load
+do_not_use_cache = False
