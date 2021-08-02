@@ -278,7 +278,7 @@ glitch_next = 0
 # Force caching waveforms
 # This can take a very long time on a Raspberry Pi or fail completely if the song is too long.
 # I recommend running on a PC first.
-force_caching = True
+force_caching = False
 
 # Generate waveforms at song load
 do_not_use_cache = False
