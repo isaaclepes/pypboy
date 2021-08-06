@@ -16,3 +16,8 @@ class Module(pypboy.SubModule):
         self.menu.rect[0] = settings.menu_x
         self.menu.rect[1] = settings.menu_y
         self.add(self.menu)
+
+        self.footer = pypboy.ui.Footer(settings.STATUS_FOOTER)
+        self.footer.rect[0] = settings.footer_x
+        self.footer.rect[1] = settings.footer_y
+        self.add(self.footer)

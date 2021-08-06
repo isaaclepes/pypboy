@@ -1,6 +1,5 @@
 import pygame
 import game
-import settings
 import pypboy.ui
 import settings
 from enum import Enum

@@ -19,6 +19,10 @@ FULLSCREEN = False
 menu_x = 10
 menu_y = 140
 
+#Menu Position
+footer_x = 0
+footer_y = 631
+
 #Description box Position
 description_box_x = 350
 description_box_y = 240
@@ -37,9 +41,18 @@ dark = (0,30,0)
 #MAP_FOCUS = (-118.5723894,34.3917171)#CodeNinjasValencia
 #MAP_FOCUS = (32.7157, 117.1611)
 #MAP_FOCUS = (-92.1943197, 38.5653437)
-MAP_FOCUS = (-98.0878917, 30.1914818) # Zap's Hometown
+#MAP_FOCUS = (-98.0878917, 30.1914818) # Zap's Hometown
+MAP_FOCUS = (-71.0594587,42.3614408) #Boston MA
+LOAD_CACHED_MAP = False
+
+#Open Strett Map settings
 WORLD_MAP_FOCUS = 0.07 #Needed to handle the 50k node limit from OSM
-LOAD_CACHED_MAP = True
+
+#Google maps:
+MAP_TYPE = "hybrid" #  Select Hybrid if you want labels and roads, satellite if you want imagry only
+MAP_STYLE = "feature:all|geometry.stroke|labels.text.stroke"
+WORLD_MAP_ZOOM = 12
+LOCAL_MAP_ZOOM = 17
 
 EVENTS = {
     'SONG_END': pygame.USEREVENT + 1
@@ -72,6 +85,7 @@ ACTIONS = {
     pygame.K_UP: "dial_up",
     pygame.K_DOWN: "dial_down",
     pygame.K_PLUS: "zoom_in",
+    pygame.K_EQUALS: "zoom_in",
     pygame.K_MINUS: "zoom_out",
     pygame.K_KP_PLUS: "zoom_in",
     pygame.K_KP_MINUS: "zoom_out",
@@ -148,6 +162,8 @@ INVENTORY_OLD = [
 
 #Menu Structure: ["Menu item",Quantity,"Image (or folder for animation")","Description text",[["stats_text_1","stats_number_1"],["stats_text_2","stats_number_2"]]],
 
+FOOTER_RADIO = ["", "", "", "", False]
+
 SPECIAL = [
     ["Strength",4,"images/stats/special/strength","Strength is a measure of your raw physical power. It affects how much you can carry, and the damage of all melee attacks."],
     ["Perception",8,"images/stats/special/perception","Perception is your environmental awareness and 'sixth sense', and affects weapon accuracy in V.A.T.S."],
@@ -157,6 +173,8 @@ SPECIAL = [
     ["Agility",3,"images/stats/special/agility","Agility is a measure of your overall fitnesse and reflexes. It affects the number of Action Points in V.A.T.S. and your ability to sneak"],
     ["Luck",3,"images/stats/special/luck","Luck is a measure of your general good fortune, and affects the recharge rate of Critical Hits"],
 ]
+
+STATUS_FOOTER = ["HP 115/115", "LEVEL 66", "AP 90/90", 90, True]
 
 WEAPONS = [
     ["10mm Pistol","1","images/inventory/10mmpistol","",[["Damage",18],["10mm",57,],["Fire Rate",46],["Range",83],["Accuracy",60],["Weight",3.5],["Value",50]]],
@@ -168,17 +186,23 @@ WEAPONS = [
     ["Plasma Mine",3,"images/inventory/plasmamine","",[["Damage",150],["Fire Rate",0],["Range",93],["Accuracy",0],["Weight",0.5],["Value",100]]],
 ]
 
+FOOTER_WEAPONS = ["WEIGHT 20/200", "CAPS: 1", "AMMO: 240", None, False]
+
 ARMOR = [
     ["Eyeglasses",1,"images/inventory/eyeglasses","",[["PER",1],["Weight",0.1],["Value",7]]],
     ["Vault 111 Jumpsuit",1,"images/inventory/vault_11_jumpsuit","",[["DMG Resist",5],["Weight",1],["Value",20]]],
     ["Wedding Ring",1,"images/inventory/wedding_ring","",[["Weight",0],["Value",250]]],
 ]
 
+FOOTER_ARMOR = ["WEIGHT 20/200", "CAPS: 1", "ARMOR: 5 / RADIATION: 10", None, False]
+
 AID = [
     ["Stim Pak",3,"images/inventory/stimpak","Stim Paks restore your health"],
     ["Purified Water",3,"images/inventory/purified_water","Purified Water"],
     ["Rad Away",2,"images/inventory/radaway","Rad Away lowers radiation"],
 ]
+
+FOOTER_AID = ["WEIGHT 20/200", "CAPS: 1", "HEALTH", 90, False]
 
 MISC = [
     ["Pencil",3],
@@ -187,10 +211,14 @@ MISC = [
     ["Toy Mini-Nuke",1],
 ]
 
+FOOTER_MISC = ["WEIGHT 20/200", "CAPS: 1", "", None, False]
+
 AMMO = [
     ["10mm Rounds",15],
     ["Fusion Cells",28],
 ]
+
+FOOTER_TIME = ["DATE", "TIME", "", None, False]
 
 QUESTS = [
     ["Cosplacon"],

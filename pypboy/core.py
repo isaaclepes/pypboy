@@ -39,8 +39,8 @@ class Pypboy(game.core.Engine):
         #self.background = pygame.image.load('images/Special_Reference.png')
         self.topmenu = pypboy.ui.TopMenu()
         self.root_persitant.add(self.topmenu)
-        #self.footer = pypboy.ui.Footer()
-        #self.root_persitant.add(self.footer)
+        self.footer = pypboy.ui.Footer()
+        self.root_persitant.add(self.footer)
         overlay = pypboy.ui.Overlay()
         self.root_persitant.add(overlay)
         scanlines = pypboy.ui.Scanlines()
@@ -55,7 +55,7 @@ class Pypboy(game.core.Engine):
             "stats": stats.Module(self),
             "boot": boot.Module(self)
         }
-        self.switch_module("radio") # Set the start screen
+        self.switch_module("stats") # Set the start screen
 
     def init_gpio_controls(self):
         for pin in settings.gpio_actions.keys():

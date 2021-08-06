@@ -1,5 +1,6 @@
 from pypboy import BaseModule
 from pypboy.modules.radio import radio
+# from pypboy.modules.radio import live_radio
 import settings
 
 class Module(BaseModule):
@@ -9,6 +10,7 @@ class Module(BaseModule):
     def __init__(self, *args, **kwargs):
         self.submodules = [
             radio.Module(self),
+            # live_radio.Module(self),
         ]
         super(Module, self).__init__(*args, **kwargs)
         

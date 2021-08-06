@@ -15,6 +15,7 @@ class Module(BaseModule):
             perks.Module(self),
         ]
         super(Module, self).__init__(*args, **kwargs)
+
         
     def handle_resume(self):
         self.pypboy.topmenu.label = self.label

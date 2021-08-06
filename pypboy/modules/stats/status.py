@@ -27,6 +27,12 @@ class Module(pypboy.SubModule):
 
         self.prev_time = 0
 
+        self.footer = pypboy.ui.Footer(settings.STATUS_FOOTER)
+        self.footer.rect[0] = settings.footer_x
+        self.footer.rect[1] = settings.footer_y
+        self.add(self.footer)
+        # STATUS_FOOTER = ["HP 115/115", "LEVEL 66", "AP 90/90", 90, True]
+
     #     self.menu = pypboy.ui.Menu(["CND", "RAD", "EFF"], [self.show_cnd, self.show_rad, self.show_eff], 0)
     #     self.menu.rect[0] = settings.menu_x
     #     self.menu.rect[1] = settings.menu_y
@@ -122,13 +128,13 @@ class Health(game.Entity):
 
         self.image = pygame.Surface((settings.WIDTH, settings.HEIGHT - 180))
         self.image.fill((0,0,0))
-       
-        # Bottom Boxes
-        pygame.draw.rect(self.image, settings.dim, (0, 501, 166, 38)) #Hit point background
-        pygame.draw.rect(self.image, settings.dim, (170, 501, 370, 38)) #Level bar background
-        pygame.draw.lines(self.image, settings.mid,True,[(282,515),(529,515),(529,529),(282,529)], 3) #Level bar surround
-        pygame.draw.rect(self.image, settings.bright, (285, 517, 179, 11)) #Level bar fill
-        pygame.draw.rect(self.image, settings.dim, (544, 501, 176, 38)) #Actiion background
+        #
+        # # Bottom Boxes
+        # pygame.draw.rect(self.image, settings.dim, (0, 501, 166, 38)) #Hit point background
+        # pygame.draw.rect(self.image, settings.dim, (170, 501, 370, 38)) #Level bar background
+        # pygame.draw.lines(self.image, settings.mid,True,[(282,515),(529,515),(529,529),(282,529)], 3) #Level bar surround
+        # pygame.draw.rect(self.image, settings.bright, (285, 517, 179, 11)) #Level bar fill
+        # pygame.draw.rect(self.image, settings.dim, (544, 501, 176, 38)) #Actiion background
         
 
         # Middle Boxes
@@ -160,11 +166,11 @@ class Health(game.Entity):
         settings.FreeRobotoB[24].render_to(self.image, (406, 395), "10", settings.bright) # Armor count
         settings.FreeRobotoB[24].render_to(self.image, (447, 395), "20", settings.bright) # Energy count
         settings.FreeRobotoB[24].render_to(self.image, (490, 395), "10", settings.bright) # Rad count
-        
-        # Bottom text
-        settings.FreeRobotoB[30].render_to(self.image, (7, 509), "HP 115/115", settings.bright)
-        settings.FreeRobotoB[24].render_to(self.image, (188, 513), "LEVEL 66", settings.bright)
-        settings.FreeRobotoB[30].render_to(self.image, (602, 509), "AP 90/90", settings.bright)
+        #
+        # # Bottom text
+        # settings.FreeRobotoB[30].render_to(self.image, (7, 509), "HP 115/115", settings.bright)
+        # settings.FreeRobotoB[24].render_to(self.image, (188, 513), "LEVEL 66", settings.bright)
+        # settings.FreeRobotoB[30].render_to(self.image, (602, 509), "AP 90/90", settings.bright)
 
         #User name
         settings.FreeRobotoB[24].render_to(self.image, (301, 448), settings.name, settings.bright)
