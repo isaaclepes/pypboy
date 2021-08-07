@@ -11,10 +11,17 @@ import mutagen
 import random
 import configparser
 import sys
+import threading
+import numpy as np
 
 from pypboy.modules.data import entities
 import pypboy.data
 
+song = None
+start_pos = 0
+waveform = []
+new_waveform = False
+song_length = 0
 
 class Module(pypboy.SubModule):
     label = "RADIO"
@@ -26,8 +33,8 @@ class Module(pypboy.SubModule):
         self.stations = []
         self.station_menu = []
         self.station_list = []
-        self.station_list = self.get_station_data()
         self.station_waveforms = []
+        self.station_list = self.get_station_data()
         self.total_length = 0
         self.station_meta_data_file = None
         self.station_files = []
@@ -67,6 +74,11 @@ class Module(pypboy.SubModule):
         self.menu.rect[1] = settings.menu_y
         self.add(self.menu)
         # self.menu.select(settings.STATION)
+
+        self.footer = pypboy.ui.Footer(settings.FOOTER_RADIO)
+        self.footer.rect[0] = settings.footer_x
+        self.footer.rect[1] = settings.footer_y
+        self.add(self.footer)
 
     def select_station(self, station):
         if hasattr(self, 'active_station') and self.active_station:
@@ -109,8 +121,9 @@ class Module(pypboy.SubModule):
         # Get list of folders
         folders = []
         stations = []
-
+        self.station_name = None
         self.station_ordered = True
+
         for f in sorted(os.listdir(self.audiofolders)):
             if not f.endswith("/"):
                 folders.append(self.audiofolders + f)
@@ -137,40 +150,13 @@ class Module(pypboy.SubModule):
 
             try:
                 self.station_name = config.get('metadata', 'station_name')
-                self.ordered = config.get('metadata', 'ordered')
+                self.station_ordered = config.get('metadata', 'ordered')
             except Exception as e:
                 self.station_name = folder_name
                 self.station_ordered = True
                 print(str(e), ' could not read configuration file')
-            if not settings.do_not_use_cache:
-                try:
-                    self.station_waveforms = config.get('cache', 'waveforms')
-                    print("Loaded cached waveforms in file", self.station_meta_data_file)
-                except Exception as e:
-                    self.station_waveforms = []
-                    print(str(e), ' No cache section in', self.station_meta_data_file)
-            else:
-                print("Using live waveform generation")
-                self.station_waveforms = []
 
             self.total_length = sum(self.station_lengths)
-
-            if not self.station_waveforms and not settings.do_not_use_cache or settings.force_caching:  # Write cached data
-                self.station_waveforms = self.process_waveforms(folder)
-                print("Writing cache data to ", self.station_meta_data_file)
-                try:
-                    config.add_section("metadata")
-                    config.set("metadata", "station_name", str(self.station_name))
-                    config.set("metadata", "ordered", str(self.station_ordered))
-                except Exception as e:
-                    print(str(e))
-                try:
-                    config.add_section("cache")
-                except Exception as e:
-                    print(str(e))
-                config.set("cache", "waveforms", str(self.station_waveforms))
-                with open(self.station_meta_data_file, 'w') as configfile:
-                    config.write(configfile)
 
             if not self.station_ordered:
                 seed = random.random()
@@ -183,33 +169,6 @@ class Module(pypboy.SubModule):
 
         return stations
 
-    def process_waveforms(self, folder):
-        print("started processing waveforms in folder", folder, "this may take a while")
-        now = time.time()
-        waveforms = []
-        for file in sorted(os.listdir(folder)):
-            if file.endswith(".ogg"):
-                print("Processing waveforms for file = ", file)
-                frame_skip = int(48000 / 75)  # sample rate / (25 fps * 3 pixels shift per frame)
-                amplitude = pygame.sndarray.array(
-                    pygame.mixer.Sound("./" + folder + "/" + file))  # Load the sound file)
-                amplitude = amplitude[:, 0] + amplitude[:, 1]
-
-                amplitude = amplitude[::frame_skip]
-                # frequency = list(abs(fft.fft(amplitude)))
-
-                # scale the amplitude to 1/4th of the frame height and translate it to height/2(central line)
-                max_amplitude = max(amplitude)
-                for i in range(len(amplitude)):
-                    amplitude[i] = float(amplitude[i]) / max_amplitude * 100 + 125
-
-                waveform = [125] * 250 + list(amplitude)
-                for x in range(125):  # Add end frames
-                    waveform.append(125)
-                waveforms.append(waveform)
-        print("Finished processing waveforms in folder", folder, "Time:", time.time() - now)
-        return waveforms
-
     def load_files(self, folder):
         files = []
         song_lengths = []
@@ -221,7 +180,6 @@ class Module(pypboy.SubModule):
 
         return [files, song_lengths]
 
-
 class Animation(game.Entity):
 
     def __init__(self):
@@ -230,13 +188,52 @@ class Animation(game.Entity):
         self.width, self.height = 250, 250
         self.center = [self.width / 2, self.height / 2]
         self.image = pygame.Surface((self.width, self.height))
-        self.animation_time = 0.04  # 25 fps
+        self.animation_time = 1/settings.waveform_fps  # 25 fps
         self.prev_time = 0
         self.index = 0
-        self.prev_song = 0
-        settings.SONG = None
+        self.prev_song = None
+        self.s_time = 0
+        self.current_time = 0
+        self.delta_time = 0
+        self.length = 0
+        self.waveform_length = 0
+
+    def generate_waveform(self):
+        global waveform, song, new_waveform
+        print("Generating waveform for", song)
+        now = time.time()
+        amplitude = pygame.sndarray.array(pygame.mixer.Sound(song))  # Load the sound file)
+        # print("song loaded = ", time.time() - now)
+        amplitude = amplitude.flatten()
+        # print("flatten= ", time.time() - now)
+        # amplitude = amplitude[:, 0] + amplitude[:, 1]
+        amplitude = amplitude[::settings.frame_skip]
+        # print("frame skip= ", time.time() - now)
+
+        # scale the amplitude to fit in the frame height and translate it to height/2(central line)
+        amplitude = amplitude.astype('float64')
+
+        # Normalised [0,255] as integer: don't forget the parenthesis before astype(int)
+        amplitude = (self.height * (amplitude - np.min(amplitude)) / np.ptp(amplitude)).astype(int)
+
+        #
+        # for i in range(len(amplitude)):
+        #     amplitude[i] = float(amplitude[i]) / max_amplitude * int(
+        #         self.height / 2.5) + self.height / 2
+        # print("fit frame= ", time.time() - now)
+
+        waveform = [int(self.height / 2)] * self.width + list(amplitude)
+        # print("done= ", time.time() - now)
+        new_waveform = True
+
+    def expand(self, oldValue, oldMin, oldMax, newMin, newMax):
+        oldRange = oldMax - oldMin
+        newRange = newMax - newMin
+        newValue = ((oldValue - oldMin) * newRange / oldRange) + newMin
+        return newValue
 
     def render(self, *args, **kwargs):
+        global waveform, song, new_waveform, song_length
 
         self.current_time = time.time()
         self.delta_time = self.current_time - self.prev_time
@@ -244,52 +241,46 @@ class Animation(game.Entity):
         if self.delta_time >= self.animation_time:
             self.prev_time = self.current_time
 
-            if not settings.SONG:
+            if not song:
                 self.image.fill((0, 0, 0))
-                pygame.draw.line(self.image, [0, 255, 0], [0, self.height / 2], [self.width, self.height / 2], 2)
-            elif settings.SONG:
+                pygame.draw.line(self.image, settings.bright, [0, self.height / 2], [self.width, self.height / 2], 2)
+                waveform = []
+                self.prev_song = 0
+
+            elif song:
                 self.image.fill((0, 0, 0))
-                self.index += 3
-                if settings.SONG != self.prev_song:
-                    self.prev_song = settings.SONG
-                    self.start_pos = settings.START_POS
 
-                    try:
-                        self.waveform = settings.WAVEFORM
-                        print("Loading cached waveform for", settings.SONG)
-                    except:
-                        print("Generating waveform from", settings.SONG)
-                        frame_skip = int(48000 / 75)
-                        amplitude = pygame.sndarray.array(pygame.mixer.Sound(settings.SONG))  # Load the sound file)
-                        amplitude = amplitude[:, 0] + amplitude[:, 1]
+                if song != self.prev_song:
+                    self.prev_song = song
+                    waveform = []
+                    self.waveform_length = 0
+                    new_waveform = False
+                    generate_waveform = threading.Thread(target=self.generate_waveform)
+                    generate_waveform.start()
+                    song_length = mutagen.File(song).info.length
 
-                        amplitude = amplitude[::frame_skip]
+                if self.index >= len(waveform) - settings.waveform_rate or self.index == 0:
+                    self.image.fill((0, 0, 0))
+                    pygame.draw.line(self.image, settings.bright, [0, self.height / 2], [self.width, self.height / 2],
+                                     2)
+                    settings.FreeRobotoB[18].render_to(self.image, (90, 106), "LOADING...", settings.dim)
 
-                        # scale the amplitude to 1/4th of the frame height and translate it to height/2(central line)
-                        max_amplitude = max(amplitude)
-                        for i in range(len(amplitude)):
-                            amplitude[i] = float(amplitude[i]) / max_amplitude * int(
-                                self.height / 2.5) + self.height / 2
+                if waveform :
+                    song_time = pygame.mixer.music.get_pos()
+                    max_length = int(song_length * 1000)
+                    waveform_length = len(waveform)
+                    self.index = int(
+                        self.expand(song_time, 0, max_length, 0, waveform_length))
 
-                        self.waveform = [int(self.height / 2)] * self.width + list(amplitude)
-                        for x in range(125):  # Add end frames
-                            self.waveform.append(125)
-
-                    # print("new start position = ",settings.START_POS)
-                    if not self.start_pos == 0:
-                        self.index = int(self.start_pos * 75)  # Adjust for new start position
-                    else:
-                        self.index = 5
-                    # print("New index=", self.index)
-                if self.index >= len(self.waveform) - 1:
-                    self.index = 0
-
-                prev_x, prev_y = 0, self.waveform[self.index]
-                for x, y in enumerate(self.waveform[self.index + 1:self.index + 1 + self.width][::1]):
-                    pygame.draw.line(self.image, [0, 255, 0], [prev_x, prev_y], [x, y], 2)
-                    prev_x, prev_y = x, y
-
-                # Credit to https://github.com/prtx/Music-Visualizer-in-Python/blob/master/music_visualizer.py
+                    # print("song_time =", song_time, "max_length =", max_length, "waveform_length = ",
+                    #       waveform_length, "self.index = ", self.index)
+                    if self.index >= len(waveform):
+                        self.index = 0
+                    prev_x, prev_y = 0, waveform[self.index]
+                    for x, y in enumerate(waveform[self.index + 1:self.index + 1 + self.width][::1]):
+                        pygame.draw.line(self.image, settings.bright, [prev_x, prev_y], [x, y], 2)
+                        prev_x, prev_y = x, y
+                        # Credit to https://github.com/prtx/Music-Visualizer-in-Python/blob/master/music_visualizer.py
 
 
 class Grid(game.Entity):
@@ -340,7 +331,6 @@ class RadioStation(game.Entity):
         self.filename = 0
         # self.files = deque([])
         # self.files = self.load_files()
-        self.start_pos = 0
         self.new_selection = True
         self.last_filename = None
         self.start_time = time.time()
@@ -348,11 +338,16 @@ class RadioStation(game.Entity):
         pygame.mixer.music.set_endevent(settings.EVENTS['SONG_END'])
 
     def play_song(self):
+        global song, start_pos, waveform, song_length
         self.start_pos = 0
         if settings.SOUND_ENABLED:
             if self.files[0].endswith("Silence.ogg"):
                 settings.AMPLITUDE = []
-                settings.SONG = None
+                song = None
+                start_pos = 0
+                waveform = []
+                settings.FOOTER_RADIO[0] = ""
+
                 print("Radio off")
                 self.stop()
             else:
@@ -406,19 +401,28 @@ class RadioStation(game.Entity):
                             self.waveforms.rotate(1)
 
                     self.filename = self.files[0]
-                    settings.SONG = self.filename
-                    settings.START_POS = self.start_pos
+
+                    song = self.filename
+                    start_pos = self.start_pos
 
                     if self.waveforms:
-                        settings.WAVEFORM = self.waveforms[0]
+                        waveform = self.waveforms[0]
 
-                    pygame.mixer.music.load(self.filename)
-                    pygame.mixer.music.play(0, self.start_pos)
-                    self.state = self.STATES['playing']
                     print("Playing =", self.filename,
                           "length =", str(round(self.song_lengths[0], 2)),
                           "start_pos =", str(round(self.start_pos, 2))
                           )
+                    song_meta_data = mutagen.File(self.filename, easy=True)
+                    # print("All song meta_data = ",song_meta_data)
+                    song_artist = str(song_meta_data['artist'])
+                    song_title = str(song_meta_data['title'])
+                    song_title = song_title.strip("['").strip("']")
+                    song_artist = song_artist.strip("['").strip("']")
+
+                    settings.FOOTER_RADIO[0] = song_artist + " / " + song_title
+                    pygame.mixer.music.load(self.filename)
+                    pygame.mixer.music.play(0, self.start_pos)
+                    self.state = self.STATES['playing']
 
     def volume_up(self):
         if settings.SOUND_ENABLED:

@@ -192,8 +192,12 @@ class Footer(game.Entity):
         self.bar_graph_centered = False
         self.line_1 = None
         self.line_2 = None
+        self.current_time = 0
 
         self.padding = 12
+        self.animation_time = 0.5
+        self.delta_time = 0
+        self.prev_time = 0
 
         # Example data sets:
         #  ["Left_text", "Right_Text", "Middle", Bar_graph_value, "Bar_graph_centered"]
@@ -216,140 +220,146 @@ class Footer(game.Entity):
         return date, time
 
     def render(self):
-        if self.sections:
+        self.current_time = time.time()
+        self.delta_time = self.current_time - self.prev_time
 
-            self.rect[0] = settings.footer_x
-            self.rect[1] = settings.footer_y
-            self.image.fill(settings.dark)
+        if self.delta_time >= self.animation_time:
+            self.prev_time = self.current_time
 
-            self.text_width = 0
-            self.line_1 = 0
-            self.line_2 = 0
+            if self.sections:
 
-            try:
-                self.text_left = str(self.sections[0])
-            except:
-                self.text_left = None
+                self.rect[0] = settings.footer_x
+                self.rect[1] = settings.footer_y
+                self.image.fill(settings.dark)
 
-            try:
-                self.text_middle = str(self.sections[1])
-            except:
-                self.text_middle = None
+                self.text_width = 0
+                self.line_1 = 0
+                self.line_2 = 0
 
-            try:
-                self.text_right = str(self.sections[2])
-            except:
-                self.text_right = None
+                try:
+                    self.text_left = str(self.sections[0])
+                except:
+                    self.text_left = None
 
-            try:
-                self.bar_graph_num = self.sections[3]
-            except:
-                self.bar_graph_num = None
+                try:
+                    self.text_middle = str(self.sections[1])
+                except:
+                    self.text_middle = None
 
-            try:
-                self.bar_graph_centered = self.sections[4]
-            except:
-                self.bar_graph_centered = False
+                try:
+                    self.text_right = str(self.sections[2])
+                except:
+                    self.text_right = None
 
-            if self.text_left == "DATE" or self.text_middle == "TIME":
-                time_text = self.time_text()
-                self.date = time_text[0]
-                self.time = time_text[1]
-                self.text_left = self.date
-                self.text_middle = self.time
+                try:
+                    self.bar_graph_num = self.sections[3]
+                except:
+                    self.bar_graph_num = None
 
-            # Left Text
-            if self.text_left:
-                text = settings.RobotoB[28].render(self.text_left, True, settings.bright, settings.dark)
-                self.text_width = text.get_rect().width
-                self.image.blit(text, (self.padding, 3))
-                self.line_1 = self.text_width + self.padding * 3
-                if self.text_right != "" or self.text_middle != "":
-                    pygame.draw.line(self.image, settings.black, (self.line_1, 0),
-                                     (self.line_1, 38), 5)
+                try:
+                    self.bar_graph_centered = self.sections[4]
+                except:
+                    self.bar_graph_centered = False
 
-            # If there is a bar graph, and it is centered: Draw right text then middle with bar-graph:
-            if isinstance(self.bar_graph_num, int) and self.bar_graph_centered:
-                text = settings.RobotoB[28].render(self.text_right, True, settings.bright, settings.dark)
-                self.text_width = text.get_rect().width
-                self.image.blit(text, (settings.WIDTH - self.text_width - self.padding, 3))
-                self.line_2 = settings.WIDTH - self.text_width - self.padding * 3
-                pygame.draw.line(self.image, settings.black, (self.line_2, 0), (self.line_2, 38), 5)
+                if self.text_left == "DATE" or self.text_middle == "TIME":
+                    time_text = self.time_text()
+                    self.date = time_text[0]
+                    self.time = time_text[1]
+                    self.text_left = self.date
+                    self.text_middle = self.time
 
-                text = settings.RobotoB[28].render(self.text_middle, True, settings.bright, settings.dark)
-                self.text_width = text.get_rect().width
-                self.image.blit(text, (self.line_1 + self.padding, 3))
-                bar_graph_start = self.line_1 + self.text_width + self.padding * 2
-                bar_graph_end = self.line_2 - self.padding
+                # Left Text
+                if self.text_left:
+                    text = settings.RobotoB[28].render(self.text_left, True, settings.bright, settings.dark)
+                    self.text_width = text.get_rect().width
+                    self.image.blit(text, (self.padding, 3))
+                    self.line_1 = self.text_width + self.padding * 3
+                    if self.text_right != "" or self.text_middle != "":
+                        pygame.draw.line(self.image, settings.black, (self.line_1, 0),
+                                         (self.line_1, 38), 5)
 
-                pygame.draw.lines(self.image, settings.light, True,
-                                  [(bar_graph_start, 12), (bar_graph_end, 12),
-                                   (bar_graph_end, 26), (bar_graph_start, 26)], 3)  # Level bar surround
-
-                bar_start = bar_graph_start + 2
-                bar_max_width = bar_graph_end - 2 - bar_start + 2
-                bar_width = int(self.expand(self.bar_graph_num, 0, 100, 0, bar_max_width))
-                pygame.draw.rect(self.image, settings.bright, (bar_start, 14, bar_width, 11))  # Level bar fill
-
-            # If there is a bar graph and it is NOT centered: Draw middle text then right with bar-graph
-            elif isinstance(self.bar_graph_num, int) and not self.bar_graph_centered:
-
-                text = settings.RobotoB[28].render(self.text_middle, True, settings.bright, settings.dark)
-                self.text_width = text.get_rect().width
-                self.image.blit(text, (self.line_1 + self.padding, 3))
-                self.line_2 = self.line_1 + self.text_width + self.padding * 2
-                pygame.draw.line(self.image, settings.black, (self.line_2, 0), (self.line_2, 38), 5)
-
-                text = settings.RobotoB[28].render(self.text_right, True, settings.bright, settings.dark)
-                self.text_width = text.get_rect().width
-                self.image.blit(text, (self.line_2 + self.padding, 3))
-
-                bar_graph_start = self.line_2 + self.text_width + self.padding * 2
-                bar_graph_end = settings.WIDTH - self.padding
-
-                pygame.draw.lines(self.image, settings.light, True,
-                                  [(bar_graph_start, 12), (bar_graph_end, 12),
-                                   (bar_graph_end, 26), (bar_graph_start, 26)], 3)  # Level bar surround
-
-                bar_start = bar_graph_start + 2
-                bar_max_width = bar_graph_end - 2 - bar_start + 2
-                bar_width = int(self.expand(self.bar_graph_num, 0, 100, 0, bar_max_width))
-                pygame.draw.rect(self.image, settings.bright, (bar_start, 14, bar_width, 11))  # Level bar fill
-
-            # If there is no bar-graph at all: Draw middle then right text
-            else:
-                text = settings.RobotoB[28].render(self.text_middle, True, settings.bright, settings.dark)
-                self.text_width = text.get_rect().width
-                self.image.blit(text, (self.line_1 + self.padding, 3))
-                self.line_2 = self.line_1 + self.text_width + self.padding * 2
-                if self.text_middle != "":
+                # If there is a bar graph, and it is centered: Draw right text then middle with bar-graph:
+                if isinstance(self.bar_graph_num, int) and self.bar_graph_centered:
+                    text = settings.RobotoB[28].render(self.text_right, True, settings.bright, settings.dark)
+                    self.text_width = text.get_rect().width
+                    self.image.blit(text, (settings.WIDTH - self.text_width - self.padding, 3))
+                    self.line_2 = settings.WIDTH - self.text_width - self.padding * 3
                     pygame.draw.line(self.image, settings.black, (self.line_2, 0), (self.line_2, 38), 5)
 
-                text = settings.RobotoB[28].render(self.text_right, True, settings.bright, settings.dark)
-                self.text_width = text.get_rect().width
-                self.image.blit(text, (settings.WIDTH - self.text_width - self.padding, 3))
+                    text = settings.RobotoB[28].render(self.text_middle, True, settings.bright, settings.dark)
+                    self.text_width = text.get_rect().width
+                    self.image.blit(text, (self.line_1 + self.padding, 3))
+                    bar_graph_start = self.line_1 + self.text_width + self.padding * 2
+                    bar_graph_end = self.line_2 - self.padding
 
-        # #self.image.fill((0, 0, 0)) #Clear text
-        # spacing = 4 #Set space between sections
-        # prev_text_width = 74 # STAT width
-        # text_pos = 104 - spacing - prev_text_width #Set first location
+                    pygame.draw.lines(self.image, settings.light, True,
+                                      [(bar_graph_start, 12), (bar_graph_end, 12),
+                                       (bar_graph_end, 26), (bar_graph_start, 26)], 3)  # Level bar surround
 
-        # for section in self.sections:
-        #     text = settings.RobotoB[33].render(section, True, (settings.bright), (0, 0, 0)) #Setup text
-        #     text_pos = text_pos + prev_text_width + spacing #Set draw location
-        #     self.image.blit(text, (text_pos, 0)) #Draw text
-        #     text_rect = text.get_rect() #Get text dimensions
-        #     prev_text_width = text_rect.width            
+                    bar_start = bar_graph_start + 2
+                    bar_max_width = bar_graph_end - 2 - bar_start + 2
+                    bar_width = int(self.expand(self.bar_graph_num, 0, 100, 0, bar_max_width))
+                    pygame.draw.rect(self.image, settings.bright, (bar_start, 14, bar_width, 11))  # Level bar fill
 
-        #     if section == self.label:
-        #         pygame.draw.line(self.image, (settings.bright), (0, 35), (text_pos - 10, 35), 3) # Line from left edge of screen
-        #         pygame.draw.line(self.image, (settings.bright), (text_pos + text_rect.width + 10, 35), (settings.WIDTH, 35), 3) # Line to the right edge of screen
-        #         pygame.draw.line(self.image, (settings.bright), (text_pos - 11, 10), (text_pos - 11, 35), 3)	#Left Vert bar
-        #         pygame.draw.line(self.image, (settings.bright), (text_pos - 12, 10), (text_pos - 3, 10), 3)	#Left Short bar
-        #         pygame.draw.line(self.image, (settings.bright), (text_pos + text_rect.width + 2, 10), (text_pos + text_rect.width + 12, 10), 3)	#Right Short bar
-        #         pygame.draw.line(self.image, (settings.bright), (text_pos + text_rect.width + 11, 10), (text_pos + text_rect.width + 11, 35), 3)	#Right Vert bar
-        #     else:
-        #         pygame.draw.line(self.image, (settings.bright), (text_pos - 10, 35), (text_pos + text_rect.width + 10, 35), 3) # Horizontal Bar
+                # If there is a bar graph and it is NOT centered: Draw middle text then right with bar-graph
+                elif isinstance(self.bar_graph_num, int) and not self.bar_graph_centered:
+
+                    text = settings.RobotoB[28].render(self.text_middle, True, settings.bright, settings.dark)
+                    self.text_width = text.get_rect().width
+                    self.image.blit(text, (self.line_1 + self.padding, 3))
+                    self.line_2 = self.line_1 + self.text_width + self.padding * 2
+                    pygame.draw.line(self.image, settings.black, (self.line_2, 0), (self.line_2, 38), 5)
+
+                    text = settings.RobotoB[28].render(self.text_right, True, settings.bright, settings.dark)
+                    self.text_width = text.get_rect().width
+                    self.image.blit(text, (self.line_2 + self.padding, 3))
+
+                    bar_graph_start = self.line_2 + self.text_width + self.padding * 2
+                    bar_graph_end = settings.WIDTH - self.padding
+
+                    pygame.draw.lines(self.image, settings.light, True,
+                                      [(bar_graph_start, 12), (bar_graph_end, 12),
+                                       (bar_graph_end, 26), (bar_graph_start, 26)], 3)  # Level bar surround
+
+                    bar_start = bar_graph_start + 2
+                    bar_max_width = bar_graph_end - 2 - bar_start + 2
+                    bar_width = int(self.expand(self.bar_graph_num, 0, 100, 0, bar_max_width))
+                    pygame.draw.rect(self.image, settings.bright, (bar_start, 14, bar_width, 11))  # Level bar fill
+
+                # If there is no bar-graph at all: Draw middle then right text
+                else:
+                    text = settings.RobotoB[28].render(self.text_middle, True, settings.bright, settings.dark)
+                    self.text_width = text.get_rect().width
+                    self.image.blit(text, (self.line_1 + self.padding, 3))
+                    self.line_2 = self.line_1 + self.text_width + self.padding * 2
+                    if self.text_middle != "":
+                        pygame.draw.line(self.image, settings.black, (self.line_2, 0), (self.line_2, 38), 5)
+
+                    text = settings.RobotoB[28].render(self.text_right, True, settings.bright, settings.dark)
+                    self.text_width = text.get_rect().width
+                    self.image.blit(text, (settings.WIDTH - self.text_width - self.padding, 3))
+
+            # #self.image.fill((0, 0, 0)) #Clear text
+            # spacing = 4 #Set space between sections
+            # prev_text_width = 74 # STAT width
+            # text_pos = 104 - spacing - prev_text_width #Set first location
+
+            # for section in self.sections:
+            #     text = settings.RobotoB[33].render(section, True, (settings.bright), (0, 0, 0)) #Setup text
+            #     text_pos = text_pos + prev_text_width + spacing #Set draw location
+            #     self.image.blit(text, (text_pos, 0)) #Draw text
+            #     text_rect = text.get_rect() #Get text dimensions
+            #     prev_text_width = text_rect.width
+
+            #     if section == self.label:
+            #         pygame.draw.line(self.image, (settings.bright), (0, 35), (text_pos - 10, 35), 3) # Line from left edge of screen
+            #         pygame.draw.line(self.image, (settings.bright), (text_pos + text_rect.width + 10, 35), (settings.WIDTH, 35), 3) # Line to the right edge of screen
+            #         pygame.draw.line(self.image, (settings.bright), (text_pos - 11, 10), (text_pos - 11, 35), 3)	#Left Vert bar
+            #         pygame.draw.line(self.image, (settings.bright), (text_pos - 12, 10), (text_pos - 3, 10), 3)	#Left Short bar
+            #         pygame.draw.line(self.image, (settings.bright), (text_pos + text_rect.width + 2, 10), (text_pos + text_rect.width + 12, 10), 3)	#Right Short bar
+            #         pygame.draw.line(self.image, (settings.bright), (text_pos + text_rect.width + 11, 10), (text_pos + text_rect.width + 11, 35), 3)	#Right Vert bar
+            #     else:
+            #         pygame.draw.line(self.image, (settings.bright), (text_pos - 10, 35), (text_pos + text_rect.width + 10, 35), 3) # Horizontal Bar
 
 
 # Menu_array Structure: [["Menu item",Quantity,"Image (or folder for animation")","Description text","Stat Text","Stat Number"],],

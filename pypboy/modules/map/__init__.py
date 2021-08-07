@@ -2,7 +2,7 @@ from pypboy import BaseModule
 
 from pypboy.modules.map import world_map
 from pypboy.modules.map import local
-from pypboy.modules.map import local_map
+# from pypboy.modules.map import local_map
 
 import settings
 
@@ -14,7 +14,7 @@ class Module(BaseModule):
         self.submodules = [
             world_map.Module(self),
             local.Module(self),
-            local_map.Module(self)
+            # local_map.Module(self)
         ]
         super(Module, self).__init__(*args, **kwargs)
         

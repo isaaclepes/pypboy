@@ -55,7 +55,7 @@ class Pypboy(game.core.Engine):
             "stats": stats.Module(self),
             "boot": boot.Module(self)
         }
-        self.switch_module("stats") # Set the start screen
+        self.switch_module("radio") # Set the start screen
 
     def init_gpio_controls(self):
         for pin in settings.gpio_actions.keys():

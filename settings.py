@@ -30,10 +30,10 @@ description_box_y = 240
 #COLORS
 black = (0,0,0)
 bright = (0,230,0)
-light = (0,150,0)
+light = (0,170,0)
 mid = (0,120,0)
 dim = (0,60,0)
-dark = (0,30,0)
+dark = (0,40,0)
 
 #MAP
 #MAP_FOCUS = (-5.9347681, 54.5889076)
@@ -298,7 +298,7 @@ def save_settings():
     
 atexit.register(save_settings)
 
-#Glitch the screen up/down
+# Glitch the screen up/down
 glitch = False
 glitch_time = 0.1
 glitch_next = 0
@@ -309,4 +309,15 @@ glitch_next = 0
 force_caching = False
 
 # Generate waveforms at song load
-do_not_use_cache = False
+do_not_use_cache = True
+
+ # Waveform related:
+waveform_frequency = 48000  # All your OGG files should be this rate to keep things in sync
+
+# This is the amount of pixel scrolling the waveform does per frame. It is basically a zoom control
+# A setting of 250 is the max, and close to a real-time view
+waveform_rate = 48
+
+# Setting this value too high will greatly delay song waveform generation
+waveform_fps = 24
+frame_skip = int(waveform_frequency / (waveform_fps * waveform_rate))
