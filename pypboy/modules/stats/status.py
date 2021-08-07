@@ -6,9 +6,11 @@ import settings
 import pypboy.ui
 import os
 import time
+import saved
+global STATION
 
 class Module(pypboy.SubModule):
-
+    global STATION
     def __init__(self, *args, **kwargs):
         super(Module, self).__init__(*args, **kwargs)
         
@@ -48,6 +50,7 @@ class Module(pypboy.SubModule):
     #     print("EFF")
 
     def render(self, *args, **kwargs):
+        global STATION
         if settings.glitch == True:
             self.current_time = time.time()
             self.delta_time = self.current_time - self.prev_time
@@ -55,20 +58,24 @@ class Module(pypboy.SubModule):
             if self.delta_time >= settings.glitch_time:
                 if settings.glitch_next == 0 or settings.glitch_next == 2 or settings.glitch_next == 4:
                     self.health.rect[1] = -69
+                    self.footer.rect[1] = 62
                     self.animation.rect[1] = -10
                     self.prev_time = self.current_time
                 elif settings.glitch_next == 1 or settings.glitch_next == 3 or settings.glitch_next == 5:
                     self.health.rect[1] = 331
+                    self.footer.rect[1] = 531
                     self.animation.rect[1] = 390
                     self.prev_time = self.current_time
                 elif settings.glitch_next == 6:
                     self.health.rect[1] = 131
                     self.animation.rect[1] = 190
+                    self.footer.rect[1] = settings.footer_y
                     self.prev_time = self.current_time
                 elif settings.glitch_next >= 7:
                     settings.glitch_next = 0
                     settings.glitch = False
                 settings.glitch_next += 1
+
 
     # def handle_resume(self):
     #     pass

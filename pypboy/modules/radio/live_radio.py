@@ -226,11 +226,26 @@ class Animation(game.Entity):
         # print("done= ", time.time() - now)
         new_waveform = True
 
+
     def expand(self, oldValue, oldMin, oldMax, newMin, newMax):
         oldRange = oldMax - oldMin
         newRange = newMax - newMin
         newValue = ((oldValue - oldMin) * newRange / oldRange) + newMin
         return newValue
+
+    def zoom_vis_in(self):
+        global waveform
+        if waveform:
+            settings.waveform_rate += 10
+            self.waveform_thread.run()
+            print("Zoom in to", settings.waveform_rate)
+
+    def zoom_vis_out(self):
+        global waveform
+        if waveform:
+            settings.waveform_rate -= 10
+            self.waveform_thread.run()
+            print("Zoom out to", settings.waveform_rate)
 
     def render(self, *args, **kwargs):
         global waveform, song, new_waveform, song_length
@@ -255,8 +270,8 @@ class Animation(game.Entity):
                     waveform = []
                     self.waveform_length = 0
                     new_waveform = False
-                    generate_waveform = threading.Thread(target=self.generate_waveform)
-                    generate_waveform.start()
+                    waveform_thread = threading.Thread(target=self.generate_waveform)
+                    waveform_thread.start()
                     song_length = mutagen.File(song).info.length
 
                 if self.index >= len(waveform) - settings.waveform_rate or self.index == 0:
@@ -482,6 +497,7 @@ class RadioStation(game.Entity):
                 self.waveforms.rotate(1)
             self.start_time = time.time()
             self.play_song()
+
 
     def randomize_station(self):
         seed = random.random()

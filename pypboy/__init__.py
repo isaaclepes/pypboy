@@ -8,6 +8,7 @@ if settings.GPIO_AVAILABLE:
     import RPi.GPIO as GPIO
 
 class GameState(Enum):
+    PASSCODE = -5
     BOOT = -4
     RADIO = -3
     MAP = -2

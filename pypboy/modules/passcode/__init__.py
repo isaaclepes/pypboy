@@ -1,5 +1,6 @@
 from pypboy import BaseModule
-from pypboy.modules.boot import passcode
+from pypboy.modules.passcode import passcode
+import settings
 
 class Module(BaseModule):
 
@@ -12,7 +13,5 @@ class Module(BaseModule):
         super(Module, self).__init__(*args, **kwargs)
         
     def handle_resume(self):
-        #self.pypboy.topmenu.headline = self.label
-        #self.pypboy.topmenu.title = ["AP  75/99","HP  159/314", "LVL 31"]
+        self.pypboy.topmenu.label = "hidden"
         self.active.handle_action("resume")
- 

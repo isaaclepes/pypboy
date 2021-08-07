@@ -1,8 +1,6 @@
-import pypboy
 import pygame
 import game
 import settings
-import pypboy.ui
 import pypboy.core
 import time
 

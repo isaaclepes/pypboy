@@ -64,7 +64,8 @@ MODULES = {
     2: "DATA",
     3: "MAP",
     4: "RADIO",
-    5: "BOOT"
+    5: "BOOT",
+    6: "PASSCODE"
 }
 
 #MODULE_TEXT = ["RADIO","MAP","DATA","INV","STAT"]
@@ -77,6 +78,7 @@ ACTIONS = {
     pygame.K_F4: "module_map",
     pygame.K_F5: "module_radio",
     pygame.K_F6: "module_boot",
+    pygame.K_F7: "module_passcode",
     pygame.K_1:	"knob_1",
     pygame.K_2: "knob_2",
     pygame.K_3: "knob_3",

@@ -11,6 +11,7 @@ from pypboy.modules import stats
 from pypboy.modules import boot
 from pypboy.modules import map
 from pypboy.modules import radio
+from pypboy.modules import passcode
 
 if settings.GPIO_AVAILABLE:
     import RPi.GPIO as GPIO
@@ -53,9 +54,10 @@ class Pypboy(game.core.Engine):
             "data": data.Module(self),
             "items": items.Module(self),
             "stats": stats.Module(self),
-            "boot": boot.Module(self)
+            "boot": boot.Module(self),
+            "passcode": passcode.Module(self)
         }
-        self.switch_module("radio") # Set the start screen
+        self.switch_module("passcode") # Set the start screen
 
     def init_gpio_controls(self):
         for pin in settings.gpio_actions.keys():
