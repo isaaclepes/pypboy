@@ -14,12 +14,6 @@ import os
 import sys
 import time
 
-# os.chdir('/home/pi/Fallout_Terminal_Game/venv')
-
-# sfx_good = simpleaudio.WaveObject.from_wave_file('passgood.wav')
-# sfx_bad = simpleaudio.WaveObject.from_wave_file('passbad.wav')
-# sfx_dud = simpleaudio.WaveObject.from_wave_file('passdud.wav')
-# sfx_reset = simpleaudio.WaveObject.from_wave_file('passreset.wav')
 locale.setlocale(locale.LC_ALL, '')
 code = locale.getpreferredencoding()
 
@@ -30,7 +24,7 @@ class Module(pypboy.SubModule):
         super(Module, self).__init__(*args, **kwargs)
         self.passcode = Passcode()
         self.passcode.rect[0] = 11
-        self.passcode.rect[1] = 51
+        self.passcode.rect[1] = 90
         self.add(self.passcode)
 
     def handle_resume(self):
@@ -39,6 +33,9 @@ class Module(pypboy.SubModule):
             print("Resumed Passcode")
             self.passcode.handle_resume()
             super(Module, self).handle_resume()
+
+    def handle_event(self, event):
+        self.passcode.handle_event(event)
 
 class Passcode(game.Entity):
 
@@ -78,7 +75,12 @@ class Passcode(game.Entity):
         self.make_new_dataset()
 
         self.image = pygame.Surface((settings.WIDTH - 10, settings.HEIGHT - 100))
-        # self.image.fill((128,0,0))
+        self.rect[0] = 11
+        self.rect[1] = 201
+
+
+        self.screen_surface = pygame.Surface((settings.WIDTH - 10, settings.HEIGHT - 100))
+        # self.screen_surface.fill((0, 0, 0))
         self.rect[0] = 11
         self.rect[1] = 51
 
@@ -89,31 +91,34 @@ class Passcode(game.Entity):
         self.max_lines = int((settings.HEIGHT - 100) / char_height)
 
         self.screen = pygcurse.PygcurseSurface(self.max_chars, self.max_lines, font,
-                                               settings.bright, settings.black, self.image, True, 1000)
-        self.screen.autoupdate = False
+                                               settings.bright, settings.black, self.screen_surface, True, 1000)
+        self.screen._autoupdate = False
+        self.screen._autodisplayupdate = False
+
         self.screen.cursor = (0, 0)
         self.screen.pushcursor()
 
         self.animation_time = 1 / 24
         self.prev_time = 0
         self.current_time = 0
-        self.delta_time = 0
         self.button = None
+
+        self.cursor_time = 1  # Cursor blink speed
+        self.prev_cursor_time = 0
 
         self.wait = 0
 
         if settings.SOUND_ENABLED:
-            self.dial_move_sfx = pygame.mixer.Sound('./sounds/pipboy/RotaryVertical/UI_PipBoy_RotaryVertical_01.wav')
+            self.dial_move_sfx = pygame.mixer.Sound('./sounds/pipboy/RotaryVertical/UI_PipBoy_RotaryVertical_01.ogg')
             self.dial_move_sfx.set_volume(settings.VOLUME)
-            self.pass_bad = pygame.mixer.Sound('./sounds/terminal/UI_Hacking_PassBad.wav')
+            self.pass_bad = pygame.mixer.Sound('./sounds/terminal/UI_Hacking_PassBad.ogg')
             self.pass_bad.set_volume(settings.VOLUME)
-            self.pass_good = pygame.mixer.Sound('./sounds/terminal/UI_Hacking_PassGood.wav')
+            self.pass_good = pygame.mixer.Sound('./sounds/terminal/UI_Hacking_PassGood.ogg')
             self.pass_good.set_volume(settings.VOLUME)
-            self.help_attempts = pygame.mixer.Sound('./sounds/terminal/UI_Hacking_PasswordHelpAttempts.wav')
+            self.help_attempts = pygame.mixer.Sound('./sounds/terminal/UI_Hacking_PasswordHelpAttempts.ogg')
             self.help_attempts.set_volume(settings.VOLUME)
-            self.help_dud = pygame.mixer.Sound('./sounds/terminal/UI_Hacking_PasswordHelpDud.wav')
+            self.help_dud = pygame.mixer.Sound('./sounds/terminal/UI_Hacking_PasswordHelpDud.ogg')
             self.help_dud.set_volume(settings.VOLUME)
-
 
     def handle_resume(self):
         self.logged_in = False
@@ -124,37 +129,36 @@ class Passcode(game.Entity):
         self.make_new_dataset()
 
 
+    def handle_event(self, event):
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                self.button = "up"
+            elif event.key == pygame.K_DOWN:
+                self.button = "down"
+            elif event.key == pygame.K_LEFT:
+                self.button = "left"
+            elif event.key == pygame.K_RIGHT:
+                self.button = "right"
+            elif event.key == pygame.K_RETURN:
+                self.button = "enter"
+            elif event.key == pygame.K_BACKSPACE:
+                self.button = "reset"
+            if self.locked_out:
+                if settings.SOUND_ENABLED:
+                    self.pass_bad.play()
+
+            print("Key = ", self.button)
+
     def render(self, *args, **kwargs):
         super(Passcode, self).render(self, *args, **kwargs)
+
+
+
+
         self.current_time = time.time()
-        self.delta_time = self.current_time - self.prev_time
 
-        events = pygame.event.get()
-        for event in events:
-            pygame.event.post(event)
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP:
-                    self.button = "up"
-                elif event.key == pygame.K_DOWN:
-                    self.button = "down"
-                elif event.key == pygame.K_LEFT:
-                    self.button = "left"
-                elif event.key == pygame.K_RIGHT:
-                    self.button = "right"
-                elif event.key == pygame.K_RETURN:
-                    self.button = "enter"
-                elif event.key == pygame.K_BACKSPACE:
-                    self.button = "reset"
-                if self.locked_out:
-                    if settings.SOUND_ENABLED:
-                        self.pass_bad.play()
-
-                # print("Key = ", self.button)
-
-        if self.delta_time >= self.animation_time:
+        if (self.current_time - self.prev_time) >= self.animation_time:
             self.prev_time = self.current_time
-
-            self.screen.update()
 
             if self.button == "reset":
                 self.make_new_dataset()
@@ -162,6 +166,8 @@ class Passcode(game.Entity):
                 pygame.event.clear()
 
             if not self.locked_out and not self.logged_in:
+
+
                 # self.screen.write(str(self.current_time), 0, 1)
 
                 self.update_cursor()
@@ -193,11 +199,10 @@ class Passcode(game.Entity):
                 self.screen.write('Attempts Remaining:', 0, 4)
 
                 # Update attempts remaining after testing
-                for blank in range(0,4):
+                for blank in range(0, 4):
                     self.screen.write(" ", 19 + blank, 4)
                 for attempt in range(self.attempts):
                     self.screen.write("▯", 19 + attempt, 4)
-
 
                 # Show the "memory" dump
                 # With the selectable text wrapping in columns
@@ -207,20 +212,26 @@ class Passcode(game.Entity):
                     self.screen.write(hex(self.address + row + 16).upper(), 20, row + 6)
                     self.screen.write(''.join(self.selectable_text[(12 * row) + 192:(12 * row) + 204]), 27, row + 6)
 
+
                 # Highlight the appropriate characters
                 for i, _ in enumerate(self.highlightable_indices):
                     self.y_row, self.x_col = self.get_cursor_pos_from_index(self.highlightable_indices[i])
-
-                    self.screen.setfgcolor(settings.black, (self.x_col, self.y_row, 1, 1))
-                    self.screen.setbgcolor(settings.bright, (self.x_col, self.y_row, 1, 1))
+                    self.screen.reversecolors((self.x_col, self.y_row, 1, 1))
+                    # self.screen.setfgcolor(settings.black, (self.x_col, self.y_row, 1, 1))
+                    # self.screen.setbgcolor(settings.bright, (self.x_col, self.y_row, 1, 1))
+                #
+                # if (self.current_time - self.prev_cursor_time) >= self.cursor_time:
+                #     self.prev_cursor_time = self.current_time
+                #     for i, _ in enumerate(self.highlightable_indices):
+                #         self.y_row, self.x_col = self.get_cursor_pos_from_index(self.highlightable_indices[i])
+                #         self.screen.reversecolors((self.x_col, self.y_row, 1, 1))
 
                     # self.screen.write(self.y_row, self.x_col, 1, curses.color_pair(2))
-
 
                 # Show hidden location/password data for debugging
                 # self.screen.write(str(self.word_start_locations), 20, 1)
                 # self.screen.write('likeness=' + str(self.likeness), 40, 1)
-                self.screen.write(self.password, 0, 3,settings.dark)
+                self.screen.write(self.password, 0, 5, settings.dark)
                 # self.screen.write(str(self.attempts), 0, 5,settings.dim)
                 # self.screen.write(str(self.selection_index), 40, 3)
                 # self.screen.write(str(self.get_cursor_pos_from_index(self.selection_index)), 40, 3)
@@ -250,7 +261,7 @@ class Passcode(game.Entity):
 
                 # Allow "logging out" to reset the game
                 self.screen.fill(" ")
-                self.screen.write('Welcome to ROBCO Industries (TM) Termlink',0,0)
+                self.screen.write('Welcome to ROBCO Industries (TM) Termlink', 0, 0)
                 self.screen.write(self.terminal_status, 0, 21)
                 if self.wait < 50:
                     self.wait += 1
@@ -260,7 +271,8 @@ class Passcode(game.Entity):
                 # self.screen.write('█')
                 # screen.addch('█', curses.A_BLINK | curses.color_pair(1))
 
-
+            self.screen.update()
+            self.image.blit(self.screen_surface, (0, 0))
 
     def make_new_dataset(self):
         print("Making a new passcode dataset")
@@ -340,8 +352,6 @@ class Passcode(game.Entity):
             self.button = None
             if settings.SOUND_ENABLED:
                 self.dial_move_sfx.play()
-
-
 
         # Constrain the position to selectable areas of the two columns
         if self.cursor_y < 6:

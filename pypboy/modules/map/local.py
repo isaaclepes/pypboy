@@ -46,6 +46,12 @@ class Module(pypboy.SubModule):
         self.mapgrid.rect[0] = 0
         self.mapgrid.rect[1] = self.map_top_edge
 
+        self.topmenu = pypboy.ui.TopMenu()
+        self.add(self.topmenu)
+        self.topmenu.label = "MAP"
+        self.topmenu.title = settings.MODULE_TEXT
+
+
         settings.FOOTER_TIME[2] = "Map Data © Google"
         self.footer = pypboy.ui.Footer(settings.FOOTER_TIME)
         self.footer.rect[0] = settings.footer_x

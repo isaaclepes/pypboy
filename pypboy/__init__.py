@@ -30,7 +30,7 @@ class BaseModule(game.EntityGroup):
 
         self.pypboy = boy
         self.position = (0, 50)
-
+        #
         self.submenu = pypboy.ui.SubMenu()
         self.submenu.menu = []
         for mod in self.submodules:
@@ -38,6 +38,8 @@ class BaseModule(game.EntityGroup):
         self.submenu.selected = self.submenu.menu[0]
         self.submenu.position = (73, 93)
         self.add(self.submenu)
+
+
 
         self.action_handlers = {
             "pause": self.handle_pause,
@@ -47,7 +49,8 @@ class BaseModule(game.EntityGroup):
         self.switch_submodule(0)
         
         if settings.SOUND_ENABLED:
-            self.module_change_sfx = pygame.mixer.Sound('sounds/pipboy/UI_Pipboy_OK.wav')
+            self.module_change_sfx = pygame.mixer.Sound('sounds/pipboy/UI_Pipboy_OK.ogg')
+            self.module_change_sfx.set_volume(settings.VOLUME)
 
     def move(self, x, y):
         super(BaseModule, self).move(x, y)
@@ -57,15 +60,16 @@ class BaseModule(game.EntityGroup):
     def switch_submodule(self, module):
         #pygame.display.flip()
         #print("Changing to sub-module", module)
-        if hasattr(self, 'active') and self.active:
-            self.active.handle_action("pause")
-            self.remove(self.active)
-        if len(self.submodules) > module:
+        if module < len(self.submodules):
+            if hasattr(self, 'active') and self.active:
+                self.active.handle_action("pause")
+                self.remove(self.active)
             self.active = self.submodules[module]
             self.active.parent = self
             self.active.handle_action("resume")
             self.submenu.select(self.submenu.menu[module])
             self.add(self.active)
+            self.currentSubmodule = module
         else:
             print("No submodule at %d" % module)
 
@@ -74,7 +78,9 @@ class BaseModule(game.EntityGroup):
         super(BaseModule, self).render()
 
     def handle_action(self, action, value=0):
+
         if action.startswith("knob_"):
+        # if action.startswith("knob_") and not settings.hide_submenu:
             num = int(action[-1])
             self.switch_submodule(num - 1)
         elif action in self.action_handlers:
@@ -117,7 +123,7 @@ class SubModule(game.EntityGroup):
         }
 
         if settings.SOUND_ENABLED:
-            self.submodule_change_sfx = pygame.mixer.Sound('sounds/pipboy/UI_Pipboy_OK.wav')
+            self.submodule_change_sfx = pygame.mixer.Sound('sounds/pipboy/UI_Pipboy_OK.ogg')
             self.submodule_change_sfx.set_volume(settings.VOLUME)
 
     def handle_action(self, action, value=0):

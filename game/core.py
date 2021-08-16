@@ -12,7 +12,7 @@ class Engine(object):
     def __init__(self, title, width, height, *args, **kwargs):
         super(Engine, self).__init__(*args, **kwargs)
 
-        pygame.mixer.pre_init(44100, 16, 2, 4096)  # frequency, size, channels, buffersize
+        # pygame.mixer.init(44100, -16, 2, 512)  # frequency, size, channels, buffersize
         pygame.mixer.init()
         pygame.init()
         

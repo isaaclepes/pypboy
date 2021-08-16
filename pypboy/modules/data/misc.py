@@ -10,6 +10,11 @@ class Module(pypboy.SubModule):
 	def __init__(self, *args, **kwargs):
 		super(Module, self).__init__(*args, **kwargs)
 
+		self.topmenu = pypboy.ui.TopMenu()
+		self.add(self.topmenu)
+		self.topmenu.label = "DATA"
+		self.topmenu.title = settings.MODULE_TEXT
+
 		settings.FOOTER_TIME[2] = ""
 		self.footer = pypboy.ui.Footer(settings.FOOTER_TIME)
 		self.footer.rect[0] = settings.footer_x

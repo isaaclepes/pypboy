@@ -31,7 +31,7 @@ class Module(pypboy.SubModule):
         self.boot.rect[1] = 51
         self.add(self.boot)
         if settings.SOUND_ENABLED:
-            self.sound = pygame.mixer.Sound('sounds/pipboy/BootSequence/UI_PipBoy_BootSequence_A.wav')
+            self.sound = pygame.mixer.Sound('sounds/pipboy/BootSequence/UI_PipBoy_BootSequence_A.ogg')
             self.sound.set_volume(settings.VOLUME)
 
     def handle_pause(self):

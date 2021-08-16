@@ -22,13 +22,17 @@ class Module(pypboy.SubModule):
             self.mapgrid = Map(settings.WIDTH, pygame.Rect(0, (settings.WIDTH - settings.HEIGHT) / 2, settings.WIDTH - 8, settings.HEIGHT - self.map_top_edge), "Loading cached map")
             self.mapgrid.load_map(settings.MAP_FOCUS, self.zoom, False)
         else:
-            print("Loading map from the internet")
+            # print("Loading map from the internet")
             self.mapgrid = Map(settings.WIDTH, pygame.Rect(0, (settings.WIDTH - settings.HEIGHT) / 2, settings.WIDTH - 8, settings.HEIGHT - self.map_top_edge), "Loading map from the internet")
             self.mapgrid.fetch_map(settings.MAP_FOCUS, self.zoom, False)
         self.add(self.mapgrid)
         self.mapgrid.rect[0] = 0
         self.mapgrid.rect[1] = self.map_top_edge
 
+        self.topmenu = pypboy.ui.TopMenu()
+        self.add(self.topmenu)
+        self.topmenu.label = "MAP"
+        self.topmenu.title = settings.MODULE_TEXT
 
         self.footer = pypboy.ui.Footer(settings.FOOTER_TIME)
         self.footer.rect[0] = settings.footer_x

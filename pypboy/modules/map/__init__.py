@@ -8,8 +8,6 @@ import settings
 
 class Module(BaseModule):
 
-    label = "MAP"
-
     def __init__(self, *args, **kwargs):
         self.submodules = [
             world_map.Module(self),
@@ -19,7 +17,9 @@ class Module(BaseModule):
         super(Module, self).__init__(*args, **kwargs)
         
     def handle_resume(self):
-        self.pypboy.topmenu.label = self.label
-        self.pypboy.topmenu.title = settings.MODULE_TEXT
+        settings.hide_top_menu = False
+        settings.hide_submenu = False
+        settings.hide_main_menu = False
+        settings.hide_footer = False
         self.active.handle_action("resume")
 

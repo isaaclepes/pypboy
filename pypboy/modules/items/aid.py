@@ -16,6 +16,11 @@ class Module(pypboy.SubModule):
         self.menu.rect[1] = settings.menu_y
         self.add(self.menu)
 
+        self.topmenu = pypboy.ui.TopMenu()
+        self.add(self.topmenu)
+        self.topmenu.label = "INV"
+        self.topmenu.title = settings.MODULE_TEXT
+
         self.footer = pypboy.ui.Footer(settings.FOOTER_AID)
         self.footer.rect[0] = settings.footer_x
         self.footer.rect[1] = settings.footer_y

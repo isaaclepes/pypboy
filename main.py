@@ -23,7 +23,7 @@ if settings.GPIO_AVAILABLE:
     pass
 
 try:
-    pygame.mixer.init(44100, -16, 1, 2048)
+    pygame.mixer.pre_init(44100, -16, 2, 512)
     settings.SOUND_ENABLED = True
 except Exception as e:
     settings.SOUND_ENABLED = False

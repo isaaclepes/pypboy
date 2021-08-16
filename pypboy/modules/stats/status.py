@@ -6,7 +6,6 @@ import settings
 import pypboy.ui
 import os
 import time
-import saved
 global STATION
 
 class Module(pypboy.SubModule):
@@ -16,7 +15,13 @@ class Module(pypboy.SubModule):
         
         self.label = "STATUS"
         self.images = []
-        
+
+        self.topmenu = pypboy.ui.TopMenu()
+        self.add(self.topmenu)
+        self.topmenu.label = "STAT"
+        self.topmenu.title = settings.MODULE_TEXT
+
+
         self.health = Health()
         self.health.rect[0] = 0
         self.health.rect[1] = 131
@@ -145,12 +150,12 @@ class Health(game.Entity):
         
 
         # Middle Boxes
-        pygame.draw.rect(self.image, settings.mid, (203, 358, 64, 62)) #Gun box
-        pygame.draw.rect(self.image, settings.mid, (273, 358, 38, 62)) #Ammo box
-        pygame.draw.rect(self.image, settings.mid, (328, 358, 64, 62)) #Helmet box
-        pygame.draw.rect(self.image, settings.mid, (398, 358, 38, 62)) #Armor box
-        pygame.draw.rect(self.image, settings.mid, (440, 358, 38, 62)) #Energy box
-        pygame.draw.rect(self.image, settings.mid, (483, 358, 38, 62)) #Radiation box
+        pygame.draw.rect(self.image, settings.dim, (203, 358, 64, 62)) #Gun box
+        pygame.draw.rect(self.image, settings.dim, (273, 358, 38, 62)) #Ammo box
+        pygame.draw.rect(self.image, settings.dim, (328, 358, 64, 62)) #Helmet box
+        pygame.draw.rect(self.image, settings.dim, (398, 358, 38, 62)) #Armor box
+        pygame.draw.rect(self.image, settings.dim, (440, 358, 38, 62)) #Energy box
+        pygame.draw.rect(self.image, settings.dim, (483, 358, 38, 62)) #Radiation box
 
         # Icons
         self.image.blit(pygame.image.load('images/stats/gun.png').convert_alpha(),(210,374))

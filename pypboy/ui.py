@@ -52,16 +52,27 @@ class TopMenu(game.Entity):
         super(TopMenu, self).__init__((settings.WIDTH, 40))
         self.rect[0] = 0
         self.rect[1] = 51
+        self.saved_label = None
 
     def render(self):
         # super(TopMenu, self).render(*args, **kwargs)
-        spacing = 40  # Set space between words
-        prev_text_width = 74  # STAT width
-        text_pos = 104 - spacing - prev_text_width  # Set first location
-        if self.label:
-            if self.label != self.prev_label:
-                self.image.fill((0, 0, 0))  # Clear text
-                if self.label != "hidden":
+        if settings.hide_top_menu and settings.hide_top_menu != 3:
+            self.image.fill((0, 0, 0))
+            settings.hide_top_menu = 3
+            if self.label:
+                self.saved_label = self.label
+                self.prev_label = None
+                self.label = None
+        elif not settings.hide_top_menu:
+            if self.saved_label:
+                self.label = self.saved_label
+                self.saved_label = None
+            spacing = 40  # Set space between words
+            prev_text_width = 74  # STAT width
+            text_pos = 104 - spacing - prev_text_width  # Set first location
+            if self.label:
+                if self.label != self.prev_label:
+                    self.image.fill((0, 0, 0))  # Clear text
                     for section in self.title:
                         text = settings.RobotoB[33].render(section, True, (settings.bright), (0, 0, 0))  # Setup text
                         text_pos = text_pos + prev_text_width + spacing  # Set draw location
@@ -70,25 +81,25 @@ class TopMenu(game.Entity):
                         prev_text_width = text_rect.width
 
                         if section == self.label:
-                            pygame.draw.line(self.image, (settings.bright), (0, 35), (text_pos - 10, 35),
+                            pygame.draw.line(self.image, settings.bright, (0, 35), (text_pos - 10, 35),
                                              3)  # Line from left edge of screen
-                            pygame.draw.line(self.image, (settings.bright), (text_pos + text_rect.width + 10, 35),
+                            pygame.draw.line(self.image, settings.bright, (text_pos + text_rect.width + 10, 35),
                                              (settings.WIDTH, 35), 3)  # Line to the right edge of screen
-                            pygame.draw.line(self.image, (settings.bright), (text_pos - 11, 10), (text_pos - 11, 35),
+                            pygame.draw.line(self.image, settings.bright, (text_pos - 11, 10), (text_pos - 11, 35),
                                              3)  # Left Vert bar
-                            pygame.draw.line(self.image, (settings.bright), (text_pos - 12, 10), (text_pos - 3, 10),
+                            pygame.draw.line(self.image, settings.bright, (text_pos - 12, 10), (text_pos - 3, 10),
                                              3)  # Left Short bar
-                            pygame.draw.line(self.image, (settings.bright), (text_pos + text_rect.width + 2, 10),
+                            pygame.draw.line(self.image, settings.bright, (text_pos + text_rect.width + 2, 10),
                                              (text_pos + text_rect.width + 12, 10), 3)  # Right Short bar
-                            pygame.draw.line(self.image, (settings.bright), (text_pos + text_rect.width + 11, 10),
+                            pygame.draw.line(self.image, settings.bright, (text_pos + text_rect.width + 11, 10),
                                              (text_pos + text_rect.width + 11, 35), 3)  # Right Vert bar
                         else:
-                            pygame.draw.line(self.image, (settings.bright), (text_pos - 10, 35),
+                            pygame.draw.line(self.image, settings.bright, (text_pos - 10, 35),
                                              (text_pos + text_rect.width + 10, 35),
                                              3)  # Horizontal Barclass TopMenu(game.Entity):
-            self.prev_label = self.label
+                self.prev_label = self.label
 
-        if settings.glitch == True:
+        if settings.glitch:
             if settings.glitch_next == 1 or settings.glitch_next == 3 or settings.glitch_next == 5:
                 self.rect[1] = -149
             elif settings.glitch_next == 2 or settings.glitch_next == 4 or settings.glitch_next == 6:
@@ -114,7 +125,6 @@ class Scanlines(game.core.Entity):
         self.dirty = 2
 
     def render(self, *args, **kwargs):
-
         self.current_time = time.time()
         self.delta_time = self.current_time - self.prev_time
 
@@ -140,11 +150,20 @@ class SubMenu(game.Entity):
         self.menu = []
         self.rect[0] = 73
         self.rect[1] = 93
-        self.hidden = False
         self.prev_time = 0
+        self.selected = None
+        self.saved_module = None
 
     def render(self):
-        if settings.glitch == True:
+        if settings.hide_submenu and settings.hide_submenu != 3:
+            settings.hide_submenu = 3
+            self.image.fill(settings.black)
+            self.saved_module = self.selected
+        elif not settings.hide_submenu and self.saved_module:
+            self.select(self.saved_module)
+            self.saved_module = None
+
+        if settings.glitch:
             if settings.glitch_next == 1 or settings.glitch_next == 3 or settings.glitch_next == 5:
                 self.rect[1] = -107
             elif settings.glitch_next == 2 or settings.glitch_next == 4 or settings.glitch_next == 6:
@@ -152,15 +171,11 @@ class SubMenu(game.Entity):
             elif settings.glitch_next >= 7:
                 self.rect[1] = 93
 
-    # def update(self, *args, **kwargs):
-    #     super(SubMenu, self).update(*args, **kwargs)
-
     def select(self, module):
         self.selected = module
-
-        self.image.fill((0, 0, 0))
+        self.image.fill(settings.black)
         self.textoffset = 18
-        if module != "hidden":
+        if not settings.hide_submenu:
             for m in self.menu:
                 padding = 1
                 text_width = 0
@@ -220,146 +235,150 @@ class Footer(game.Entity):
         return date, time
 
     def render(self):
-        self.current_time = time.time()
-        self.delta_time = self.current_time - self.prev_time
+        if settings.hide_footer and settings.hide_footer != 3:
+            self.image.fill((0, 0, 0))
+            settings.hide_footer = 3
+        elif not settings.hide_footer:
+            self.current_time = time.time()
+            self.delta_time = self.current_time - self.prev_time
 
-        if self.delta_time >= self.animation_time:
-            self.prev_time = self.current_time
+            if self.delta_time >= self.animation_time:
+                self.prev_time = self.current_time
 
-            if self.sections:
+                if self.sections:
 
-                self.rect[0] = settings.footer_x
-                self.rect[1] = settings.footer_y
-                self.image.fill(settings.dark)
+                    self.rect[0] = settings.footer_x
+                    self.rect[1] = settings.footer_y
+                    self.image.fill(settings.dark)
 
-                self.text_width = 0
-                self.line_1 = 0
-                self.line_2 = 0
+                    self.text_width = 0
+                    self.line_1 = 0
+                    self.line_2 = 0
 
-                try:
-                    self.text_left = str(self.sections[0])
-                except:
-                    self.text_left = None
+                    try:
+                        self.text_left = str(self.sections[0])
+                    except:
+                        self.text_left = None
 
-                try:
-                    self.text_middle = str(self.sections[1])
-                except:
-                    self.text_middle = None
+                    try:
+                        self.text_middle = str(self.sections[1])
+                    except:
+                        self.text_middle = None
 
-                try:
-                    self.text_right = str(self.sections[2])
-                except:
-                    self.text_right = None
+                    try:
+                        self.text_right = str(self.sections[2])
+                    except:
+                        self.text_right = None
 
-                try:
-                    self.bar_graph_num = self.sections[3]
-                except:
-                    self.bar_graph_num = None
+                    try:
+                        self.bar_graph_num = self.sections[3]
+                    except:
+                        self.bar_graph_num = None
 
-                try:
-                    self.bar_graph_centered = self.sections[4]
-                except:
-                    self.bar_graph_centered = False
+                    try:
+                        self.bar_graph_centered = self.sections[4]
+                    except:
+                        self.bar_graph_centered = False
 
-                if self.text_left == "DATE" or self.text_middle == "TIME":
-                    time_text = self.time_text()
-                    self.date = time_text[0]
-                    self.time = time_text[1]
-                    self.text_left = self.date
-                    self.text_middle = self.time
+                    if self.text_left == "DATE" or self.text_middle == "TIME":
+                        time_text = self.time_text()
+                        self.date = time_text[0]
+                        self.time = time_text[1]
+                        self.text_left = self.date
+                        self.text_middle = self.time
 
-                # Left Text
-                if self.text_left:
-                    text = settings.RobotoB[28].render(self.text_left, True, settings.bright, settings.dark)
-                    self.text_width = text.get_rect().width
-                    self.image.blit(text, (self.padding, 3))
-                    self.line_1 = self.text_width + self.padding * 3
-                    if self.text_right != "" or self.text_middle != "":
-                        pygame.draw.line(self.image, settings.black, (self.line_1, 0),
-                                         (self.line_1, 38), 5)
+                    # Left Text
+                    if self.text_left:
+                        text = settings.RobotoB[28].render(self.text_left, True, settings.bright, settings.dark)
+                        self.text_width = text.get_rect().width
+                        self.image.blit(text, (self.padding, 3))
+                        self.line_1 = self.text_width + self.padding * 3
+                        if self.text_right != "" or self.text_middle != "":
+                            pygame.draw.line(self.image, settings.black, (self.line_1, 0),
+                                             (self.line_1, 38), 5)
 
-                # If there is a bar graph, and it is centered: Draw right text then middle with bar-graph:
-                if isinstance(self.bar_graph_num, int) and self.bar_graph_centered:
-                    text = settings.RobotoB[28].render(self.text_right, True, settings.bright, settings.dark)
-                    self.text_width = text.get_rect().width
-                    self.image.blit(text, (settings.WIDTH - self.text_width - self.padding, 3))
-                    self.line_2 = settings.WIDTH - self.text_width - self.padding * 3
-                    pygame.draw.line(self.image, settings.black, (self.line_2, 0), (self.line_2, 38), 5)
-
-                    text = settings.RobotoB[28].render(self.text_middle, True, settings.bright, settings.dark)
-                    self.text_width = text.get_rect().width
-                    self.image.blit(text, (self.line_1 + self.padding, 3))
-                    bar_graph_start = self.line_1 + self.text_width + self.padding * 2
-                    bar_graph_end = self.line_2 - self.padding
-
-                    pygame.draw.lines(self.image, settings.light, True,
-                                      [(bar_graph_start, 12), (bar_graph_end, 12),
-                                       (bar_graph_end, 26), (bar_graph_start, 26)], 3)  # Level bar surround
-
-                    bar_start = bar_graph_start + 2
-                    bar_max_width = bar_graph_end - 2 - bar_start + 2
-                    bar_width = int(self.expand(self.bar_graph_num, 0, 100, 0, bar_max_width))
-                    pygame.draw.rect(self.image, settings.bright, (bar_start, 14, bar_width, 11))  # Level bar fill
-
-                # If there is a bar graph and it is NOT centered: Draw middle text then right with bar-graph
-                elif isinstance(self.bar_graph_num, int) and not self.bar_graph_centered:
-
-                    text = settings.RobotoB[28].render(self.text_middle, True, settings.bright, settings.dark)
-                    self.text_width = text.get_rect().width
-                    self.image.blit(text, (self.line_1 + self.padding, 3))
-                    self.line_2 = self.line_1 + self.text_width + self.padding * 2
-                    pygame.draw.line(self.image, settings.black, (self.line_2, 0), (self.line_2, 38), 5)
-
-                    text = settings.RobotoB[28].render(self.text_right, True, settings.bright, settings.dark)
-                    self.text_width = text.get_rect().width
-                    self.image.blit(text, (self.line_2 + self.padding, 3))
-
-                    bar_graph_start = self.line_2 + self.text_width + self.padding * 2
-                    bar_graph_end = settings.WIDTH - self.padding
-
-                    pygame.draw.lines(self.image, settings.light, True,
-                                      [(bar_graph_start, 12), (bar_graph_end, 12),
-                                       (bar_graph_end, 26), (bar_graph_start, 26)], 3)  # Level bar surround
-
-                    bar_start = bar_graph_start + 2
-                    bar_max_width = bar_graph_end - 2 - bar_start + 2
-                    bar_width = int(self.expand(self.bar_graph_num, 0, 100, 0, bar_max_width))
-                    pygame.draw.rect(self.image, settings.bright, (bar_start, 14, bar_width, 11))  # Level bar fill
-
-                # If there is no bar-graph at all: Draw middle then right text
-                else:
-                    text = settings.RobotoB[28].render(self.text_middle, True, settings.bright, settings.dark)
-                    self.text_width = text.get_rect().width
-                    self.image.blit(text, (self.line_1 + self.padding, 3))
-                    self.line_2 = self.line_1 + self.text_width + self.padding * 2
-                    if self.text_middle != "":
+                    # If there is a bar graph, and it is centered: Draw right text then middle with bar-graph:
+                    if isinstance(self.bar_graph_num, int) and self.bar_graph_centered:
+                        text = settings.RobotoB[28].render(self.text_right, True, settings.bright, settings.dark)
+                        self.text_width = text.get_rect().width
+                        self.image.blit(text, (settings.WIDTH - self.text_width - self.padding, 3))
+                        self.line_2 = settings.WIDTH - self.text_width - self.padding * 3
                         pygame.draw.line(self.image, settings.black, (self.line_2, 0), (self.line_2, 38), 5)
 
-                    text = settings.RobotoB[28].render(self.text_right, True, settings.bright, settings.dark)
-                    self.text_width = text.get_rect().width
-                    self.image.blit(text, (settings.WIDTH - self.text_width - self.padding, 3))
+                        text = settings.RobotoB[28].render(self.text_middle, True, settings.bright, settings.dark)
+                        self.text_width = text.get_rect().width
+                        self.image.blit(text, (self.line_1 + self.padding, 3))
+                        bar_graph_start = self.line_1 + self.text_width + self.padding * 2
+                        bar_graph_end = self.line_2 - self.padding
 
-            # #self.image.fill((0, 0, 0)) #Clear text
-            # spacing = 4 #Set space between sections
-            # prev_text_width = 74 # STAT width
-            # text_pos = 104 - spacing - prev_text_width #Set first location
+                        pygame.draw.lines(self.image, settings.light, True,
+                                          [(bar_graph_start, 12), (bar_graph_end, 12),
+                                           (bar_graph_end, 26), (bar_graph_start, 26)], 3)  # Level bar surround
 
-            # for section in self.sections:
-            #     text = settings.RobotoB[33].render(section, True, (settings.bright), (0, 0, 0)) #Setup text
-            #     text_pos = text_pos + prev_text_width + spacing #Set draw location
-            #     self.image.blit(text, (text_pos, 0)) #Draw text
-            #     text_rect = text.get_rect() #Get text dimensions
-            #     prev_text_width = text_rect.width
+                        bar_start = bar_graph_start + 2
+                        bar_max_width = bar_graph_end - 2 - bar_start + 2
+                        bar_width = int(self.expand(self.bar_graph_num, 0, 100, 0, bar_max_width))
+                        pygame.draw.rect(self.image, settings.bright, (bar_start, 14, bar_width, 11))  # Level bar fill
 
-            #     if section == self.label:
-            #         pygame.draw.line(self.image, (settings.bright), (0, 35), (text_pos - 10, 35), 3) # Line from left edge of screen
-            #         pygame.draw.line(self.image, (settings.bright), (text_pos + text_rect.width + 10, 35), (settings.WIDTH, 35), 3) # Line to the right edge of screen
-            #         pygame.draw.line(self.image, (settings.bright), (text_pos - 11, 10), (text_pos - 11, 35), 3)	#Left Vert bar
-            #         pygame.draw.line(self.image, (settings.bright), (text_pos - 12, 10), (text_pos - 3, 10), 3)	#Left Short bar
-            #         pygame.draw.line(self.image, (settings.bright), (text_pos + text_rect.width + 2, 10), (text_pos + text_rect.width + 12, 10), 3)	#Right Short bar
-            #         pygame.draw.line(self.image, (settings.bright), (text_pos + text_rect.width + 11, 10), (text_pos + text_rect.width + 11, 35), 3)	#Right Vert bar
-            #     else:
-            #         pygame.draw.line(self.image, (settings.bright), (text_pos - 10, 35), (text_pos + text_rect.width + 10, 35), 3) # Horizontal Bar
+                    # If there is a bar graph and it is NOT centered: Draw middle text then right with bar-graph
+                    elif isinstance(self.bar_graph_num, int) and not self.bar_graph_centered:
+
+                        text = settings.RobotoB[28].render(self.text_middle, True, settings.bright, settings.dark)
+                        self.text_width = text.get_rect().width
+                        self.image.blit(text, (self.line_1 + self.padding, 3))
+                        self.line_2 = self.line_1 + self.text_width + self.padding * 2
+                        pygame.draw.line(self.image, settings.black, (self.line_2, 0), (self.line_2, 38), 5)
+
+                        text = settings.RobotoB[28].render(self.text_right, True, settings.bright, settings.dark)
+                        self.text_width = text.get_rect().width
+                        self.image.blit(text, (self.line_2 + self.padding, 3))
+
+                        bar_graph_start = self.line_2 + self.text_width + self.padding * 2
+                        bar_graph_end = settings.WIDTH - self.padding
+
+                        pygame.draw.lines(self.image, settings.light, True,
+                                          [(bar_graph_start, 12), (bar_graph_end, 12),
+                                           (bar_graph_end, 26), (bar_graph_start, 26)], 3)  # Level bar surround
+
+                        bar_start = bar_graph_start + 2
+                        bar_max_width = bar_graph_end - 2 - bar_start + 2
+                        bar_width = int(self.expand(self.bar_graph_num, 0, 100, 0, bar_max_width))
+                        pygame.draw.rect(self.image, settings.bright, (bar_start, 14, bar_width, 11))  # Level bar fill
+
+                    # If there is no bar-graph at all: Draw middle then right text
+                    else:
+                        text = settings.RobotoB[28].render(self.text_middle, True, settings.bright, settings.dark)
+                        self.text_width = text.get_rect().width
+                        self.image.blit(text, (self.line_1 + self.padding, 3))
+                        self.line_2 = self.line_1 + self.text_width + self.padding * 2
+                        if self.text_middle != "":
+                            pygame.draw.line(self.image, settings.black, (self.line_2, 0), (self.line_2, 38), 5)
+
+                        text = settings.RobotoB[28].render(self.text_right, True, settings.bright, settings.dark)
+                        self.text_width = text.get_rect().width
+                        self.image.blit(text, (settings.WIDTH - self.text_width - self.padding, 3))
+
+                # #self.image.fill((0, 0, 0)) #Clear text
+                # spacing = 4 #Set space between sections
+                # prev_text_width = 74 # STAT width
+                # text_pos = 104 - spacing - prev_text_width #Set first location
+
+                # for section in self.sections:
+                #     text = settings.RobotoB[33].render(section, True, (settings.bright), (0, 0, 0)) #Setup text
+                #     text_pos = text_pos + prev_text_width + spacing #Set draw location
+                #     self.image.blit(text, (text_pos, 0)) #Draw text
+                #     text_rect = text.get_rect() #Get text dimensions
+                #     prev_text_width = text_rect.width
+
+                #     if section == self.label:
+                #         pygame.draw.line(self.image, (settings.bright), (0, 35), (text_pos - 10, 35), 3) # Line from left edge of screen
+                #         pygame.draw.line(self.image, (settings.bright), (text_pos + text_rect.width + 10, 35), (settings.WIDTH, 35), 3) # Line to the right edge of screen
+                #         pygame.draw.line(self.image, (settings.bright), (text_pos - 11, 10), (text_pos - 11, 35), 3)	#Left Vert bar
+                #         pygame.draw.line(self.image, (settings.bright), (text_pos - 12, 10), (text_pos - 3, 10), 3)	#Left Short bar
+                #         pygame.draw.line(self.image, (settings.bright), (text_pos + text_rect.width + 2, 10), (text_pos + text_rect.width + 12, 10), 3)	#Right Short bar
+                #         pygame.draw.line(self.image, (settings.bright), (text_pos + text_rect.width + 11, 10), (text_pos + text_rect.width + 11, 35), 3)	#Right Vert bar
+                #     else:
+                #         pygame.draw.line(self.image, (settings.bright), (text_pos - 10, 35), (text_pos + text_rect.width + 10, 35), 3) # Horizontal Bar
 
 
 # Menu_array Structure: [["Menu item",Quantity,"Image (or folder for animation")","Description text","Stat Text","Stat Number"],],
@@ -383,6 +402,8 @@ class Menu(game.Entity):
         self.descriptionbox = pygame.Surface((360, 300))
         self.imagebox = pygame.Surface((240, 240))
 
+        self.saved_selection = 0
+
         try:
             self.callbacks = callbacks
             # print("self.callbacks = ", self.callbacks)
@@ -396,31 +417,33 @@ class Menu(game.Entity):
         self.select(self.selected)
 
         if settings.SOUND_ENABLED:
-            self.dial_move_sfx = pygame.mixer.Sound('sounds/pipboy/RotaryVertical/UI_PipBoy_RotaryVertical_01.wav')
+            self.dial_move_sfx = pygame.mixer.Sound('sounds/pipboy/RotaryVertical/UI_PipBoy_RotaryVertical_01.ogg')
             self.dial_move_sfx.set_volume(settings.VOLUME)
 
     def select(self, item):
-        self.selected = item
-        self.redraw()
-        if len(self.callbacks) > item and self.callbacks[item]:
-            self.callbacks[item]()
+        if not settings.hide_main_menu:
+            self.selected = item
+            self.redraw()
+            if len(self.callbacks) > item and self.callbacks[item]:
+                self.callbacks[item]()
 
     def handle_action(self, action):
-        if action == "dial_up":
-            # print("Dial up")
-            if self.selected > 0:
-                if settings.SOUND_ENABLED:
-                    self.dial_move_sfx.play()
-                self.selected -= 1
-                self.select(self.selected)
+        if not settings.hide_main_menu:
+            if action == "dial_up":
+                # print("Dial up")
+                if self.selected > 0:
+                    if settings.SOUND_ENABLED:
+                        self.dial_move_sfx.play()
+                    self.selected -= 1
+                    self.select(self.selected)
 
-        if action == "dial_down":
-            # print("Dial down")
-            if self.selected < len(self.source_array) - 1:
-                self.selected += 1
-                if settings.SOUND_ENABLED:
-                    self.dial_move_sfx.play()
-                self.select(self.selected)
+            if action == "dial_down":
+                # print("Dial down")
+                if self.selected < len(self.source_array) - 1:
+                    self.selected += 1
+                    if settings.SOUND_ENABLED:
+                        self.dial_move_sfx.play()
+                    self.select(self.selected)
 
     def redraw(self):
         self.image.fill((0, 0, 0))
@@ -446,7 +469,8 @@ class Menu(game.Entity):
 
             if i == self.selected:
                 # print("Selected Index = ", i)
-                text = settings.RobotoB[30].render(" %s " % self.menu_array[i][0], True, (0, 0, 0), (settings.bright))
+                text = settings.RobotoB[30].render(" %s " % self.menu_array[i][0], True, (0, 0, 0),
+                                                   (settings.bright))
                 try:
                     number = settings.RobotoB[30].render(" %s " % self.menu_array[i][1], True, (0, 0, 0),
                                                          (settings.bright))
@@ -476,7 +500,8 @@ class Menu(game.Entity):
                             if filename == "frameorder.py":
                                 url = self.image_url + "/" + filename
                                 # print ("url =",url)
-                                file = imp.load_source("frameorder.py", os.path.join(self.image_url, "frameorder.py"))
+                                file = imp.load_source("frameorder.py",
+                                                       os.path.join(self.image_url, "frameorder.py"))
                                 self.frameorder = file.frameorder
                                 self.frame = 0
 
@@ -523,7 +548,8 @@ class Menu(game.Entity):
                     self.image.blit(self.descriptionbox, (settings.description_box_x, settings.description_box_y))
 
             else:
-                text = settings.RobotoB[30].render(" %s " % self.menu_array[i][0], True, (settings.bright), (0, 0, 0))
+                text = settings.RobotoB[30].render(" %s " % self.menu_array[i][0], True, (settings.bright),
+                                                   (0, 0, 0))
                 try:
                     number = settings.RobotoB[30].render(" %s " % self.menu_array[i][1], True, (settings.bright),
                                                          (0, 0, 0))
@@ -549,26 +575,36 @@ class Menu(game.Entity):
                 self.image.blit(self.arrow_img_down, (10, 448))
 
     def render(self, *args, **kwargs):
-        self.current_time = time.time()
-        self.delta_time = self.current_time - self.prev_time
+        if settings.hide_main_menu and settings.hide_main_menu != 3:
+            settings.hide_main_menu = 3
+            self.image.fill(settings.black)
+            self.saved_selection = self.selected
 
-        if hasattr(self, 'images') and self.images:  # If there is an animation list
-            if self.delta_time >= self.animation_time:
-                self.prev_time = self.current_time
+        elif not settings.hide_main_menu:
+            if self.saved_selection is not None:
+                self.select(self.saved_selection)
+                self.saved_selection = None
 
-                self.imagebox.fill((0, 0, 0))
+            self.current_time = time.time()
+            self.delta_time = self.current_time - self.prev_time
 
-                if self.index >= len(self.images):
-                    self.index = 0
+            if hasattr(self, 'images') and self.images:  # If there is an animation list
+                if self.delta_time >= self.animation_time:
+                    self.prev_time = self.current_time
 
-                if self.frameorder:  # Support non-linear frames
-                    if self.frame >= len(self.frameorder):
-                        self.frame = 0
-                    self.index = self.frameorder[self.frame]
-                    self.frame += 1
+                    self.imagebox.fill((0, 0, 0))
 
-                self.file = self.images[self.index]
-                self.imagebox.blit(self.file, (0, 0))
-                self.image.blit(self.imagebox, (400, 0))
+                    if self.index >= len(self.images):
+                        self.index = 0
 
-                self.index += 1
+                    if self.frameorder:  # Support non-linear frames
+                        if self.frame >= len(self.frameorder):
+                            self.frame = 0
+                        self.index = self.frameorder[self.frame]
+                        self.frame += 1
+
+                    self.file = self.images[self.index]
+                    self.imagebox.blit(self.file, (0, 0))
+                    self.image.blit(self.imagebox, (400, 0))
+
+                    self.index += 1

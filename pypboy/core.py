@@ -37,15 +37,11 @@ class Pypboy(game.core.Engine):
 
     def init_persitant(self):
         #self.background = pygame.image.load('images/background.png')
-        #self.background = pygame.image.load('images/Special_Reference.png')
-        self.topmenu = pypboy.ui.TopMenu()
-        self.root_persitant.add(self.topmenu)
-        self.footer = pypboy.ui.Footer()
-        self.root_persitant.add(self.footer)
         overlay = pypboy.ui.Overlay()
         self.root_persitant.add(overlay)
         scanlines = pypboy.ui.Scanlines()
         self.root_persitant.add(scanlines)
+        pass
 
     def init_modules(self):
         self.modules = {
@@ -57,7 +53,7 @@ class Pypboy(game.core.Engine):
             "boot": boot.Module(self),
             "passcode": passcode.Module(self)
         }
-        self.switch_module("passcode") # Set the start screen
+        self.switch_module(settings.STARTER_MODULE) # Set the start screen
 
     def init_gpio_controls(self):
         for pin in settings.gpio_actions.keys():
@@ -76,6 +72,7 @@ class Pypboy(game.core.Engine):
             self.active.render()
 
     def switch_module(self, module):
+        # if not settings.hide_top_menu:
         if module in self.modules:
             if hasattr(self, 'active'):
                 self.active.handle_action("pause")
@@ -95,10 +92,11 @@ class Pypboy(game.core.Engine):
                 self.active.handle_action(action)   
 
     def handle_event(self, event):
-        
         if event.type == pygame.KEYDOWN: #Some key has been pressed
+            # Persistant Events:
             if event.key == pygame.K_ESCAPE: #ESC
                 self.running = False
+
             elif event.key == pygame.K_PAGEUP: # Volume up
                 settings.radio.handle_event(event)
             elif event.key == pygame.K_PAGEDOWN: # Volume down
@@ -109,9 +107,12 @@ class Pypboy(game.core.Engine):
                 settings.radio.handle_event(event)
             elif event.key == pygame.K_DELETE:
                 settings.radio.handle_event(event)
+            elif event.key == pygame.K_INSERT:
+                settings.radio.handle_event(event)
             else:
                 if event.key in settings.ACTIONS: #Check action based on key in settings
                     self.handle_action(settings.ACTIONS[event.key])
+
         elif event.type == pygame.QUIT:
             self.running = False
 
@@ -119,10 +120,10 @@ class Pypboy(game.core.Engine):
             if settings.SOUND_ENABLED:
                 if hasattr(settings, 'radio'):
                     settings.radio.handle_event(event)
-
-
-
-
+        elif event.type == settings.EVENTS['PLAYPAUSE']:
+            if settings.SOUND_ENABLED:
+                if hasattr(settings, 'radio'):
+                    settings.radio.handle_event(event)
         else:
             if hasattr(self, 'active'):
                 self.active.handle_event(event)
@@ -137,12 +138,11 @@ class Pypboy(game.core.Engine):
             self.check_gpio_input()
             for event in pygame.event.get():
                 self.handle_event(event)
-            # self.update()
+                if hasattr(self, 'active'):
+                    self.active.handle_event(event)
             self.render()
-            #pygame.time.wait(1)
-
+            pygame.time.wait(1)
         try:
             pygame.mixer.quit()
         except Exception as e:
             print(e)
-            pass

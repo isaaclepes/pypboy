@@ -14,8 +14,12 @@ class Module(pypboy.SubModule):
         self.menu = pypboy.ui.Menu(settings.WEAPONS)
         self.menu.rect[0] = settings.menu_x
         self.menu.rect[1] = settings.menu_y
-        
         self.add(self.menu)
+
+        self.topmenu = pypboy.ui.TopMenu()
+        self.add(self.topmenu)
+        self.topmenu.label = "INV"
+        self.topmenu.title = settings.MODULE_TEXT
 
         self.footer = pypboy.ui.Footer(settings.FOOTER_WEAPONS)
         self.footer.rect[0] = settings.footer_x

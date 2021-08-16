@@ -32,7 +32,7 @@ black = (0,0,0)
 bright = (0,230,0)
 light = (0,170,0)
 mid = (0,120,0)
-dim = (0,60,0)
+dim = (0,70,0)
 dark = (0,40,0)
 
 #MAP
@@ -55,7 +55,9 @@ WORLD_MAP_ZOOM = 12
 LOCAL_MAP_ZOOM = 17
 
 EVENTS = {
-    'SONG_END': pygame.USEREVENT + 1
+    'SONG_END': pygame.USEREVENT + 1,
+    'PLAYPAUSE': pygame.USEREVENT + 2,
+    'HOLOTAPE_END': pygame.USEREVENT + 3
 }
 
 MODULES = {
@@ -70,6 +72,8 @@ MODULES = {
 
 #MODULE_TEXT = ["RADIO","MAP","DATA","INV","STAT"]
 MODULE_TEXT = ["STAT","INV","DATA","MAP","RADIO"]
+
+STARTER_MODULE = "data"
 
 ACTIONS = {
     pygame.K_F1: "module_stats",
@@ -293,10 +297,15 @@ try:
 except:
     STATION = 0
 
+hide_top_menu = False
+hide_submenu = False
+hide_main_menu = False
+hide_footer = False
+
 def save_settings():
     file = open("saved.py","w")
     file.write("SAVED_VOLUME = " + str(VOLUME) + "\n" + "SAVED_STATION = " + str(STATION))
-    print ("exiting", VOLUME, STATION)
+    print ("exiting", "SAVED_VOLUME = ", str(VOLUME), "SAVED_STATION = ", str(STATION))
     
 atexit.register(save_settings)
 
@@ -323,3 +332,7 @@ waveform_rate = 48
 # Setting this value too high will greatly delay song waveform generation
 waveform_fps = 24
 frame_skip = int(waveform_frequency / (waveform_fps * waveform_rate))
+
+terminal_speed = 50
+
+CURRENT_SONG = None

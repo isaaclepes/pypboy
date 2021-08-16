@@ -37,13 +37,18 @@ class Module(pypboy.SubModule):
             self.mapgrid = Map(self.map_width,self.map_height,self.map_rect, "Loading cached map")
             self.mapgrid.load_map(settings.MAP_FOCUS, self.zoom, self.map_width, self.map_height, self.map_type)
         else:
-            print("Loading map from the internet")
+            # print("Loading map from the internet")
             self.mapgrid = Map(self.map_width,self.map_height,self.map_rect, "Loading map from the internet")
             self.mapgrid.fetch_map(settings.MAP_FOCUS, self.zoom, self.map_width, self.map_height, self.map_type)
 
         self.add(self.mapgrid)
         self.mapgrid.rect[0] = 0
         self.mapgrid.rect[1] = self.map_top_edge
+
+        self.topmenu = pypboy.ui.TopMenu()
+        self.add(self.topmenu)
+        self.topmenu.label = "MAP"
+        self.topmenu.title = settings.MODULE_TEXT
 
         settings.FOOTER_TIME[2] = "Map Data © Google"
         self.footer = pypboy.ui.Footer(settings.FOOTER_TIME)
