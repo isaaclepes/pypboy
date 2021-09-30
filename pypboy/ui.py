@@ -4,11 +4,10 @@ import settings
 import time
 import os
 import imp
-import cairosvg
+# import cairosvg
 import io
 from datetime import datetime
 from collections import deque
-
 
 def word_wrap(surf, text, font):
     text = str(text)
@@ -32,14 +31,20 @@ def word_wrap(surf, text, font):
 
 
 def load_svg(filename, width, height):
-    drawing = cairosvg.svg2png(url=filename)
-    byte_io = io.BytesIO(drawing)
-    image = pygame.image.load(byte_io)
+    # Pygame.image now supports basic SVGs as a un-documented feature but SVG files must be flattened with a background
+
+
+    # drawing = cairosvg.svg2png(url=filename) #Cairo is a pain to install.
+    # byte_io = io.BytesIO(drawing)
+    # image = pygame.image.load(byte_io)
+    # print ("Loading svg:",filename)
+    image = pygame.image.load(filename).convert_alpha()
     size = image.get_size()
     scale = min(width / size[0], height / size[1])
     if size[1] != height:
+        print("Rescaling", filename, "from", size[0], "x", size[1], "to", width, "x", height)
         image = pygame.transform.smoothscale(image, (round(size[0] * scale), round(size[1] * scale)))
-    image.fill((0, 230, 0), None, pygame.BLEND_RGBA_MULT)
+    image.fill(settings.bright, None, pygame.BLEND_RGBA_MULT)
     return image
 
 
@@ -410,7 +415,7 @@ class Menu(game.Entity):
         except:
             self.callbacks = []
 
-        self.arrow_img_up = load_svg("./images/inventory/arrow.svg", 40, 40)
+        self.arrow_img_up = load_svg("./images/inventory/arrow.svg", 26, 26)
         self.arrow_img_down = pygame.transform.flip(self.arrow_img_up, False, True)
 
         self.selected = selected
@@ -483,7 +488,6 @@ class Menu(game.Entity):
                 self.images = []
                 try:  # Try loading a image if there is one
                     self.image_url = self.menu_array[i][2]
-
                     if os.path.isdir(self.image_url):
                         for filename in sorted(os.listdir(self.image_url)):
                             if filename.endswith(".png"):
@@ -508,9 +512,17 @@ class Menu(game.Entity):
                     else:
                         if self.image_url:
                             self.frameorder = []
-                            self.imagebox.fill((0, 0, 0))
-                            self.graphic = pygame.image.load(self.image_url).convert_alpha()
-                            self.image.blit(self.graphic, (400, 0))
+                            # self.imagebox.fill(settings.black)
+                            if self.image_url.endswith(".svg"):
+                                graphic = load_svg(self.image_url, self.imagebox.get_width(),
+                                                   self.imagebox.get_height())
+                                self.imagebox.blit(graphic, (0, 0))
+                                self.image.blit(self.imagebox, (400, 0))
+                            else:
+                                graphic = pygame.image.load(self.image_url).convert_alpha()
+                                self.image.blit(graphic, (0, 0))
+
+
 
                 except:
                     self.image_url = ""
@@ -568,11 +580,11 @@ class Menu(game.Entity):
         # Handle the up/down arrows for long lists
         if len(self.source_array) > len(self.menu_array):
             if self.top_of_menu != 0:
-                self.image.blit(self.arrow_img_up, (10, 0))
+                self.image.blit(self.arrow_img_up, (20, 6))
 
         if len(self.source_array) > len(self.menu_array):
             if self.top_of_menu != len(self.source_array) - self.max_items:
-                self.image.blit(self.arrow_img_down, (10, 448))
+                self.image.blit(self.arrow_img_down, (20, 454))
 
     def render(self, *args, **kwargs):
         if settings.hide_main_menu and settings.hide_main_menu != 3:
@@ -581,7 +593,7 @@ class Menu(game.Entity):
             self.saved_selection = self.selected
 
         elif not settings.hide_main_menu:
-            if self.saved_selection is not None:
+            if self.saved_selection:
                 self.select(self.saved_selection)
                 self.saved_selection = None
 
@@ -605,6 +617,7 @@ class Menu(game.Entity):
 
                     self.file = self.images[self.index]
                     self.imagebox.blit(self.file, (0, 0))
+                    self.imagebox.fill(settings.bright, None, pygame.BLEND_RGBA_MULT)
                     self.image.blit(self.imagebox, (400, 0))
 
                     self.index += 1

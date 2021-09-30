@@ -1,22 +1,13 @@
-import configparser
 import glob
-from collections import deque
-
 import numpy as np
-
 import pypboy
 import pygame
 import game
 import settings
 import pygcurse
-import locale
 import os
 import time
 import xml.etree.ElementTree as ET
-from pypboy import ptext
-
-locale.setlocale(locale.LC_ALL, '')
-code = locale.getpreferredencoding()
 
 
 class Module(pypboy.SubModule):
@@ -34,15 +25,14 @@ class Module(pypboy.SubModule):
         self.grid = pygame.Surface((270, 270))
 
         for holotapes_data in self.holotapes_data_set:
-            # holotapes_data = [holotape_name, folder_name, static_text, dynamic_text, menu, action]
+            # holotapes_data = [holotape_name, folder_name, static_text, dynamic_text, menu, action, image]
+            # Menu Structure: ["Menu item",Quantity,"Image (or folder for animation")","Description text",[["stats_text_1","stats_number_1"],["stats_text_2","stats_number_2"]]],
             holotape_name = holotapes_data[0]
-            self.main_menu.append([holotape_name])
+            image = settings.holotape_generic
+            self.main_menu.append([holotape_name, "", image])
             self.holotapes.append(HolotapeClass(holotape_name, holotapes_data))
 
-        for tape in self.holotapes:
-            self.add(tape)
         self.active_holotape = None
-        settings.holotape = self
 
         holotapeCallbacks = []
         for i, holotape in enumerate(self.holotapes):
@@ -68,52 +58,53 @@ class Module(pypboy.SubModule):
 
     def select_holotape(self, holotape):
         if hasattr(self, 'active_holotape') and self.active_holotape:
-            self.active_holotape.selected = True
+            self.remove(self.active_holotape)
+            if self.active_holotape.alive():
+                self.remove(self.active_holotape)
         self.active_holotape = self.holotapes[holotape]
-        if self.active_holotape.holotape_type:
-            settings.FOOTER_TIME[2] = self.active_holotape.holotape_type
 
     def handle_event(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
-                if not self.active_holotape.active:
+
+                self.add(self.active_holotape)
+
+                if self.active_holotape.alive():
                     settings.hide_top_menu = True
                     settings.hide_submenu = True
                     settings.hide_main_menu = True
-                    settings.hide_footer = True
-                    self.active_holotape.write_display(0, False)
-                    print("Loading Holotape")
+                    settings.hide_footer = False
+                    # self.active_holotape.write_display(0, False)
+                    print("Loading Holotape:", self.active_holotape.label)
+
                 if self.active_holotape and not self.active_holotape.skip and self.active_holotape.crawling:
                     self.active_holotape.handle_event(event)
+
             elif event.key == pygame.K_BACKSPACE:
-                settings.hide_top_menu = False
-                settings.hide_submenu = False
-                settings.hide_main_menu = False
-                settings.hide_footer = False
-                self.active_holotape.clear_display()
-                print("Backspace pressed")
+                self.handle_resume()
+                print("Back to main holotape menu")
+
         if self.active_holotape and self.active_holotape.waiting_for_input:
             self.active_holotape.handle_event(event)
 
-
     def handle_resume(self):
-        if self.paused == True:
+        super(Module, self).handle_resume()
+        if hasattr(self, 'active_holotape') and self.active_holotape:
+            self.active_holotape.clear_display()
+        if self.active_holotape.alive():
+            self.remove(self.active_holotape)
+        if self.paused:
             self.paused = False
             settings.hide_top_menu = False
             settings.hide_submenu = False
             settings.hide_main_menu = False
             settings.hide_footer = False
-            self.active_holotape.clear_display()
-            # print("Resumed Holotape", self)
-            # self.holotape.handle_resume()
-            super(Module, self).handle_resume()
 
     def handle_pause(self):
         # print("Holotape paused")
         self.active_holotape.clear_display()
 
     def get_data(self):
-
         # Get list of folders
         folders = []
         holotapes_data = []
@@ -209,7 +200,6 @@ class HolotapeDisplay(game.Entity):
         self.rect[0] = 11
         self.rect[1] = 51
 
-
         self.cursor_x = 0
         self.cursor_y = 0
         self.prev_x = 0
@@ -224,7 +214,6 @@ class HolotapeDisplay(game.Entity):
         self.menu_index = 0
         self.prev_line = 0
         self.blink = False
-        self.screen = None
         self.static_text_index = 0
         self.dynamic_text_index = 0
         self.menu_text_index = 0
@@ -237,7 +226,7 @@ class HolotapeDisplay(game.Entity):
         # Audio holotape related:
         self.holotape_waveform_width, self.holotape_waveform_height = 250, 250
         self.holotape_waveform_image = pygame.Surface((self.holotape_waveform_width, self.holotape_waveform_height))
-        self.holotape_waveform_animation_time = 1 / settings.waveform_fps  # 25 fps
+        self.holotape_waveform_animation_time = 1 / settings.waveform_fps
         self.grid = pygame.Surface((270, 270))
 
         self.prev_time = 0
@@ -251,30 +240,33 @@ class HolotapeDisplay(game.Entity):
         self.audio_file_length = 0
         self.sound_object = None
         self.max_length = 0
-        self.active = False
-        self.selected = False
         self.page = 0
         self.previous_page = 0
         self.skip = False
         self.console_text = None
+        self.saved_song = None
+        self.saved_song_pos = None
 
         if settings.SOUND_ENABLED:
             self.sfx_dial_move = pygame.mixer.Sound('./sounds/pipboy/RotaryVertical/UI_PipBoy_RotaryVertical_01.ogg')
             self.sfx_dial_move.set_volume(settings.VOLUME)
             self.sfx_text = pygame.mixer.Sound('./sounds/terminal/UI_Terminal_CharScroll_LP.ogg')
-            self.sfx_text.set_volume(settings.VOLUME/3)
+            self.sfx_text.set_volume(settings.VOLUME / 3)
             self.sfx_ok = pygame.mixer.Sound('./sounds/pipboy/UI_Pipboy_OK_Press.ogg')
             self.sfx_ok.set_volume(settings.VOLUME)
 
-        # Text related:
-        ptext.DEFAULT_COLOR = settings.bright
-        ptext.DEFAULT_BACKGROUND = settings.black
-        ptext.DEFAULT_FONT_NAME = "fonts/TechMono.ttf"
-        ptext.DEFAULT_FONT_SIZE = 25
-        self.font = settings.TechMono[ptext.DEFAULT_FONT_SIZE]
+        self.font = settings.TechMono[25]
         self.char_width, self.char_height = self.font.size("X")
         self.max_chars = int(settings.WIDTH / self.char_width) - 5
         self.max_lines = int((settings.HEIGHT - 100) / self.char_height) - 1
+
+
+        # Create the pygcurse surface
+        self.holotape_screen = pygcurse.PygcurseSurface(self.max_chars, self.max_lines + 1, self.font,
+                                                        settings.bright, settings.black, self.holotape_image, True,
+                                                        1000)
+        self.holotape_screen._autoupdate = False
+        self.holotape_screen._autodisplayupdate = False
 
     def write_display(self, page, skip=False):
         # print ("Drawing page:", page, "self.previous_page = ",self.previous_page,'Skip=',skip)
@@ -282,7 +274,6 @@ class HolotapeDisplay(game.Entity):
         self.skip = skip
         self.previous_page = self.page
         self.page = page
-        self.active = True
         settings.hide_top_menu = True
         settings.hide_submenu = True
         settings.hide_main_menu = True
@@ -292,12 +283,7 @@ class HolotapeDisplay(game.Entity):
         self.dynamic_text_index = 0
         self.menu_text_index = 0
         self.char_index = 0
-
-        # Create the pygcurse surface
-        self.screen = pygcurse.PygcurseSurface(self.max_chars, self.max_lines + 1, self.font,
-                                               settings.bright, settings.black, self.holotape_image, True, 1000)
-        self.screen._autoupdate = False
-        self.screen._autodisplayupdate = False
+        self.holotape_screen.cursor = (0, 0)
 
         if self.page >= len(self.holotape_data[3]):
             print("Selected an invalid page", self.page, len(self.holotape_data[3]))
@@ -312,7 +298,6 @@ class HolotapeDisplay(game.Entity):
 
     def clear_display(self):
         self.holotape_image.fill((0, 0, 0))
-        self.screen = None
         self.static_text_index = 0
         self.dynamic_text_index = 0
         self.menu_text_index = 0
@@ -322,9 +307,9 @@ class HolotapeDisplay(game.Entity):
         settings.hide_submenu = False
         settings.hide_main_menu = False
         settings.hide_footer = False
-        self.active = False
         self.line = 0
         self.skip = False
+        self.holotape_screen.cursor = (0, 0)
 
         if self.holotape_waveform:
             print("Clearing waveform")
@@ -342,11 +327,20 @@ class HolotapeDisplay(game.Entity):
         if event.type == settings.EVENTS['HOLOTAPE_END']:
             if self.holotape_waveform:
                 print("End of Audio Holotape")
-                pygame.mixer.music.set_endevent(settings.EVENTS['SONG_END'])
-                pygame.event.post(pygame.event.Event(settings.EVENTS['SONG_END']))
                 self.holotape_waveform = None
                 self.holotape_image.fill((0, 0, 0))
                 self.write_display(self.previous_page, True)
+            if self.saved_song:
+                # pygame.event.post(pygame.event.Event(settings.EVENTS['SONG_END']))
+                # print("Resuming song", self.saved_song, "at position", self.saved_song_pos)
+                pygame.mixer.music.load(self.saved_song)
+                try:
+                    pygame.mixer.music.play(0, self.saved_song_pos)
+                except:
+                    pygame.mixer.music.play(0, 0)
+                self.saved_song = None
+                self.saved_song_pos = None
+                pygame.mixer.music.set_endevent(settings.EVENTS['SONG_END'])
 
         if self.waiting_for_input:
             if event.type == pygame.KEYDOWN:
@@ -356,7 +350,7 @@ class HolotapeDisplay(game.Entity):
                     self.update_cursor("Down")
                 if event.key == pygame.K_RETURN:
                     self.update_cursor("Enter")
-        elif not self.skip and self.active:
+        elif not self.skip:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     if settings.SOUND_ENABLED:
@@ -384,125 +378,146 @@ class HolotapeDisplay(game.Entity):
         return static_text, dynamic_text, menu, actions
 
     def strip_end_block(self, line):
-        text = self.screen.getchars((0, self.line, self.max_chars, 1))
+        text = self.holotape_screen.getchars((0, self.line, self.max_chars, 1))
         text = str(text[0])
         text = text.rstrip()
         text = text.rstrip("▯")
         return text
 
     def draw_holotape_screen(self):
-        self.line = self.screen.cursory
+        self.line = self.holotape_screen.cursory
+        self.holotape_screen.erase((0,0,self.max_chars,self.max_lines))
 
-        if not self.skip:
-            self.crawling = True
-            # Draw static text
-            if self.static_text_index < len(self.static_text):
-                # print("Drawing static_text", self.static_text)
-                if not self.page:  # Draw static text slowly on first screen only
-                    self.screen.write(self.static_text[self.static_text_index])
-                    self.screen.putchar("▯", self.screen.cursorx, self.screen.cursory)
-                    self.static_text_index += 1
-                else:
-                    self.screen.write(self.static_text, 0, 0)
-                    self.static_text_index = 1000
+        if self.alive():
+            if not self.skip:
+                self.crawling = True
+                # Draw static text
+                if self.static_text_index < len(self.static_text):
+                    # print("Drawing static_text", self.static_text)
+                    if not self.page:  # Draw static text slowly on first screen only
+                        self.holotape_screen.write(self.static_text[self.static_text_index])
+                        self.holotape_screen.putchar("▯", self.holotape_screen.cursorx, self.holotape_screen.cursory)
+                        self.static_text_index += 1
+                    else:
+                        self.holotape_screen.write(self.static_text, 0, 0)
+                        self.static_text_index = 1000
 
-            # Draw dynamic text
-            elif self.dynamic_text and self.dynamic_text_index < len(self.dynamic_text):
-                # print("Drawing dynamic_text", self.dynamic_text)
-                text = str(self.dynamic_text[self.dynamic_text_index])
-                self.screen.write(self.dynamic_text[self.dynamic_text_index])
-                self.screen.putchar("▯", self.screen.cursorx, self.screen.cursory)
-                self.dynamic_text_index += 1
-                self.menu_start = self.screen.cursory
+                # Draw dynamic text
+                elif self.dynamic_text and self.dynamic_text_index < len(self.dynamic_text):
+                    # print("Drawing dynamic_text", self.dynamic_text)
+                    text = str(self.dynamic_text[self.dynamic_text_index])
+                    self.holotape_screen.write(self.dynamic_text[self.dynamic_text_index])
+                    self.holotape_screen.putchar("▯", self.holotape_screen.cursorx, self.holotape_screen.cursory)
+                    self.dynamic_text_index += 1
+                    self.menu_start = self.holotape_screen.cursory
 
-            # Draw menu
-            elif self.menu and self.menu_index < len(self.menu):
-                if self.menu_text_index < len(self.menu[self.menu_index]):
-                    self.screen.write(self.menu[self.menu_index][self.menu_text_index])
-                    self.screen.putchar("▯", self.screen.cursorx, self.screen.cursory)
-                    self.menu_text_index += 1
-                else:
+                # Draw menu
+                elif self.menu and self.menu_index < len(self.menu):
+                    if self.menu_text_index < len(self.menu[self.menu_index]):
+                        self.holotape_screen.write(self.menu[self.menu_index][self.menu_text_index])
+                        self.holotape_screen.putchar("▯", self.holotape_screen.cursorx, self.holotape_screen.cursory)
+                        self.menu_text_index += 1
+                    else:
+                        self.menu_text_index = 0
+                        self.menu_index += 1
+                        self.holotape_screen.cursory += 1
+                        self.holotape_screen.cursorx = 0
+                elif self.menu and self.menu_index == len(self.menu):
                     self.menu_text_index = 0
+                    self.menu_end = self.holotape_screen.cursory - 1
                     self.menu_index += 1
-                    self.screen.cursory += 1
-                    self.screen.cursorx = 0
-            elif self.menu and self.menu_index == len(self.menu):
-                self.menu_text_index = 0
-                self.menu_end = self.screen.cursory - 1
-                self.menu_index += 1
-                self.skip = True
+                    self.skip = True
 
-        if self.line != self.screen.cursory:
-            text = self.strip_end_block(self.line)
-            self.screen.putchars(text + " ", 0, self.line)
+            if self.line != self.holotape_screen.cursory:
+                text = self.strip_end_block(self.line)
+                self.holotape_screen.putchars(text + " ", 0, self.line)
 
-        # Skip and just draw everything at once
-        if self.skip:
-            self.crawling = False
-            print ("Skip text crawl",self.skip)
-            self.screen.fill(" ")
-            self.screen.write(self.static_text, 0, 0)
-            if self.dynamic_text:
-                self.screen.write(self.dynamic_text, 0, self.screen.cursory)
-            if self.menu:
-                self.menu_start = self.screen.cursory
-                for each in self.menu:
-                    self.screen.write(each, 0, self.screen.cursory)
-                    self.menu_end = self.screen.cursory
-                    self.screen.cursory += 1
-                self.screen.reversecolors((0, self.menu_start, self.max_chars, 1))
-                self.screen.cursorx = 0
-                self.screen.cursory = self.menu_start
-                self.cursor_x = self.screen.cursorx
-                self.cursor_y = self.screen.cursory
-            self.waiting_for_input = True
-            self.skip = False
+            # Skip and just draw everything at once
+            if self.skip:
+                self.crawling = False
+                print("Skip text crawl", self.skip)
+                self.holotape_screen.fill(" ")
+                self.holotape_screen.write(self.static_text, 0, 0)
+                if self.dynamic_text:
+                    self.holotape_screen.write(self.dynamic_text, 0, self.holotape_screen.cursory)
+                if self.menu:
+                    self.menu_start = self.holotape_screen.cursory
+                    for each in self.menu:
+                        self.holotape_screen.write(each, 0, self.holotape_screen.cursory)
+                        self.menu_end = self.holotape_screen.cursory
+                        self.holotape_screen.cursory += 1
+                    self.holotape_screen.reversecolors((0, self.menu_start, self.max_chars, 1))
+                    self.holotape_screen.cursorx = 0
+                    self.holotape_screen.cursory = self.menu_start
+                    self.cursor_x = self.holotape_screen.cursorx
+                    self.cursor_y = self.holotape_screen.cursory
+                self.waiting_for_input = True
+                self.skip = False
 
-        # Play sound on each action
-        if settings.SOUND_ENABLED:
-            self.sfx_text.play()
+            # Play sound on each action
+            if settings.SOUND_ENABLED:
+                self.sfx_text.play()
 
     def render(self, *args, **kwargs):
         super(HolotapeDisplay, self).render(self, *args, **kwargs)
-        self.current_time = time.time()
-        if self.active:
-            if (self.current_time - self.prev_time) >= 1 / settings.terminal_speed:
-                self.prev_time = self.current_time
-                if not self.waiting_for_input:
-                    self.draw_holotape_screen()
-                else:
-                    # Blink cursor at the bottom
-                    if self.current_time - self.prev_cursor_time >= self.cursor_time:
-                        self.prev_cursor_time = self.current_time
-                        for char in range(self.max_chars):
-                            self.screen.putchar(' ', char, self.max_lines)
-                        self.screen.putchar(">", 0, self.max_lines)
-                        if self.console_text:
-                            self.screen.putchars(self.console_text, 2, self.max_lines)
-                        else:
-                            if self.blink:
-                                self.screen.putchar(' ', 2, self.max_lines)
-                                self.blink = False
-                            else:
-                                self.screen.putchar('▯', 2, self.max_lines)
-                                self.blink = True
-
-                self.screen.update()
-                self.image.blit(self.holotape_image, (0, 0))
-
-        if self.holotape_waveform:
-            self.console_text = "Playing Holotape Audio..."
-            self.draw_grid()
-            self.render_holotape_waveform()
-            self.image.blit(self.grid, (225, 230))
-            self.image.blit(self.holotape_waveform_image, (225, 230))
-            if not pygame.mixer.music.get_busy():
-                pygame.draw.line(self.holotape_waveform_image, settings.bright, [0, self.holotape_waveform_height / 2 + 10],
-                                 [self.holotape_waveform_width, self.holotape_waveform_height / 2 + 10], 2)
-        else:
-            self.holotape_waveform_image.fill((0, 0, 0))
-            self.grid.fill((0, 0, 0))
-            self.console_text = None
+        # self.current_time = time.time()
+        print ("Rendering Holotape")
+    #
+    #     if not self.debug_time:
+    #         self.debug_time = 0
+    #
+    #     time_past = time.time() - self.debug_time
+    #     if time_past:
+    #         max_fps = int(1 / time_past)
+    #         print("Holotape render took:", time_past, "max fps:", max_fps)
+    #
+    #     debug_time = time.time()
+    #
+    #     if self.alive():
+    #         if (self.current_time - self.prev_time) >= settings.fps_rate:
+    #                 self.prev_time = self.current_time
+    #                 print("Should be showing holotape", self.label)
+    #         #
+    #         #     self.image.fill((128,128,0))
+    #         #
+    #         #
+    #         #     if not self.waiting_for_input:
+    #         #         self.draw_holotape_screen()
+    #         #     else:
+    #         #         # Blink cursor at the bottom
+    #         #         if self.current_time - self.prev_cursor_time >= self.cursor_time:
+    #         #             self.prev_cursor_time = self.current_time
+    #         #             for char in range(self.max_chars):
+    #         #                 self.holotape_screen.putchar(' ', char, self.max_lines)
+    #         #             self.holotape_screen.putchar(">", 0, self.max_lines)
+    #         #             if self.console_text:
+    #         #                 self.holotape_screen.putchars(self.console_text, 2, self.max_lines)
+    #         #             else:
+    #         #                 if self.blink:
+    #         #                     self.holotape_screen.putchar(' ', 2, self.max_lines)
+    #         #                     self.blink = False
+    #         #                 else:
+    #         #                     self.holotape_screen.putchar('▯', 2, self.max_lines)
+    #         #                     self.blink = True
+    #         #     self.holotape_screen.update()
+    #         #     self.image.blit(self.holotape_image, (0, 0))
+    #         #
+    #         # if self.holotape_waveform:
+    #         #     self.console_text = "Playing Holotape Audio..."
+    #         #     self.draw_grid()
+    #         #     self.render_holotape_waveform()
+    #         #     self.image.blit(self.grid, (225, 230))
+    #         #     self.image.blit(self.holotape_waveform_image, (225, 230))
+    #         #     if not pygame.mixer.music.get_busy():
+    #         #         pygame.draw.line(self.holotape_waveform_image, settings.bright,
+    #         #                          [0, self.holotape_waveform_height / 2 + 10],
+    #         #                          [self.holotape_waveform_width, self.holotape_waveform_height / 2 + 10], 2)
+    #         # else:
+    #         #     self.holotape_waveform_image.fill((0, 0, 0))
+    #         #     self.grid.fill((0, 0, 0))
+    #         #     self.console_text = None
+    #
+    # #
 
     def draw_grid(self):
         self.grid.fill((0, 0, 0))
@@ -531,7 +546,6 @@ class HolotapeDisplay(game.Entity):
             pygame.draw.line(self.grid, settings.light, (right, line_start), (right - short_line, line_start), 2)
             short_lines -= 1
 
-
     def expand(self, oldvalue, oldmin, oldmax, newmin, newmax):
         oldRange = oldmax - oldmin
         newRange = newmax - newmin
@@ -545,6 +559,13 @@ class HolotapeDisplay(game.Entity):
             self.audio_file = file
             print("Generating waveform for", self.audio_file)
             self.sound_object = pygame.mixer.Sound(self.audio_file)  # Load song into memory for waveform gen
+
+            if settings.CURRENT_SONG:
+                # print("Saving song", settings.CURRENT_SONG, "at position", pygame.mixer.music.get_pos())
+                self.saved_song = settings.CURRENT_SONG
+                self.saved_song_pos = pygame.mixer.music.get_pos()
+                pygame.mixer.music.pause()
+
             pygame.mixer.music.load(self.audio_file)  # Load for streaming playback
             self.audio_file_length = self.sound_object.get_length()
             amplitude = pygame.sndarray.array(self.sound_object)  # Load the sound file
@@ -581,7 +602,6 @@ class HolotapeDisplay(game.Entity):
                     prev_x, prev_y = x, y
                     # Credit to https://github.com/prtx/Music-Visualizer-in-Python/blob/master/music_visualizer.py
 
-
     def update_cursor(self, button=None):
 
         if button == "Down":
@@ -605,9 +625,9 @@ class HolotapeDisplay(game.Entity):
             if self.cursor_y != self.line:
                 if settings.SOUND_ENABLED:
                     self.sfx_dial_move.play()
-                self.screen.cursor = (0, self.cursor_y)
-                self.screen.reversecolors((0, self.line, self.max_chars, 1))
-                self.screen.reversecolors((0, self.cursor_y, self.max_chars, 1))
+                self.holotape_screen.cursor = (0, self.cursor_y)
+                self.holotape_screen.reversecolors((0, self.line, self.max_chars, 1))
+                self.holotape_screen.reversecolors((0, self.cursor_y, self.max_chars, 1))
                 # print("prev_y = ", self.prev_y, "cursor_y =", self.cursor_y, "menu_start=", self.menu_start, "menu_end = ",
                 #       self.menu_end)
 
@@ -685,18 +705,71 @@ class HolotapeDisplay(game.Entity):
 
 class HolotapeClass(HolotapeDisplay):
     def __init__(self, holotape_name, holotape_data, *args, **kwargs):
+        super(HolotapeClass, self).__init__(self, *args, **kwargs)
         # holotapes_data = [holotape_name, folder_name, holotape_type, static_text, dynamic_text, menu, action]
-        # print("xxxxxxxxxxxxxxxxx")
-        # print(holotape_data)
-        # print("xxxxxxxxxxxxxxx")
         self.label = holotape_name
         self.directory = holotape_data[1]
         self.holotape_type = holotape_data[2]
-        holotape_display_page = []
-        holotape_display_page = 'Welcome to ROBCO Industries (TM) Termlink\\n\\n', 'Holotape Audio\\n\\n', [
-            '[< Back]', '[Play / Pause]'], ['Previous', 'Pause']
+        holotape_display_page = ['Welcome to ROBCO Industries (TM) Termlink\\n\\n', 'Holotape Audio\\n\\n', [
+            '[< Back]', '[Play / Pause]'], ['Previous', 'Pause']]
         holotape_data[3].append(holotape_display_page)
 
         self.holotape_data = holotape_data
 
-        super(HolotapeClass, self).__init__(self, *args, **kwargs)
+
+class Health(game.Entity):
+
+    def __init__(self):
+        super(Health, self).__init__()
+
+        self.image = pygame.Surface((settings.WIDTH, settings.HEIGHT - 180))
+        self.image.fill((0, 0, 0))
+        #
+        # # Bottom Boxes
+        # pygame.draw.rect(self.image, settings.dim, (0, 501, 166, 38)) #Hit point background
+        # pygame.draw.rect(self.image, settings.dim, (170, 501, 370, 38)) #Level bar background
+        # pygame.draw.lines(self.image, settings.mid,True,[(282,515),(529,515),(529,529),(282,529)], 3) #Level bar surround
+        # pygame.draw.rect(self.image, settings.bright, (285, 517, 179, 11)) #Level bar fill
+        # pygame.draw.rect(self.image, settings.dim, (544, 501, 176, 38)) #Actiion background
+
+        # Middle Boxes
+        pygame.draw.rect(self.image, settings.dim, (203, 358, 64, 62))  # Gun box
+        pygame.draw.rect(self.image, settings.dim, (273, 358, 38, 62))  # Ammo box
+        pygame.draw.rect(self.image, settings.dim, (328, 358, 64, 62))  # Helmet box
+        pygame.draw.rect(self.image, settings.dim, (398, 358, 38, 62))  # Armor box
+        pygame.draw.rect(self.image, settings.dim, (440, 358, 38, 62))  # Energy box
+        pygame.draw.rect(self.image, settings.dim, (483, 358, 38, 62))  # Radiation box
+
+        # Icons
+        self.image.blit(pygame.image.load('images/stats/gun.png').convert_alpha(), (210, 374))
+        self.image.blit(pygame.image.load('images/stats/reticle.png').convert_alpha(), (284, 363))
+        self.image.blit(pygame.image.load('images/stats/helmet.png').convert_alpha(), (338, 373))
+        self.image.blit(pygame.image.load('images/stats/shield.png').convert_alpha(), (410, 362))
+        self.image.blit(pygame.image.load('images/stats/bolt.png').convert_alpha(), (453, 362))
+        self.image.blit(pygame.image.load('images/stats/radiation.png').convert_alpha(), (491, 363))
+
+        # Health Bars
+        pygame.draw.line(self.image, settings.bright, (344, 32), (379, 32), 9)
+        pygame.draw.line(self.image, settings.bright, (465, 134), (500, 134), 9)
+        pygame.draw.line(self.image, settings.bright, (465, 266), (500, 266), 9)
+        pygame.draw.line(self.image, settings.bright, (344, 318), (379, 318), 9)
+        pygame.draw.line(self.image, settings.bright, (216, 266), (251, 266), 9)
+        pygame.draw.line(self.image, settings.bright, (216, 134), (251, 134), 9)
+
+        # Stat text
+        settings.FreeRobotoB[24].render_to(self.image, (281, 395), "18", settings.bright)  # Ammo count
+        settings.FreeRobotoB[24].render_to(self.image, (406, 395), "10", settings.bright)  # Armor count
+        settings.FreeRobotoB[24].render_to(self.image, (447, 395), "20", settings.bright)  # Energy count
+        settings.FreeRobotoB[24].render_to(self.image, (490, 395), "10", settings.bright)  # Rad count
+        #
+        # # Bottom text
+        # settings.FreeRobotoB[30].render_to(self.image, (7, 509), "HP 115/115", settings.bright)
+        # settings.FreeRobotoB[24].render_to(self.image, (188, 513), "LEVEL 66", settings.bright)
+        # settings.FreeRobotoB[30].render_to(self.image, (602, 509), "AP 90/90", settings.bright)
+
+        # User name
+        settings.FreeRobotoB[24].render_to(self.image, (301, 448), settings.name, settings.bright)
+
+    # def handle_resume(self):
+    #     pass
+    #     super(Module, self).handle_resume()

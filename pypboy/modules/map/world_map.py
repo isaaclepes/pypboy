@@ -8,16 +8,16 @@ import io
 import numpy as np
 import cairosvg
 
-def load_svg(filename, width, height):
-    drawing = cairosvg.svg2png(url = filename)
-    byte_io = io.BytesIO(drawing)
-    image = pygame.image.load(byte_io)
-    size = image.get_size()
-    scale = min(width / size[0], height / size[1])
-    if size[1] != height:
-        image = pygame.transform.smoothscale(image, (round(size[0] * scale), round(size[1] * scale)))
-    image.fill((0,230,0), None, pygame.BLEND_RGBA_MULT)
-    return image
+# def load_svg(filename, width, height):
+#     drawing = cairosvg.svg2png(url = filename)
+#     byte_io = io.BytesIO(drawing)
+#     image = pygame.image.load(byte_io).convert_alpha()
+#     size = image.get_size()
+#     scale = min(width / size[0], height / size[1])
+#     if size[1] != height:
+#         image = pygame.transform.smoothscale(image, (round(size[0] * scale), round(size[1] * scale)))
+#     image.fill((0,230,0), None, pygame.BLEND_RGBA_MULT)
+#     return image
 
 class Module(pypboy.SubModule):
     label = "WORLD MAP"
@@ -137,7 +137,9 @@ class Map(game.Entity):
 
             self._map_surface.blit(map_surf, (0, 0))
 
-            svg_surface = load_svg("./images/map_icons/Player_Marker.svg", 40, 40)
+            # svg_surface = load_svg("./images/map_icons/Player_Marker.svg", 40, 40)
+            svg_surface = pygame.image.load("./images/map_icons/Player_Marker.svg").convert_alpha()
+            svg_surface.fill(settings.bright, None, pygame.BLEND_RGBA_MULT)
             self._map_surface.blit(svg_surface, (settings.WIDTH / 2 - 20, self._render_rect.centery - 20))
 
         else:

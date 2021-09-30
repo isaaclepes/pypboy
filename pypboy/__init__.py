@@ -7,6 +7,7 @@ from enum import Enum
 if settings.GPIO_AVAILABLE:
     import RPi.GPIO as GPIO
 
+
 class GameState(Enum):
     PASSCODE = -5
     BOOT = -4
@@ -16,17 +17,18 @@ class GameState(Enum):
     INV = 0
     STATS = 1
 
-class BaseModule(game.EntityGroup):
 
+class BaseModule(game.EntityGroup):
     submodules = []
     currentSubmodule = 0
 
     def __init__(self, boy, *args, **kwargs):
         super(BaseModule, self).__init__()
 
-        #if settings.GPIO_AVAILABLE:
-            #GPIO.setup(self.GPIO_LED_ID, GPIO.OUT)
-            #GPIO.output(self.GPIO_LED_ID, False)
+        # if settings.GPIO_AVAILABLE:
+        # GPIO.setup(self.GPIO_LED_ID, GPIO.OUT)
+        # GPIO.output(self.GPIO_LED_ID, False)
+        self.active = None
 
         self.pypboy = boy
         self.position = (0, 50)
@@ -34,20 +36,18 @@ class BaseModule(game.EntityGroup):
         self.submenu = pypboy.ui.SubMenu()
         self.submenu.menu = []
         for mod in self.submodules:
-           self.submenu.menu.append(mod.label)
+            self.submenu.menu.append(mod.label)
         self.submenu.selected = self.submenu.menu[0]
         self.submenu.position = (73, 93)
         self.add(self.submenu)
-
-
 
         self.action_handlers = {
             "pause": self.handle_pause,
             "resume": self.handle_resume
         }
-        
+
         self.switch_submodule(0)
-        
+
         if settings.SOUND_ENABLED:
             self.module_change_sfx = pygame.mixer.Sound('sounds/pipboy/UI_Pipboy_OK.ogg')
             self.module_change_sfx.set_volume(settings.VOLUME)
@@ -58,8 +58,7 @@ class BaseModule(game.EntityGroup):
             self.active.move(x, y)
 
     def switch_submodule(self, module):
-        #pygame.display.flip()
-        #print("Changing to sub-module", module)
+        # print("Changing to sub-module", module)
         if module < len(self.submodules):
             if hasattr(self, 'active') and self.active:
                 self.active.handle_action("pause")
@@ -73,14 +72,13 @@ class BaseModule(game.EntityGroup):
         else:
             print("No submodule at %d" % module)
 
-    def render(self): 
-        self.active.render()
-        super(BaseModule, self).render()
+    # def render(self):
+    #     super(BaseModule, self).render()
 
     def handle_action(self, action, value=0):
 
         if action.startswith("knob_"):
-        # if action.startswith("knob_") and not settings.hide_submenu:
+            # if action.startswith("knob_") and not settings.hide_submenu:
             num = int(action[-1])
             self.switch_submodule(num - 1)
         elif action in self.action_handlers:
@@ -93,22 +91,22 @@ class BaseModule(game.EntityGroup):
         if hasattr(self, 'active') and self.active:
             self.active.handle_event(event)
 
-
     def handle_pause(self):
         self.paused = True
         self.currentSubmodule = 0
         self.switch_submodule(0)
-        #if settings.GPIO_AVAILABLE:
-            #GPIO.output(self.GPIO_LED_ID, False)
+        # if settings.GPIO_AVAILABLE:
+        # GPIO.output(self.GPIO_LED_ID, False)
 
     def handle_resume(self):
         self.paused = False
         self.currentSubmodule = 0
         self.switch_submodule(0)
-        #if settings.GPIO_AVAILABLE:
-            #GPIO.output(self.GPIO_LED_ID, True)
+        # if settings.GPIO_AVAILABLE:
+        # GPIO.output(self.GPIO_LED_ID, True)
         if settings.SOUND_ENABLED:
             self.module_change_sfx.play()
+
 
 class SubModule(game.EntityGroup):
 

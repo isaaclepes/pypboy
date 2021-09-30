@@ -2,5 +2,4 @@ pygame
 requests
 xmltodict
 numpy
-cairosvg
 mutagen

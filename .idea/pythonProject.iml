@@ -4,6 +4,8 @@
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/venv" />
       <excludeFolder url="file://$MODULE_DIR$/_gsdata_" />
+      <excludeFolder url="file://$MODULE_DIR$/objloader" />
+      <excludeFolder url="file://$MODULE_DIR$/music_visualizer" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

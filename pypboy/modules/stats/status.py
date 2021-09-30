@@ -81,7 +81,6 @@ class Module(pypboy.SubModule):
                     settings.glitch = False
                 settings.glitch_next += 1
 
-
     # def handle_resume(self):
     #     pass
     #     super(Module, self).handle_resume()
@@ -116,16 +115,16 @@ class Animation(game.Entity):
         # if self.fps_delta_time:
         #     self.fps = round(1/self.fps_delta_time,1)
         # self.prev_fps_time = time.time()
-        
+
         if self.delta_time >= self.animation_time:
             self.prev_time = self.current_time
-  
+
             self.image.fill((0,0,0))
 
             if self.index >= len(self.images):
-                self.index = 0 
+                self.index = 0
             self.file = self.images[self.index]
-            
+
             self.image.blit((self.file),(1 + self.steps[self.index] // 2,68 + self.steps[self.index]))
             self.image.blit((self.head),(29 + self.steps[self.index] // 2,0 + self.steps[self.index]))
             # settings.FreeRobotoB[24].render_to(self.image, (0, 0), str(self.fps), settings.bright) #FPS
